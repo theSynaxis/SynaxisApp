@@ -17,6 +17,8 @@ Our project is divided into three parts: The App, the API, and the site.
 The App and the API are built with the T3 stack.
 The website is made with NextWP and WordPress.
 
+The UI was designed using Figma.
+
 ### T3 Stack
 
 The [T3 Stack](https://create.t3.gg/) is an opinionated template for building a full stack, type safe web application.
@@ -40,6 +42,10 @@ The CMS is hosted on a subdomain. This gives us an easy and familiar interface t
 This content is accessed via the WordPress REST API using NextWP.
 
 [NextWP](https://nextwp.org) is a library built on the WP REST API and Next.js App Router that streamlines the process of building super fast Headless WordPress sites with Next.js.
+
+## Style Guide
+
+Our comprehensive style guide can be found here: [Style Guide](/docs/style-guide/).
 
 ### Deployment
 
