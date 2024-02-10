@@ -5,10 +5,12 @@ A full stack app for Orthodox Christians.
 ## The App
 
 The Synaxis App, at this time, is a simple quote app built in React.js.
+For more information regarding the app itself, see the documentation: [App](docs/app.md)
 
 ## API
 
 Our API is consumed internally using tRPC, but is also externally exposed as a REST API for other future projects and other developers.
+For more information regarding the API itself, see the documentation: [API](docs/api.md)
 
 ## Tech Stack
 
