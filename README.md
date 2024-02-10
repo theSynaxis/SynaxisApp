@@ -1,28 +1,46 @@
-# Create T3 App
+# Synaxis App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A full stack app for Orthodox Christians.
 
-## What's next? How do I make an app with this?
+## The App
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+The Synaxis App, at this time, is a simple quote app built in React.js.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## API
 
+Our API is consumed internally using tRPC, but is also externally exposed as a REST API for other future projects and other developers.
+
+## Tech Stack
+
+The Synaxis App is a React.js app built using the T3 stack, NextWP, and WordPress.
+Our project is divided into three parts: The App, the API, and the site.
+The App and the API are built with the T3 stack.
+The website is made with NextWP and WordPress.
+
+### T3 Stack
+
+The [T3 Stack](https://create.t3.gg/) is an opinionated template for building a full stack, type safe web application.
+
+Our stack includes:
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [Drizzle](https://orm.drizzle.team)
 
-## Learn More
+The T3 stack comes pre-configured for Typescript. This is the opinionated part of the stack.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+For our API, we are using https://github.com/jlalmes/trpc-openapi/tree/master for externally exposing a REST API along with our internally consumed tRCP API.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+We are using a Postgres Database.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### NextWP and WordPress
 
-## How do I deploy this?
+Our project includes a headless WordPress website.
+The CMS is hosted on a subdomain. This gives us an easy and familiar interface to manage the content of the marketing website.
+This content is accessed via the WordPress REST API using NextWP.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+[NextWP](https://nextwp.org) is a library built on the WP REST API and Next.js App Router that streamlines the process of building super fast Headless WordPress sites with Next.js.
+
+### Deployment
+
+Our app is deployed on Vercel.
