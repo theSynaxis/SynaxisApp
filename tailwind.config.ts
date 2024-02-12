@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        synaxisHeader: ["var(--font-synaxis)"],
       },
     },
     colors: {
@@ -70,7 +71,7 @@ export default {
       'warning-yellow-700': '#A8A22A',
       'warning-yellow-800': '#827D20',
       'warning-yellow-900': '#646019',
-    }
+    },
   },
   plugins: [],
 } satisfies Config;
