@@ -10,16 +10,16 @@ export default async function Home() {
   const hello = await api.user.hello.query({ text: "from tRPC" });
 
   return (
-    <main className="text-white flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 text-neutral-900">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1
-          className={`font-synaxisHeader text-5xl font-extrabold tracking-tight sm:text-[5rem]`}
+          className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
         >
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+          The <span className="text-secondary-red-600">Synaxis</span> App
         </h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <Link
-            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl p-4"
+            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl border border-neutral-900 p-4 shadow-lg"
             href="https://create.t3.gg/en/usage/first-steps"
             target="_blank"
           >
@@ -30,7 +30,7 @@ export default async function Home() {
             </div>
           </Link>
           <Link
-            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl p-4"
+            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl border border-neutral-900 p-4 shadow-lg"
             href="https://create.t3.gg/en/introduction"
             target="_blank"
           >
