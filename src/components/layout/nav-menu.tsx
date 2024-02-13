@@ -14,7 +14,7 @@ export default function NavMenu(props: { items: WpMenuItem[] }) {
         return (
           <li key={`${item.label}`} className="m-4">
             <Link
-              className={`${`${pathname}/` === `/${item.path}` ? "border-b-2 border-b-primary-gold-400" : ""} text-primary-gold-400`}
+              className={`${`${pathname}/` === `/${item.path}` ? "border-b-2 border-b-primary-gold-400" : ""} text-lg text-primary-gold-400`}
               href={`/${item.path}`}
             >
               {parseHtml(`${item.label}`)}

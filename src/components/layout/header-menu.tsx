@@ -20,10 +20,11 @@ export default async function HeaderMenu() {
           />
         </Link>
 
-        <Link href="/">
-          <h1 className="font-synaxisHeader m-4 text-primary-gold-400">
-            {siteSettings.title}
-          </h1>
+        <Link
+          className="m-2 font-synaxisHeader text-3xl text-primary-gold-400"
+          href="/"
+        >
+          {siteSettings.title}
         </Link>
       </span>
 
