@@ -1,6 +1,11 @@
 import { TRPCReactProvider } from "~/trpc/react";
-import { sourceSansPro, synaxisHeader } from "./fonts";
+import { sourceSansPro, synaxisHeader } from "../fonts";
 import "~/styles/globals.css";
+
+export const metadata = {
+  title: "Apps | The Synaxis",
+  description: "Apps for Eastern Orthodox Christians.",
+};
 
 export default function RootLayout({
   children,

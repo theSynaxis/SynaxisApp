@@ -3,14 +3,13 @@ import Link from "next/link";
 
 import { CreateUser } from "~/app/_components/create-user";
 import { api } from "~/trpc/server";
-// import { inter } from "./fonts";
 
 export default async function Home() {
   noStore();
   const hello = await api.user.hello.query({ text: "from tRPC" });
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 text-neutral-900">
+    <main className="flex min-h-screen flex-col items-center justify-center text-neutral-900">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1
           className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
@@ -19,9 +18,8 @@ export default async function Home() {
         </h1>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <Link
-            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl border border-neutral-900 p-4 shadow-lg"
+            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl border border-neutral-900 p-4 shadow-md hover:shadow-lg"
             href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
           >
             <h3 className="text-2xl font-bold">First Steps →</h3>
             <div className="text-lg">
@@ -32,7 +30,6 @@ export default async function Home() {
           <Link
             className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl border border-neutral-900 p-4 shadow-lg"
             href="https://create.t3.gg/en/introduction"
-            target="_blank"
           >
             <h3 className="text-2xl font-bold">Documentation →</h3>
             <div className="text-lg">
