@@ -1,10 +1,25 @@
+/** @type {import("next").NextConfig} */
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
 await import("./src/env.js");
 
-/** @type {import("next").NextConfig} */
-const config = {};
+const wpBaseUrl = `${process.env.NEXT_PUBLIC_WP_URL?.replace("https://", "").replace("/", "")}`;
 
-export default config;
+const nextConfig = {
+    images: {
+      remotePatterns: [
+        {
+          protocol: "https",
+          hostname: wpBaseUrl,
+        },
+        {
+          protocol: "https",
+          hostname: "secure.gravatar.com",
+        },
+      ],
+    },
+}
+
+export default nextConfig;
