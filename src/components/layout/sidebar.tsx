@@ -2,6 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { getMenuItems, getSiteSettings, getSiteLogo } from "@nextwp/core";
 import NavMenu from "./nav-menu";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
 
 export default async function Sidebar() {
   const menuItems = await getMenuItems({ slug: "main-menu" });
@@ -29,7 +38,26 @@ export default async function Sidebar() {
               {siteSettings.title}
             </Link>
           </span>
+          <span className="mx-4 my-8 flex flex-row items-center justify-around">
+            <Button>Login</Button>
 
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Register</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Create a Synaxis Account</DialogTitle>
+                </DialogHeader>
+                <DialogDescription className="flex flex-col items-start justify-between">
+                  <p>
+                    This action cannot be undone. This will permanently delete
+                    your account and remove your data from our servers.
+                  </p>
+                </DialogDescription>
+              </DialogContent>
+            </Dialog>
+          </span>
           <NavMenu items={menuItems} direction={"left"} />
         </span>
 

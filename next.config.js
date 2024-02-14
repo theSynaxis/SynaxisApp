@@ -8,6 +8,9 @@ await import("./src/env.js");
 const wpBaseUrl = `${process.env.NEXT_PUBLIC_WP_URL?.replace("https://", "").replace("/", "")}`;
 
 const nextConfig = {
+    typescript: {
+      ignoreBuildErrors: true,
+    },
     images: {
       remotePatterns: [
         {

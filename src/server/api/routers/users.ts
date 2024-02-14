@@ -1,4 +1,5 @@
 import { z } from "zod";
+import bcrypt from 'bcrypt';
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { users } from "~/server/db/schema";
@@ -13,15 +14,14 @@ export const userRouter = createTRPCRouter({
     }),
 
   create: publicProcedure
-    .input(z.object({ username: z.string().min(1), email: z.string().min(1), password: z.string().min(1) }))
+    .input(z.object({ username: z.string().min(1), email: z.string().email(), password: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      // simulate a slow db call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const hashedPassword = await bcrypt.hash(input.password, 10);
 
       await ctx.db.insert(users).values({
         username: input.username,
         email: input.email,
-        password: input.password,
+        password: hashedPassword,
       });
     }),
 

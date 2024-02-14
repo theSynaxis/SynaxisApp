@@ -1,4 +1,6 @@
 import parser from "html-react-parser";
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
 
 /*
 * This parser is used throughout the dynamic WP pages and posts
@@ -12,4 +14,8 @@ import parser from "html-react-parser";
 export function parseHtml(html: string) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
     return parser(html);
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
