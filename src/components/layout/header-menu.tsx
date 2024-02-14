@@ -21,14 +21,14 @@ export default async function HeaderMenu() {
         </Link>
 
         <Link
-          className="m-2 font-synaxisHeader text-3xl text-primary-gold-400"
+          className="m-2 font-synaxisHeader text-2xl text-primary-gold-400"
           href="/"
         >
           {siteSettings.title}
         </Link>
       </span>
 
-      <NavMenu items={menuItems} />
+      <NavMenu items={menuItems} direction={"top"} />
     </header>
   );
 }

@@ -11,7 +11,7 @@ export default async function PageRoute(props: {
   searchParams?: SearchParams;
 }) {
   return (
-    <main className="flex min-h-screen flex-col items-center pt-28 text-neutral-900">
+    <main className="flex min-h-[620px] flex-col items-center pt-28 text-neutral-900">
       <div className="container flex flex-col items-center gap-12 px-4">
         <h1
           className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}

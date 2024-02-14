@@ -1,6 +1,7 @@
 import { TRPCReactProvider } from "~/trpc/react";
-import { sourceSansPro, synaxisHeader } from "./fonts";
+import { sourceSansPro, synaxisHeader } from "../fonts";
 import HeaderMenu from "~/components/layout/header-menu";
+import Footer from "~/components/layout/footer";
 import "~/styles/globals.css";
 
 export default function RootLayout({
@@ -11,10 +12,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans ${sourceSansPro.variable} ${synaxisHeader.variable} w-full bg-neutral-50`}
+        className={`min-h-screen font-sans ${sourceSansPro.variable} ${synaxisHeader.variable} w-full bg-neutral-50`}
       >
         <HeaderMenu />
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Footer />
       </body>
     </html>
   );
