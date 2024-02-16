@@ -10,7 +10,6 @@ import {
   date,
   boolean,
   integer,
-  foreignKey,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -94,3 +93,15 @@ export const works = createTable("works", {
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
+
+export const citations = createTable("citations", {
+  id: serial('id').primaryKey(),
+  publicationCity: varchar('publication_city').notNull(),
+  publicationYear: varchar('publication_year').notNull(),
+  pageStart: integer('page_start').notNull(),
+  pageEnd: integer('page_end').notNull(),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  // dbdesigner includes "pg_pl: varchar" but there are no notes for what it might be.
+})
+
