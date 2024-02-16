@@ -105,3 +105,10 @@ export const citations = createTable("citations", {
   // dbdesigner includes "pg_pl: varchar" but there are no notes for what it might be.
 })
 
+export const quotes = createTable("quotes", {
+  id: serial("id").primaryKey(),
+  text: varchar('text').notNull(),
+  authorId: integer('author_id').references(() => saints.id),
+  workId: integer('work_id').references(() => works.id),
+  citationId: integer('citation_id').references(() => citations.id),
+})
