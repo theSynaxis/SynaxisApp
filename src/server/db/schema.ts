@@ -138,3 +138,23 @@ export const quote_categories = createTable('quote_categories', {
   quoteId: integer('quote_id').references(() => quotes.id),
   categoryId: integer('category_id').references(() => categories.id),
 })
+
+// service refers to sayings and calendar apps and all data they own
+// used for Work/Book cover photos, saint icons, and user profile pictures.
+export const service_images = createTable('service_images', {
+  id: serial('id').primaryKey(),
+  url: varchar('url').notNull(),
+  alt: varchar('alt').notNull(),
+})
+
+// icons here refers to Orthodox Iconography depicting saints
+export const icons = createTable('icons', {
+  saintId: integer('saint_id').references(() => saints.id),
+  iconId: integer('icon_id').references(() => service_images.id),
+})
+
+export const work_cover = createTable('work_cover', {
+  workId: integer('work_id').references(() => works.id),
+  coverId: integer('cover_id').references(() => service_images.id),
+})
+
