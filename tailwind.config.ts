@@ -29,6 +29,7 @@ export default {
       'md': '0 0 12px 0 rgba(210, 207, 200, 1)',
       'lg': '0 0 25px 0 rgba(210, 207, 200, 1)', // can use for hover shadow
     },
+    // TODO: organize these colors according to the docs
     colors: {
       'primary-gold-50': '#FDF8EC',
       'primary-gold-100': '#FAEAC4',

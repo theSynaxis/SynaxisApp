@@ -14,7 +14,7 @@ import {
 import CreateUser from "~/components/create-user";
 
 export default async function Sidebar() {
-  const menuItems = await getMenuItems({ slug: "main-menu" });
+  const menuItems = await getMenuItems({ slug: "sidebar-menu" });
   const siteSettings = await getSiteSettings();
   const logo = await getSiteLogo();
 
@@ -57,6 +57,10 @@ export default async function Sidebar() {
             </Dialog>
           </span>
           <NavMenu items={menuItems} direction={"left"} />
+          {/* TODO: Add user links; add admin links */}
+          {/* <Link className="text-md text-primary-gold-400" href="/apps/admin">
+            Admin
+          </Link> */}
         </span>
 
         <p className="mx-auto py-4 text-center text-primary-gold-400">
