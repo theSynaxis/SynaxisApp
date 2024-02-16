@@ -94,6 +94,7 @@ export const works = createTable("works", {
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
 
+// each quote has a citation
 export const citations = createTable("citations", {
   id: serial('id').primaryKey(),
   publicationCity: varchar('publication_city').notNull(),
@@ -113,13 +114,27 @@ export const quotes = createTable("quotes", {
   citationId: integer('citation_id').references(() => citations.id),
 })
 
+// user's collections of quotes
 export const collections = createTable("collections", {
   id: serial("id").primaryKey(),
   name: varchar('name', { length: 256 }).notNull(),
   userId: integer('user_id').references(() => users.id),
 })
 
+// many to many quotes/collections table
 export const quote_collections = createTable("quote_collections", {
   collectionId: integer('collection_id').references(() => collections.id),
   quoteId: integer('quote_id').references(() => quotes.id),
+})
+
+// these are categories of quotes/sayings: e.g. hope, faith, love, etc.
+export const categories = createTable('categories', {
+  id: serial('id').primaryKey(),
+  name: varchar('name').notNull(),
+})
+
+// many to many quotes/categories table
+export const quote_categories = createTable('quote_categories', {
+  quoteId: integer('quote_id').references(() => quotes.id),
+  categoryId: integer('category_id').references(() => categories.id),
 })
