@@ -10,6 +10,7 @@ import {
   date,
   boolean,
   integer,
+  foreignKey,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -63,7 +64,7 @@ export const parishes = createTable(
   }
 )
 
-export const saint = createTable("saint", {
+export const saints = createTable("saints", {
   id: serial('id').primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
   life: varchar("life"),
@@ -81,6 +82,15 @@ export const saint = createTable("saint", {
   yearDied: integer("year_died"),
   isBc: boolean("is_bc").notNull(),
   feastDate: date("feast_date"),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+})
+
+export const works = createTable("works", {
+  id: serial('id').primaryKey(),
+  title: varchar('title').notNull(),
+  publishedDate: varchar('published_date'),
+  authorId: integer("author_id").references(() => saints.id),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
