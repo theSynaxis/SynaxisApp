@@ -112,3 +112,9 @@ export const quotes = createTable("quotes", {
   workId: integer('work_id').references(() => works.id),
   citationId: integer('citation_id').references(() => citations.id),
 })
+
+export const collections = createTable("collections", {
+  id: serial("id").primaryKey(),
+  name: varchar('name', { length: 256 }).notNull(),
+  userId: integer('user_id').references(() => users.id),
+})
