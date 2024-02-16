@@ -18,8 +18,10 @@ export default function RootLayout({
       <body
         className={`font-sans ${sourceSansPro.variable} ${synaxisHeader.variable} flex h-full flex-row justify-between bg-neutral-50`}
       >
-        <Sidebar />
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <TRPCReactProvider>
+          <Sidebar />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );

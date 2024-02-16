@@ -9,8 +9,8 @@ export default async function HeaderMenu() {
   const logo = await getSiteLogo();
 
   return (
-    <header className="fixed flex w-full flex-row items-center justify-between border-2 border-b-secondary-red-500 bg-neutral-900 uppercase">
-      <span className="m-4 flex flex-row items-center justify-between">
+    <header className="sticky top-0 z-50 flex w-full flex-row items-center justify-between border-2 border-b-secondary-red-500 bg-neutral-900 uppercase">
+      <span className="flex flex-row items-center justify-between px-2 py-2 sm:px-4 lg:px-8">
         <Link href="/">
           <Image
             src={`${logo.source_url}`}

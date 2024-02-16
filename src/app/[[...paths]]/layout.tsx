@@ -14,9 +14,11 @@ export default function RootLayout({
       <body
         className={`min-h-screen font-sans ${sourceSansPro.variable} ${synaxisHeader.variable} w-full bg-neutral-50`}
       >
-        <HeaderMenu />
-        <TRPCReactProvider>{children}</TRPCReactProvider>
-        <Footer />
+        <div className="max-w-7xl">
+          <HeaderMenu />
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Footer />
+        </div>
       </body>
     </html>
   );

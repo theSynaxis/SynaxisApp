@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
+import CreateUser from "~/components/create-user";
 
 export default async function Sidebar() {
   const menuItems = await getMenuItems({ slug: "main-menu" });
@@ -50,10 +51,7 @@ export default async function Sidebar() {
                   <DialogTitle>Create a Synaxis Account</DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="flex flex-col items-start justify-between">
-                  <p>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </p>
+                  <CreateUser />
                 </DialogDescription>
               </DialogContent>
             </Dialog>

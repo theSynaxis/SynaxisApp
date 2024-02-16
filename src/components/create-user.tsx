@@ -21,13 +21,20 @@ export default function CreateUser() {
     },
   });
 
+  // TODO: add validation rules
+  // TODO: add error handling
+  // TODO: add error messages
+  // TODO: refactor form state to one hook
+  // TODO: add logic for unique usernames
+  // TODO: add logic for secure passwords
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         createUser.mutate({ username, email, password });
       }}
-      className="flex flex-col gap-2"
+      className="flex w-full flex-col gap-2"
     >
       <input
         type="text"
@@ -44,7 +51,7 @@ export default function CreateUser() {
         className="text-black w-full rounded-full px-4 py-2"
       />
       <input
-        type="text"
+        type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}

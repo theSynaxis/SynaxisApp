@@ -9,14 +9,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        default:
+          "bg-primary-gold-500 text-neutral-900 hover:boxShadow-lg transition",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+          "bg-primary-gold-200 text-neutral-900 hover:boxShadow-lg transition",
+        disabled: "bg-neutral- text-neutral-200 transition",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -54,14 +51,3 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = "Button";
 
 export { Button, buttonVariants };
-// const primaryStyles =
-//     "bg-primary-gold-500 text-neutral-900 hover:boxShadow-lg transition";
-//   const secondaryStyles =
-//     "bg-primary-gold-200 text-neutral-900 hover:boxShadow-lg transition";
-//   const disabledStyles = "bg-neutral- text-neutral-200 transition";
-//   const sizeStyles =
-//     size === "lg"
-//       ? "rounded-xl px-10 py-3"
-//       : size === "md"
-//         ? "rounded-lg px-8 py-3"
-//         : "rounded-md px-4 py-2";
