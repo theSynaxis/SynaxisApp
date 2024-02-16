@@ -118,3 +118,8 @@ export const collections = createTable("collections", {
   name: varchar('name', { length: 256 }).notNull(),
   userId: integer('user_id').references(() => users.id),
 })
+
+export const quote_collections = createTable("quote_collections", {
+  collectionId: integer('collection_id').references(() => collections.id),
+  quoteId: integer('quote_id').references(() => quotes.id),
+})
