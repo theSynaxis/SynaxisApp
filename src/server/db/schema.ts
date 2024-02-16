@@ -9,6 +9,7 @@ import {
   varchar,
   date,
   boolean,
+  integer,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -56,7 +57,30 @@ export const parishes = createTable(
     zipCode: varchar("zip_code", { length: 256 }).notNull(),
     website: varchar("website", { length: 256 }),
     googleCalendarId: varchar("google_calendar_id", { length: 256 }),
+    isActivated: boolean("is_activated").default(false).notNull(),
     createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
     updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   }
 )
+
+export const saint = createTable("saint", {
+  id: serial('id').primaryKey(),
+  name: varchar("name", { length: 256 }).notNull(),
+  life: varchar("life"),
+  isPatriarch: boolean("is_patriarch").default(false).notNull(),
+  isBishop: boolean("is_bishop").default(false).notNull(),
+  isPriest: boolean("is_priest").default(false).notNull(),
+  isDeacon: boolean("is_deacon").default(false).notNull(),
+  isElder: boolean("is_elder").default(false).notNull(),
+  isMonk: boolean("is_monk").default(false).notNull(),
+  isProphet: boolean("is_prophet").default(false).notNull(),
+  isRuler: boolean("is_ruler").default(false).notNull(),
+  isMarried: boolean("is_married").default(false).notNull(),
+  isLayman: boolean("is_layman").default(false).notNull(),
+  yearBorn: integer("year_born"),
+  yearDied: integer("year_died"),
+  isBc: boolean("is_bc").notNull(),
+  feastDate: date("feast_date"),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+})
