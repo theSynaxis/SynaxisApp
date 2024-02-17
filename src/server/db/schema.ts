@@ -44,8 +44,9 @@ export const users = createTable(
 export const parishes = createTable(
   "parishes", {
     id: serial("id").primaryKey(),
-    isMonastery: boolean("is_monastery").default(false).notNull(),
     name: varchar("name", { length: 256 }).notNull(),
+    adminId: integer('admin_id').references(() => users.id).notNull(),
+    isMonastery: boolean("is_monastery").default(false).notNull(),
     jurisdiction: varchar("jurisdiction", { length: 256 }).notNull(),
     diocese: varchar("diocese", { length: 256 }).notNull(),
     priest: varchar("priest", { length: 256 }),
@@ -89,7 +90,7 @@ export const works = createTable("works", {
   id: serial('id').primaryKey(),
   title: varchar('title').notNull(),
   publishedDate: varchar('published_date'),
-  authorId: integer("author_id").references(() => saints.id),
+  authorId: integer("author_id").references(() => saints.id).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
@@ -109,22 +110,22 @@ export const citations = createTable("citations", {
 export const quotes = createTable("quotes", {
   id: serial("id").primaryKey(),
   text: varchar('text').notNull(),
-  authorId: integer('author_id').references(() => saints.id),
-  workId: integer('work_id').references(() => works.id),
-  citationId: integer('citation_id').references(() => citations.id),
+  authorId: integer('author_id').references(() => saints.id).notNull(),
+  workId: integer('work_id').references(() => works.id).notNull(),
+  citationId: integer('citation_id').references(() => citations.id).notNull(),
 })
 
 // user's collections of quotes
 export const collections = createTable("collections", {
   id: serial("id").primaryKey(),
   name: varchar('name', { length: 256 }).notNull(),
-  userId: integer('user_id').references(() => users.id),
+  userId: integer('user_id').references(() => users.id).notNull(),
 })
 
 // many to many quotes/collections table
 export const quote_collections = createTable("quote_collections", {
-  collectionId: integer('collection_id').references(() => collections.id),
-  quoteId: integer('quote_id').references(() => quotes.id),
+  collectionId: integer('collection_id').references(() => collections.id).notNull(),
+  quoteId: integer('quote_id').references(() => quotes.id).notNull(),
 })
 
 // these are categories of quotes/sayings: e.g. hope, faith, love, etc.
