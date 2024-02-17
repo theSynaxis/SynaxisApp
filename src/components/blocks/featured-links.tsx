@@ -1,7 +1,5 @@
-import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "../ui/button";
 import Edges from "~/components/layout/edges";
 import { parseHtml } from "~/lib/utils";
 
@@ -27,7 +25,7 @@ export function FeaturedLinks(props: FeaturedLinksProps) {
 
   return (
     <>
-      <Edges className="relative min-h-[50vh] border-b-2 border-secondary-red-500">
+      <Edges className="relative min-h-[50vh]">
         <div className="relative z-10 min-h-[50vh] pb-4 pt-8">
           <div className="w-full">
             <div className="flex flex-col items-center gap-4">
@@ -37,11 +35,11 @@ export function FeaturedLinks(props: FeaturedLinksProps) {
                 </h2>
               )}
 
-              <span className="w-3/5">
+              <span className="w-3/5 text-center">
                 {featured_links_text && <p>{featured_links_text}</p>}
               </span>
               <span className="flex flex-row items-center divide-x-2 divide-secondary-red-500">
-                {featured_links?.map((featuredLink, i) => {
+                {featured_links?.map((featuredLink) => {
                   const { link, text, icon } = featuredLink;
 
                   return (
