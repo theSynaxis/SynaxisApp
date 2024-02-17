@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { api } from "~/trpc/react";
-import { Button } from "./ui/button";
+import { Button } from "../../ui/button";
 
 export default function CreateUser() {
   const router = useRouter();

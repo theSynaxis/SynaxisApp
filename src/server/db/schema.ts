@@ -90,6 +90,7 @@ export const works = createTable("works", {
   id: serial('id').primaryKey(),
   title: varchar('title').notNull(),
   publishedDate: varchar('published_date'),
+  // a pseudo-author should be created for anthology works
   authorId: integer("author_id").references(() => saints.id).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),

@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import CreateUser from "~/components/create-user";
+import CreateUser from "~/components/domain/users/create-user";
 
 export default async function Sidebar() {
   const menuItems = await getMenuItems({ slug: "sidebar-menu" });

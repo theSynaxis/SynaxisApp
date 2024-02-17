@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 import Edges from "~/components/layout/edges";
 
 export interface HeroProps {
@@ -27,35 +27,37 @@ export function Hero(props: HeroProps) {
     hero_text,
     hero_primary_button,
     hero_secondary_button,
-    // hero_background_image,
+    hero_background_image,
   } = props;
 
   return (
     <>
-      <Edges className="relative min-h-[50vh]">
-        {/* <div className="z-[-10] overflow-hidden"> */}
-        {/* {hero_background_image && (
+      <Edges className="relative min-h-[50vh] border-b-2 border-secondary-red-500">
+        <div className="z-[-10] overflow-hidden">
+          {hero_background_image && (
             <Image
               src={hero_background_image.url}
               alt="Cover Image"
-              className="object-cover"
+              className="border-l-2 border-secondary-red-500 object-cover"
+              style={{
+                clipPath: "polygon(60% 0, 100% 0%, 100% 100%, 40% 100%)",
+              }}
               fill
               priority
               // placeholder="blur"
               quality={100}
             />
-          )} */}
-        {/* </div> */}
+          )}
+        </div>
 
-        <div className="relative z-10 min-h-[50vh] pt-8">
+        <div className="relative z-10 min-h-[50vh] pb-4 pt-8">
           <div className="w-1/2">
             <div className="flex flex-col gap-4">
               {hero_title && (
                 <h1 className="font-synaxisHeader">{hero_title}</h1>
               )}
 
-              {hero_text && <p>{hero_text}</p>}
-
+              <span className="w-4/5">{hero_text && <p>{hero_text}</p>}</span>
               <span className="flex flex-row items-center gap-4">
                 {hero_primary_button && (
                   <Link href={`${hero_primary_button.url}`}>
