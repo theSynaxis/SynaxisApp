@@ -2,6 +2,8 @@ import { userRouter } from "~/server/api/routers/users";
 import { parishRouter } from "~/server/api/routers/parishes";
 import { saintRouter } from "~/server/api/routers/saints";
 import { workRouter } from "~/server/api/routers/works";
+import { citationRouter } from "~/server/api/routers/citations";
+import { quoteRouter } from "~/server/api/routers/quotes";
 import { createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -14,6 +16,8 @@ export const appRouter = createTRPCRouter({
   parish: parishRouter,
   saint: saintRouter,
   work: workRouter,
+  citation: citationRouter,
+  quote: quoteRouter,
 });
 
 // export type definition of API
