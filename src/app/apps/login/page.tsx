@@ -10,7 +10,8 @@ export default async function LoginPage() {
         <h1
           className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
         >
-          The <span className="text-secondary-red-600">Synaxis</span> App
+          <span className="text-secondary-red-600">Login</span> To The Synaxis
+          App
         </h1>
 
         <p className="w-1/2">
