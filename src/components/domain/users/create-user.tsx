@@ -81,7 +81,14 @@ export default function CreateUser(props: CreateUserProps) {
       if (closeModal) return closeModal();
     },
     onError: (e) => {
-      setSubmitError(e.message);
+      switch (e.message) {
+        case "Username taken.":
+          return setErrors({ ...errors, username: e.message });
+        case "Email taken.":
+          return setErrors({ ...errors, email: e.message });
+        default:
+          return setSubmitError(e.message);
+      }
     },
   });
 
@@ -95,9 +102,6 @@ export default function CreateUser(props: CreateUserProps) {
   }
 
   // TODO: fix validation rules
-  // TODO: add error handling
-  // TODO: add error messages
-  // TODO: add logic for unique usernames
   // TODO: add logic for secure passwords
 
   return (
