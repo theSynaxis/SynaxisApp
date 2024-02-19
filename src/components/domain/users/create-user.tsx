@@ -1,41 +1,50 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { z, type ZodError } from "zod";
+import { useState, type SyntheticEvent } from "react";
+import { z } from "zod";
 
 import { api } from "~/trpc/react";
 import { Button } from "../../ui/button";
+
+interface CreateUserProps {
+  closeModal?: () => void;
+}
 
 interface FormData {
   username: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
-export default function CreateUser() {
+export default function CreateUser(props: CreateUserProps) {
+  const { closeModal } = props;
   const router = useRouter();
   const [errors, setErrors] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
+  const [submitError, setSubmitError] = useState("");
 
   const validateSchema = z
     .object({
-      username: z.string().min(1),
+      username: z.string(),
       email: z.string().email(),
       password: z.string().min(6),
-      confirmPassword: z.string().min(6),
+      confirmPassword: z.string(),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine((data) => data.password !== data.confirmPassword, {
       message: "Password doesn't match",
-      path: ["confirmpassword"],
+      path: ["confirmPassword"],
     });
 
   function validateFormData(data: FormData) {
@@ -46,6 +55,7 @@ export default function CreateUser() {
         username: allErrors.fieldErrors.username?.[0] ?? "",
         email: allErrors.fieldErrors.email?.[0] ?? "",
         password: allErrors.fieldErrors.password?.[0] ?? "",
+        confirmPassword: allErrors.fieldErrors.confirmPassword?.[0] ?? "",
       });
     }
     return validatedFormData.success;
@@ -61,10 +71,28 @@ export default function CreateUser() {
 
   const createUser = api.user.create.useMutation({
     onSuccess: () => {
-      router.refresh();
-      setFormData({ username: "", email: "", password: "" });
+      router.push("/apps/login");
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      if (closeModal) return closeModal();
+    },
+    onError: (e) => {
+      setSubmitError(e.message);
     },
   });
+
+  function handleSubmit(e: SyntheticEvent) {
+    e.preventDefault();
+    createUser.mutate({
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+    });
+  }
 
   // TODO: fix validation rules
   // TODO: add error handling
@@ -73,17 +101,7 @@ export default function CreateUser() {
   // TODO: add logic for secure passwords
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        createUser.mutate({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        });
-      }}
-      className="flex w-full flex-col gap-2"
-    >
+    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
       <input
         type="text"
         placeholder="Username"
@@ -108,7 +126,16 @@ export default function CreateUser() {
         className="text-black w-full rounded-full px-4 py-2"
       />
       {errors.password && <p>{errors.password}</p>}
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={formData.confirmPassword}
+        onChange={(e) => handleChange("confirmPassword", e.target.value)}
+        className="text-black w-full rounded-full px-4 py-2"
+      />
+      {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
 
+      {submitError && <p>{submitError}</p>}
       <Button disabled={createUser.isLoading}>
         {createUser.isLoading ? "Submitting..." : "Submit"}
       </Button>

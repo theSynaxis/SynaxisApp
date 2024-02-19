@@ -23,6 +23,8 @@ export const createTable = pgTableCreator((name) => `synaxis-app_${name}`);
 export const users = createTable(
   "users", {
     id: serial('id').primaryKey(),
+    isAdmin: boolean('is_admin').default(false).notNull(),
+    isMod: boolean('is_mod').default(false).notNull(),
     username: varchar("username", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }).notNull(),
     password: varchar("password", { length: 256 }).notNull(),

@@ -3,15 +3,7 @@ import Link from "next/link";
 import { getMenuItems, getSiteSettings, getSiteLogo } from "@nextwp/core";
 import NavMenu from "./nav-menu";
 import { Button } from "~/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "~/components/ui/dialog";
-import CreateUser from "~/components/domain/users/create-user";
+import RegistrationModal from "../domain/users/registration-modal";
 
 export default async function Sidebar() {
   const menuItems = await getMenuItems({ slug: "sidebar-menu" });
@@ -42,19 +34,7 @@ export default async function Sidebar() {
           <span className="mx-4 my-8 flex flex-row items-center justify-around">
             <Button>Login</Button>
 
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Register</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create a Synaxis Account</DialogTitle>
-                </DialogHeader>
-                <DialogDescription className="flex flex-col items-start justify-between">
-                  <CreateUser />
-                </DialogDescription>
-              </DialogContent>
-            </Dialog>
+            <RegistrationModal />
           </span>
           <NavMenu items={menuItems} direction={"left"} />
           {/* TODO: Add user links; add admin links */}
