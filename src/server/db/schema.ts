@@ -92,6 +92,8 @@ export const works = createTable("works", {
   publishedDate: varchar('published_date'),
   // a pseudo-author should be created for anthology works
   authorId: integer("author_id").references(() => saints.id).notNull(),
+  // because uses can submit works, they need to be approved before publically consumed.
+  isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
@@ -103,6 +105,8 @@ export const citations = createTable("citations", {
   publicationYear: varchar('publication_year').notNull(),
   pageStart: integer('page_start').notNull(),
   pageEnd: integer('page_end').notNull(),
+  // because uses can submit citations, they need to be approved before publically consumed.
+  isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   // dbdesigner includes "pg_pl: varchar" but there are no notes for what it might be.
@@ -114,6 +118,10 @@ export const quotes = createTable("quotes", {
   authorId: integer('author_id').references(() => saints.id).notNull(),
   workId: integer('work_id').references(() => works.id).notNull(),
   citationId: integer('citation_id').references(() => citations.id).notNull(),
+  // because uses can submit works, they need to be approved before publically consumed.
+  isApproved: boolean("is_approved").default(false).notNull(),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
 
 // user's collections of quotes
@@ -121,6 +129,8 @@ export const collections = createTable("collections", {
   id: serial("id").primaryKey(),
   name: varchar('name', { length: 256 }).notNull(),
   userId: integer('user_id').references(() => users.id).notNull(),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
 
 // many to many quotes/collections table
@@ -133,6 +143,10 @@ export const quote_collections = createTable("quote_collections", {
 export const categories = createTable('categories', {
   id: serial('id').primaryKey(),
   name: varchar('name').notNull(),
+  // because uses can submit works, they need to be approved before publically consumed.
+  isApproved: boolean("is_approved").default(false).notNull(),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
 
 // many to many quotes/categories table
@@ -147,6 +161,10 @@ export const service_images = createTable('service_images', {
   id: serial('id').primaryKey(),
   url: varchar('url').notNull(),
   alt: varchar('alt').notNull(),
+  // because uses can submit works, they need to be approved before publically consumed.
+  isApproved: boolean("is_approved").default(false).notNull(),
+  createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
 
 // icons here refers to Orthodox Iconography depicting saints
