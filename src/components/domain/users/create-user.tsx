@@ -113,7 +113,11 @@ export default function CreateUser(props: CreateUserProps) {
         onChange={(e) => handleChange("username", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
-      {errors.username && <p>{errors.username}</p>}
+      {errors.username && (
+        <p className="pl-4 font-bold text-secondary-red-500">
+          {errors.username}
+        </p>
+      )}
       <input
         type="text"
         placeholder="Email"
@@ -121,7 +125,9 @@ export default function CreateUser(props: CreateUserProps) {
         onChange={(e) => handleChange("email", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
-      {errors.email && <p>{errors.email}</p>}
+      {errors.email && (
+        <p className="pl-4 font-bold text-secondary-red-500">{errors.email}</p>
+      )}
       <input
         type="password"
         placeholder="Password"
@@ -129,7 +135,11 @@ export default function CreateUser(props: CreateUserProps) {
         onChange={(e) => handleChange("password", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
-      {errors.password && <p>{errors.password}</p>}
+      {errors.password && (
+        <p className="pl-4 font-bold text-secondary-red-500">
+          {errors.password}
+        </p>
+      )}
       <input
         type="password"
         placeholder="Confirm Password"
@@ -137,9 +147,15 @@ export default function CreateUser(props: CreateUserProps) {
         onChange={(e) => handleChange("confirmPassword", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
-      {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+      {errors.confirmPassword && (
+        <p className="pl-4 font-bold text-secondary-red-500">
+          {errors.confirmPassword}
+        </p>
+      )}
 
-      {submitError && <p>{submitError}</p>}
+      {submitError && (
+        <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
+      )}
       <Button disabled={createUser.isLoading}>
         {createUser.isLoading ? "Submitting..." : "Submit"}
       </Button>
