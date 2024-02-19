@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { service_images } from "~/server/db/schema";
@@ -15,4 +16,17 @@ export const serviceImagesRouter = createTRPCRouter({
         alt: input.alt,
       });
     }),
+    updateApproval: publicProcedure
+    .input(z.object({ 
+        id: z.number(),
+        isApproved: z.boolean()
+    }))
+    .mutation(async ( { ctx, input }) => {
+        await ctx.db
+            .update(service_images)
+            .set({
+                isApproved: input.isApproved,
+            })
+            .where(eq(service_images.id, input.id))
+    })
 });

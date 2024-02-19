@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { citations } from "~/server/db/schema";
@@ -19,4 +20,17 @@ export const citationRouter = createTRPCRouter({
         pageEnd: input.pageEnd,
       });
     }),
+  updateApproval: publicProcedure
+    .input(z.object({ 
+        id: z.number(),
+        isApproved: z.boolean()
+    }))
+    .mutation(async ( { ctx, input }) => {
+        await ctx.db
+            .update(citations)
+            .set({
+                isApproved: input.isApproved,
+            })
+            .where(eq(citations.id, input.id))
+    })
 });
