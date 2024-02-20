@@ -11,13 +11,6 @@ interface CreateUserProps {
   closeModal?: () => void;
 }
 
-interface FormData {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
 export default function CreateUser(props: CreateUserProps) {
   const { closeModal } = props;
   const router = useRouter();
@@ -27,7 +20,7 @@ export default function CreateUser(props: CreateUserProps) {
     password: "",
     confirmPassword: "",
   });
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
@@ -35,38 +28,46 @@ export default function CreateUser(props: CreateUserProps) {
   });
   const [submitError, setSubmitError] = useState("");
 
-  const validateSchema = z
+  const formSchema = z
     .object({
       username: z.string(),
       email: z.string().email(),
       password: z.string().min(6),
       confirmPassword: z.string(),
     })
-    .refine((data) => data.password !== data.confirmPassword, {
+    .refine((data) => data.password === data.confirmPassword, {
       message: "Password doesn't match",
       path: ["confirmPassword"],
     });
 
-  function validateFormData(data: FormData) {
-    const validatedFormData = validateSchema.safeParse(data);
+  function validateFormData(data: typeof formData) {
+    const validatedFormData = formSchema.safeParse(data);
     if (!validatedFormData.success) {
       const allErrors = validatedFormData.error.flatten();
-      setErrors({
+      return setErrors({
         username: allErrors.fieldErrors.username?.[0] ?? "",
         email: allErrors.fieldErrors.email?.[0] ?? "",
         password: allErrors.fieldErrors.password?.[0] ?? "",
         confirmPassword: allErrors.fieldErrors.confirmPassword?.[0] ?? "",
       });
     }
+
+    setErrors({
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
     return validatedFormData.success;
   }
 
   async function handleChange(name: string, value: string): Promise<void> {
+    const updatedFormData = { ...formData, [name]: value };
     setFormData({
       ...formData,
       [name]: value,
     });
-    validateFormData(formData);
+    validateFormData(updatedFormData);
   }
 
   const createUser = api.user.create.useMutation({
