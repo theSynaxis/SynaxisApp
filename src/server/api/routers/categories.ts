@@ -14,7 +14,7 @@ export const categoryRouter = createTRPCRouter({
         name: input.name,
       });
     }),
-    updateApproval: publicProcedure
+  updateApproval: publicProcedure // TODO: modProcedure
     .input(z.object({ 
         id: z.number(),
         isApproved: z.boolean()

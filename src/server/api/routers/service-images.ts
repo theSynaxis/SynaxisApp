@@ -16,7 +16,7 @@ export const serviceImagesRouter = createTRPCRouter({
         alt: input.alt,
       });
     }),
-    updateApproval: publicProcedure
+  updateApproval: publicProcedure // TODO: modProcedure
     .input(z.object({ 
         id: z.number(),
         isApproved: z.boolean()

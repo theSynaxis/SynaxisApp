@@ -74,3 +74,8 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+// TODO: add privateProcedure for auth'd users
+// TODO: add parishProcedure for parishes, so only controlling users can edit
+// TODO: add modProcedure for moderators
+// TODO: add adminProcedure for admins

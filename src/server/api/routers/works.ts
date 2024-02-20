@@ -18,7 +18,7 @@ export const workRouter = createTRPCRouter({
         publishedDate: input.publishedDate,
       });
     }),
-  updateApproval: publicProcedure
+  updateApproval: publicProcedure // TODO: modProcedure
     .input(z.object({ 
         id: z.number(),
         isApproved: z.boolean()

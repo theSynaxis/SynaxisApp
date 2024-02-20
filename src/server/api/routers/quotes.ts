@@ -20,7 +20,7 @@ export const quoteRouter = createTRPCRouter({
         citationId: input.citationId
       });
     }),
-  updateApproval: publicProcedure
+  updateApproval: publicProcedure // TODO: modProcedure
     .input(z.object({ 
         id: z.number(),
         isApproved: z.boolean()
