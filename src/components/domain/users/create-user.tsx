@@ -102,7 +102,6 @@ export default function CreateUser(props: CreateUserProps) {
     });
   }
 
-  // TODO: fix validation rules
   // TODO: add logic for secure passwords
 
   return (
