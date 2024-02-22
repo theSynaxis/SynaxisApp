@@ -102,7 +102,15 @@ export default function CreateUser(props: CreateUserProps) {
     });
   }
 
-  // TODO: add logic for secure passwords
+  // TODO: add logic for secure passwords:
+  // example:
+  // minLength: 8,
+  // minLowercase: 1,
+  // minUppercase: 1,
+  // minNumbers: 1,
+  // minSymbols: 1,
+
+  // TODO: add email verification
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">

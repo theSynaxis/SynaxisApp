@@ -1,11 +1,15 @@
 import { z } from "zod";
 import bcrypt from 'bcrypt';
 import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
+import { cookies } from "next/headers";
 
+// import components
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
- 
+import { lucia } from '~/server/api/auth';
+
 export const userRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ username: z.string().min(1), email: z.string().email(), password: z.string() }))
@@ -29,9 +33,66 @@ export const userRouter = createTRPCRouter({
       }
 
       await ctx.db.insert(users).values({
+        id: generateId(15),
         username: input.username,
         email: input.email,
         password: hashedPassword,
       });
+    }),
+  login: publicProcedure
+    .input(z.object({ 
+      usernameOrEmail: z.string(),
+      password: z.string()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const userByUsername = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.username, input.usernameOrEmail));
+
+      if (userByUsername?.[0]?.password) {
+        const passwordMatches = await bcrypt.compare(input.password, userByUsername[0].password);
+
+        if (!passwordMatches) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Invalid Credentials." })
+        }
+
+        const session = await lucia.createSession(userByUsername[0].id, {});
+        const sessionCookie = lucia.createSessionCookie(session.id);
+
+        cookies().set(
+          sessionCookie.name,
+          sessionCookie.value,
+          sessionCookie.attributes,
+        );
+        
+        return
+      }
+
+      const userByEmail = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.email, input.usernameOrEmail));
+
+      if (userByEmail?.[0]?.password) {
+        const passwordMatches = await bcrypt.compare(input.password, userByEmail[0].password);
+
+        if (!passwordMatches) {
+          throw new TRPCError({ code: "FORBIDDEN", message: "Invalid Credentials." })
+        }
+        
+        const session = await lucia.createSession(userByEmail[0].id, {});
+        const sessionCookie = lucia.createSessionCookie(session.id);
+
+        cookies().set(
+          sessionCookie.name,
+          sessionCookie.value,
+          sessionCookie.attributes,
+        );
+
+        return
+      }
+      
+      throw new TRPCError({ code: "NOT_FOUND", message: "Invalid Credentials." })
     }),
 });

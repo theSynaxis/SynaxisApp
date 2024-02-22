@@ -14,6 +14,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@lucia-auth/adapter-drizzle": "^1.0.2",
     "@nextwp/core": "^0.0.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@t3-oss/env-nextjs": "^0.7.1",
@@ -28,8 +29,10 @@
     "drizzle-orm": "^0.29.3",
     "framer-motion": "^11.0.5",
     "html-react-parser": "^5.1.4",
+    "lucia": "^3.0.1",
     "lucide-react": "^0.330.0",
     "next": "^14.0.4",
+    "oslo": "^1.1.2",
     "postgres": "^3.4.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

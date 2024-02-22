@@ -22,11 +22,12 @@ export const createTable = pgTableCreator((name) => `synaxis-app_${name}`);
 
 export const users = createTable(
   "users", {
-    id: serial('id').primaryKey(),
+    id: varchar('id').primaryKey(),
     isAdmin: boolean('is_admin').default(false).notNull(),
     isMod: boolean('is_mod').default(false).notNull(),
     username: varchar("username", { length: 256 }).notNull(),
     email: varchar("email", { length: 256 }).notNull(),
+    emailVerified: boolean("email_verified").default(false).notNull(),
     password: varchar("password", { length: 256 }).notNull(),
     firstName: varchar("first_name", { length: 256 }),
     lastName: varchar("last_name", { length: 256 }),
@@ -43,11 +44,49 @@ export const users = createTable(
   }
 )
 
+export const sessions = createTable("sessions", {
+  id: varchar("session_id").primaryKey(),
+  userId: varchar('user_id').references(() => users.id).notNull(),
+  loginTime: timestamp("login_time").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  expiresAt: timestamp("expires_at", {
+		withTimezone: true,
+		mode: "date"
+	}).notNull()
+  // ip address?
+})
+
+
+export const emailVerificationCodes = createTable(
+  "email_verification_codes",
+  {
+    id: serial("id").primaryKey(),
+    userId: varchar("user_id", { length: 21 }).unique().notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    code: varchar("code", { length: 8 }).notNull(),
+    expiresAt: timestamp("expires_at", {
+		withTimezone: true,
+		mode: "date"
+	}).notNull(),
+  },
+);
+
+export const passwordResetTokens = createTable(
+  "password_reset_tokens",
+  {
+    id: varchar("id", { length: 40 }).primaryKey(),
+    userId: varchar("user_id", { length: 21 }).notNull(),
+    expiresAt: timestamp("expires_at", {
+		withTimezone: true,
+		mode: "date"
+	}).notNull(),
+  },
+);
+
 export const parishes = createTable(
   "parishes", {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull(),
-    adminId: integer('admin_id').references(() => users.id).notNull(),
+    adminId: varchar('admin_id').references(() => users.id).notNull(),
     isMonastery: boolean("is_monastery").default(false).notNull(),
     jurisdiction: varchar("jurisdiction", { length: 256 }).notNull(),
     diocese: varchar("diocese", { length: 256 }).notNull(),
@@ -120,6 +159,8 @@ export const quotes = createTable("quotes", {
   authorId: integer('author_id').references(() => saints.id).notNull(),
   workId: integer('work_id').references(() => works.id).notNull(),
   citationId: integer('citation_id').references(() => citations.id).notNull(),
+  // id of the user who submitted the quote.
+  submitId: varchar('submit_id').references(() => users.id).notNull(),
   // because uses can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
@@ -130,7 +171,7 @@ export const quotes = createTable("quotes", {
 export const collections = createTable("collections", {
   id: serial("id").primaryKey(),
   name: varchar('name', { length: 256 }).notNull(),
-  userId: integer('user_id').references(() => users.id).notNull(),
+  userId: varchar('user_id').references(() => users.id).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })

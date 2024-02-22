@@ -7,7 +7,7 @@ export const collectionRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ 
       name: z.string().min(1),
-      userId: z.number(),
+      userId: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(collections).values({
