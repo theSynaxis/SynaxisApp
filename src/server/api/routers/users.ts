@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 
 // import components
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
 import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { lucia } from '~/server/api/auth';
@@ -81,5 +81,17 @@ export const userRouter = createTRPCRouter({
       }
       
       throw new TRPCError({ code: "NOT_FOUND", message: "Invalid Credentials." })
+    }),
+  logout: protectedProcedure.mutation(async ({ ctx }) => {
+    const { session } = ctx;
+    
+    if (!session) {
+      throw new TRPCError({ code: "NOT_FOUND", message: "No Session Found." })
+    }
+
+    await lucia.invalidateSession(session.id);
+    const sessionCookie = lucia.createBlankSessionCookie();
+
+    return sessionCookie
     }),
 });

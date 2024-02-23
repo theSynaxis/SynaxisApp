@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import NavMenu from "./nav-menu";
 import { Button } from "~/components/ui/button";
 import RegistrationModal from "../domain/users/registration-modal";
+import UserLogout from "../domain/users/logout";
 
 export default async function Sidebar() {
   const cookieStore = cookies();
@@ -52,6 +53,8 @@ export default async function Sidebar() {
             Admin
           </Link> */}
         </span>
+
+        {userSession && <UserLogout />}
 
         <p className="mx-auto py-4 text-center text-primary-gold-400">
           &copy; {new Date().getFullYear().toString()}
