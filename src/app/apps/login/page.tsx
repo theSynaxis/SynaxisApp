@@ -7,7 +7,7 @@ import UserLogin from "~/components/domain/users/user-login";
 export default async function LoginPage() {
   noStore();
   const cookieStore = cookies();
-  const userSession = cookieStore.get("_ssid");
+  const userSession = cookieStore.get("auth_session");
 
   if (userSession) redirect("/apps");
 

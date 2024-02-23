@@ -1,8 +1,15 @@
 import { unstable_noStore as noStore } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 import CreateUser from "~/components/domain/users/create-user";
 
 export default async function UserRegisterPage() {
   noStore();
+  const cookieStore = cookies();
+  const userSession = cookieStore.get("auth_session");
+
+  if (userSession) redirect("/apps");
 
   return (
     <main className="flex w-4/5 flex-col items-center justify-center text-neutral-900">
