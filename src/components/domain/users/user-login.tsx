@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState, type SyntheticEvent } from "react";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 import { api } from "~/trpc/react";
+import { loginAction } from "~/lib/actions/login";
 import { Button } from "../../ui/button";
 
 interface CreateUserProps {
@@ -56,22 +57,18 @@ export default function UserLogin(props: CreateUserProps) {
   }
 
   const userLogin = api.user.login.useMutation({
-    onSuccess: () => {
-      router.push("/apps");
+    onSuccess: async (data) => {
+      await loginAction(data); // sets cookie data
       setFormData({
         usernameOrEmail: "",
         password: "",
       });
+
       if (closeModal) return closeModal();
+
+      router.push("/apps");
     },
-    onError: (e) => {
-      switch (e.message) {
-        case "USERNAME OR EMAIL PROBLEM":
-          return setErrors({ ...errors, usernameOrEmail: e.message });
-        default:
-          return setSubmitError(e.message);
-      }
-    },
+    onError: (e) => setSubmitError(e.message),
   });
 
   function handleSubmit(e: SyntheticEvent) {

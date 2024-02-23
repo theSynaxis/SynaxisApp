@@ -2,7 +2,6 @@ import { z } from "zod";
 import bcrypt from 'bcrypt';
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
-import { cookies } from "next/headers";
 
 // import components
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
@@ -60,13 +59,7 @@ export const userRouter = createTRPCRouter({
         const session = await lucia.createSession(userByUsername[0].id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
 
-        cookies().set(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes,
-        );
-        
-        return
+        return sessionCookie
       }
 
       const userByEmail = await ctx.db
@@ -84,13 +77,7 @@ export const userRouter = createTRPCRouter({
         const session = await lucia.createSession(userByEmail[0].id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
 
-        cookies().set(
-          sessionCookie.name,
-          sessionCookie.value,
-          sessionCookie.attributes,
-        );
-
-        return
+        return sessionCookie
       }
       
       throw new TRPCError({ code: "NOT_FOUND", message: "Invalid Credentials." })
