@@ -1,11 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getMenuItems, getSiteSettings, getSiteLogo } from "@nextwp/core";
+import { cookies } from "next/headers";
+
+// import components
 import NavMenu from "./nav-menu";
 import { Button } from "~/components/ui/button";
 import RegistrationModal from "../domain/users/registration-modal";
 
 export default async function Sidebar() {
+  const cookieStore = cookies();
+  const userSession = cookieStore.get("auth_session");
+
   const menuItems = await getMenuItems({ slug: "sidebar-menu" });
   const siteSettings = await getSiteSettings();
   const logo = await getSiteLogo();
@@ -31,11 +37,15 @@ export default async function Sidebar() {
               {siteSettings.title}
             </Link>
           </span>
-          <span className="mx-4 my-8 flex flex-row items-center justify-around">
-            <Button>Login</Button>
 
-            <RegistrationModal />
-          </span>
+          {!userSession && (
+            <span className="mx-4 my-8 flex flex-row items-center justify-around">
+              <Button>Login</Button>
+
+              <RegistrationModal />
+            </span>
+          )}
+
           <NavMenu items={menuItems} direction={"left"} />
           {/* TODO: Add user links; add admin links */}
           {/* <Link className="text-md text-primary-gold-400" href="/apps/admin">
