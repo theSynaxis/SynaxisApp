@@ -22,4 +22,9 @@
     h6 {
         @apply text-lg;
     }
+
+    .wysiwyg ul {
+        list-style-type: disc;
+        padding-left: 1rem;
+    }
 }

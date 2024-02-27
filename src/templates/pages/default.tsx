@@ -3,8 +3,9 @@ import * as blocks from "~/components/blocks";
 
 import { type FeaturedLinksProps } from "~/components/blocks/featured-links";
 import { type HeroProps } from "~/components/blocks/hero";
+import { type TextImageProps } from "~/components/blocks/text-image";
 
-type Block = FeaturedLinksProps | HeroProps;
+type Block = FeaturedLinksProps | HeroProps | TextImageProps;
 
 interface PageData extends WpPage {
   acf?: {

@@ -1,2 +1,3 @@
+export { FeaturedLinks } from './featured-links';
 export { Hero } from "./hero";
-export { FeaturedLinks } from './featured-links'
+export { TextImage } from './text-image';
