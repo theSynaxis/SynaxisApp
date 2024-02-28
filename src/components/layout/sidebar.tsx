@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import NavMenu from "./nav-menu";
 import { Button } from "~/components/ui/button";
 import RegistrationModal from "../domain/users/registration-modal";
+import LoginModal from "../domain/users/login-modal";
 import UserLogout from "../domain/users/logout";
 
 export default async function Sidebar() {
@@ -41,7 +42,7 @@ export default async function Sidebar() {
 
           {!userSession && (
             <span className="mx-4 my-8 flex flex-row items-center justify-around">
-              <Button>Login</Button>
+              <LoginModal />
 
               <RegistrationModal />
             </span>
