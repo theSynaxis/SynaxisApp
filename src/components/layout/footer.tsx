@@ -13,13 +13,13 @@ export default async function Footer() {
           <div className="flex flex-row items-center justify-between">
             <span className="flex flex-row items-center gap-2">
               <Image
-                src={`/images/icons/apple-download.svg`}
+                src={`/images/apple-download.svg`}
                 alt={"Download in the Apple Store"}
                 height={43}
                 width={128}
               />
               <Image
-                src={`/images/icons/google-play-download.svg`}
+                src={`/images/google-play-download.svg`}
                 alt={"Download in the Google Play Store"}
                 height={43}
                 width={128}

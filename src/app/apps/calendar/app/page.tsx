@@ -1,5 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
+import Calendar from "~/components/domain/calendar/Calendar";
 
 export default async function CalendarPage() {
   noStore();
@@ -22,6 +23,8 @@ export default async function CalendarPage() {
         </p>
 
         <div>This is where the default calendar goes.</div>
+
+        <Calendar />
 
         {/* if user is assigned only one parish. */}
         <Link href="/apps/calendar/app/parishes/parish">Your Parish Info</Link>
