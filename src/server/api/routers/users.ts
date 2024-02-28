@@ -84,10 +84,6 @@ export const userRouter = createTRPCRouter({
     }),
   logout: protectedProcedure.mutation(async ({ ctx }) => {
     const { session } = ctx;
-    
-    if (!session) {
-      throw new TRPCError({ code: "NOT_FOUND", message: "No Session Found." })
-    }
 
     await lucia.invalidateSession(session.id);
     const sessionCookie = lucia.createBlankSessionCookie();

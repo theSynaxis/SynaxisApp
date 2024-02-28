@@ -27,7 +27,14 @@ export const lucia = new Lucia(adapter, {
 declare module "lucia" {
 	interface Register {
 		Lucia: typeof lucia;
+		DatabaseUserAttributes: DatabaseUserAttributes;
 	}
+}
+
+interface DatabaseUserAttributes {
+	username: string;
+	isAdmin: string;
+	isMod: string;
 }
 
 export const uncachedValidateRequest = async (): Promise<
