@@ -21,21 +21,16 @@ export default async function CalendarPage() {
           maiores nostrum reprehenderit laboriosam!
         </p>
 
-        <div>
-          <h3>Download</h3>
-          <p>From Apple App Store</p>
-          <p>From Google Play Store</p>
-        </div>
+        <div>This is where the default calendar goes.</div>
 
-        <Link href="/apps/calendar/app">
-          <div>
-            <h3>Use in the Browser</h3>
-            <p>
-              It&rsquo;s also a browser app! You can use it right here in your
-              favorite browser.
-            </p>
-          </div>
-        </Link>
+        {/* if user is assigned only one parish. */}
+        <Link href="/apps/calendar/app/parishes/parish">Your Parish Info</Link>
+
+        {/* if user is assigned multiple parishes. */}
+        <Link href="/apps/calendar/app/parishes">Your Parishes</Link>
+
+        {/* so users can change their default location preferences */}
+        <Link href="/apps/user-settings">User Settings</Link>
       </div>
     </main>
   );

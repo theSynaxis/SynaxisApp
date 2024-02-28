@@ -1,7 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
-export default async function CalendarPage() {
+export default async function UserSettingsPage() {
   noStore();
 
   return (
@@ -10,8 +10,7 @@ export default async function CalendarPage() {
         <h1
           className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
         >
-          Divine Service{" "}
-          <span className="text-secondary-red-600">Calendar</span>
+          <span className="text-secondary-red-600">User</span> Settings
         </h1>
 
         <p className="w-1/2">
