@@ -1,4 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
+import Link from "next/link";
 
 export default async function SayingsPage() {
   noStore();
@@ -18,6 +19,22 @@ export default async function SayingsPage() {
           non, consequuntur quas accusamus? Suscipit inventore architecto illum
           maiores nostrum reprehenderit laboriosam!
         </p>
+
+        <div>
+          <h3>Download</h3>
+          <p>From Apple App Store</p>
+          <p>From Google Play Store</p>
+        </div>
+
+        <Link href="/apps/sayings/app">
+          <div>
+            <h3>Use in the Browser</h3>
+            <p>
+              It&rsquo;s also a browser app! You can use it right here in your
+              favorite browser.
+            </p>
+          </div>
+        </Link>
       </div>
     </main>
   );

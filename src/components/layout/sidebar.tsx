@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 
 // import components
 import NavMenu from "./nav-menu";
-import { Button } from "~/components/ui/button";
 import RegistrationModal from "../domain/users/registration-modal";
 import LoginModal from "../domain/users/login-modal";
 import UserLogout from "../domain/users/logout";
