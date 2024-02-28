@@ -14,7 +14,7 @@ export default function RootLayout({
       <body
         className={`mx-auto min-h-screen font-sans ${sourceSansPro.variable} ${synaxisHeader.variable} w-full bg-neutral-50`}
       >
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto">
           <HeaderMenu />
           <TRPCReactProvider>{children}</TRPCReactProvider>
           <Footer />

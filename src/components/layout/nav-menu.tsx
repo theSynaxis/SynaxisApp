@@ -21,10 +21,10 @@ export default function NavMenu(props: {
     <ul className={`flex flex-${flexDir} items-${alignItems} justify-around`}>
       {items?.map((item) => {
         return (
-          <li key={`${item.label}`} className="m-4">
+          <li key={`${item.label}`} className="mx-4">
             <Link
               className={`${direction === "left" ? "" : activeLink(`${item.path}`)} text-md text-primary-gold-400`}
-              href={`/${item.path}`}
+              href={`${item.path}`}
             >
               {parseHtml(`${item.label}`)}
             </Link>
