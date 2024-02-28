@@ -19,7 +19,7 @@ export default async function Sidebar() {
 
   return (
     <>
-      <div className="flex min-h-dvh w-1/5 flex-col items-start justify-between border-2 border-r-secondary-red-500 bg-neutral-900 uppercase">
+      <div className="flex min-h-dvh w-1/5 flex-col items-center justify-between border-2 border-r-secondary-red-500 bg-neutral-900 uppercase">
         <span>
           <span className="m-4 flex flex-row items-center justify-between">
             <Link href="/">
