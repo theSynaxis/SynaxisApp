@@ -197,17 +197,17 @@ export default function MonthView() {
           <time dateTime="2022-01">January 2022</time>
         </h4>
         <div className="flex items-center">
-          <div className="flex items-center rounded-md shadow-sm md:items-stretch">
+          <div className="flex items-center rounded-md border border-neutral-900 p-2 font-medium text-neutral-900 shadow-sm">
             <button
               type="button"
-              className="flex  items-center justify-center rounded-l-md border border-r-0 border-neutral-300 py-2 pl-3 pr-4 text-neutral-400 hover:text-neutral-800 focus:relative md:w-9 md:px-2 md:hover:bg-neutral-50"
+              className="flex items-center justify-center rounded-l-md text-neutral-400 hover:text-neutral-800 focus:relative md:w-9 md:px-2 md:hover:bg-neutral-50"
             >
               <span className="sr-only">Previous month</span>
 
               <Image
                 src={`/images/icons/Chevron-Left-Icon.svg`}
                 alt={"Previous Month"}
-                className="ml-2 h-5 w-5 text-neutral-400"
+                className="mr-2 h-5 w-5 text-neutral-400"
                 height={20}
                 width={20}
                 aria-hidden="true"
@@ -215,14 +215,14 @@ export default function MonthView() {
             </button>
             <button
               type="button"
-              className="hidden  border-b border-t border-neutral-300 px-3.5  font-medium text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 focus:relative md:block"
+              className="hidden px-3.5 font-medium text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 focus:relative md:block"
             >
               Today
             </button>
             <span className="relative -mx-px h-5 w-px bg-neutral-300 md:hidden" />
             <button
               type="button"
-              className="bg-white flex items-center justify-center rounded-r-md border border-l-0 border-neutral-300 py-2 pl-4 pr-3 text-neutral-400 hover:text-neutral-800 focus:relative md:w-9 md:px-2 md:hover:bg-neutral-50"
+              className="bg-white flex items-center justify-center rounded-r-md text-neutral-400 hover:text-neutral-800 focus:relative md:w-9 md:px-2 md:hover:bg-neutral-50"
             >
               <span className="sr-only">Next month</span>
 
@@ -238,10 +238,10 @@ export default function MonthView() {
           </div>
           <div className="hidden md:ml-4 md:flex md:items-center">
             <ViewMenu />
-            <div className="ml-6 h-6 w-px bg-neutral-300" />
+            <div className="ml-6 h-6 w-px bg-neutral-900" />
             <button
               type="button"
-              className="border-transparent bg-indigo-600  hover:bg-indigo-700 ml-6 rounded-md border px-4 py-2  font-medium shadow-sm focus:outline-none"
+              className="border-transparent ml-6 rounded-md border px-4 py-2 font-medium text-neutral-700 shadow-sm hover:text-neutral-900 focus:outline-none"
             >
               Add event
             </button>
