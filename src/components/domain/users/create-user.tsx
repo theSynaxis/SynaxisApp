@@ -5,7 +5,8 @@ import { useState, type SyntheticEvent } from "react";
 import { z } from "zod";
 
 import { api } from "~/trpc/react";
-import { Button } from "../../ui/button";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 
 interface CreateUserProps {
   closeModal?: () => void;
@@ -30,7 +31,7 @@ export default function CreateUser(props: CreateUserProps) {
 
   const formSchema = z
     .object({
-      username: z.string(),
+      username: z.string().min(3),
       email: z.string().email(),
       password: z.string().min(6),
       confirmPassword: z.string(),
@@ -114,47 +115,54 @@ export default function CreateUser(props: CreateUserProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
-      <input
+      <Input
         type="text"
         placeholder="Username"
         value={formData.username}
         onChange={(e) => handleChange("username", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
+
       {errors.username && (
         <p className="pl-4 font-bold text-secondary-red-500">
           {errors.username}
         </p>
       )}
-      <input
-        type="text"
+
+      <Input
+        type="email"
         placeholder="Email"
         value={formData.email}
         onChange={(e) => handleChange("email", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
+
       {errors.email && (
         <p className="pl-4 font-bold text-secondary-red-500">{errors.email}</p>
       )}
-      <input
+
+      <Input
         type="password"
         placeholder="Password"
         value={formData.password}
         onChange={(e) => handleChange("password", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
+
       {errors.password && (
         <p className="pl-4 font-bold text-secondary-red-500">
           {errors.password}
         </p>
       )}
-      <input
+
+      <Input
         type="password"
         placeholder="Confirm Password"
         value={formData.confirmPassword}
         onChange={(e) => handleChange("confirmPassword", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
+
       {errors.confirmPassword && (
         <p className="pl-4 font-bold text-secondary-red-500">
           {errors.confirmPassword}
@@ -164,6 +172,7 @@ export default function CreateUser(props: CreateUserProps) {
       {submitError && (
         <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
       )}
+
       <Button disabled={createUser.isLoading}>
         {createUser.isLoading ? "Submitting..." : "Submit"}
       </Button>
