@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 
 import { api } from "~/trpc/react";
 import { loginAction } from "~/lib/actions/login";
-import { Button } from "../../ui/button";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 
 interface CreateUserProps {
   closeModal?: () => void;
@@ -91,25 +92,28 @@ export default function UserLogin(props: CreateUserProps) {
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
-      <input
+      <Input
         type="text"
         placeholder="Username or Email"
         value={formData.usernameOrEmail}
         onChange={(e) => handleChange("usernameOrEmail", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
+
       {errors.usernameOrEmail && (
         <p className="pl-4 font-bold text-secondary-red-500">
           {errors.usernameOrEmail}
         </p>
       )}
-      <input
+
+      <Input
         type="password"
         placeholder="Password"
         value={formData.password}
         onChange={(e) => handleChange("password", e.target.value)}
         className="text-black w-full rounded-full px-4 py-2"
       />
+
       {errors.password && (
         <p className="pl-4 font-bold text-secondary-red-500">
           {errors.password}
@@ -119,6 +123,7 @@ export default function UserLogin(props: CreateUserProps) {
       {submitError && (
         <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
       )}
+
       <Button disabled={userLogin.isLoading}>
         {userLogin.isLoading ? "Submitting..." : "Submit"}
       </Button>
