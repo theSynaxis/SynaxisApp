@@ -131,7 +131,7 @@ export const works = createTable("works", {
   id: serial('id').primaryKey(),
   title: varchar('title').notNull(),
   publishedDate: varchar('published_date'),
-  // a pseudo-author should be created for anthology works
+  // a pseudo-author should be created for anthology works and the hymns
   authorId: integer("author_id").references(() => saints.id).notNull(),
   // because uses can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
@@ -146,6 +146,8 @@ export const citations = createTable("citations", {
   publicationYear: varchar('publication_year').notNull(),
   pageStart: integer('page_start').notNull(),
   pageEnd: integer('page_end').notNull(),
+  isScripture: boolean("is_scripture").default(false).notNull(),
+  isPrayer: boolean("is_prayer").default(false).notNull(),
   // because uses can submit citations, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
