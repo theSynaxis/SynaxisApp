@@ -1,14 +1,23 @@
 "use client";
 
-import { useState, type SyntheticEvent } from "react";
+import { useState } from "react";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 import { api } from "~/trpc/react";
 import { loginAction } from "~/lib/actions/login";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 interface CreateUserProps {
   closeModal?: () => void;
 }
@@ -16,64 +25,40 @@ interface CreateUserProps {
 export default function UserLogin(props: CreateUserProps) {
   const { closeModal } = props;
   const router = useRouter();
-  const [errors, setErrors] = useState({
-    usernameOrEmail: "",
-    password: "",
-  });
-  const [formData, setFormData] = useState({
-    usernameOrEmail: "",
-    password: "",
-  });
-  const [submitError, setSubmitError] = useState("");
 
   const formSchema = z.object({
-    usernameOrEmail: z.string(),
-    password: z.string(),
+    usernameOrEmail: z.string().min(3),
+    password: z.string().min(6),
   });
 
-  function validateFormData(data: typeof formData) {
-    const validatedFormData = formSchema.safeParse(data);
-    if (!validatedFormData.success) {
-      const allErrors = validatedFormData.error.flatten();
-      return setErrors({
-        usernameOrEmail: allErrors.fieldErrors.usernameOrEmail?.[0] ?? "",
-        password: allErrors.fieldErrors.password?.[0] ?? "",
-      });
-    }
-
-    setErrors({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
       usernameOrEmail: "",
       password: "",
-    });
-    return validatedFormData.success;
-  }
+    },
+  });
 
-  async function handleChange(name: string, value: string): Promise<void> {
-    const updatedFormData = { ...formData, [name]: value };
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    validateFormData(updatedFormData);
-  }
+  const {
+    formState: { isDirty },
+    setError,
+  } = form;
 
   const userLogin = api.user.login.useMutation({
     onSuccess: async (data) => {
       await loginAction(data); // sets cookie data
-      setFormData({
-        usernameOrEmail: "",
-        password: "",
-      });
 
       if (closeModal) return closeModal();
 
       router.push("/apps");
     },
-    onError: (e) => setSubmitError(e.message),
+    onError: (e) => {
+      setError("usernameOrEmail", { type: "server", message: e.message });
+      return setError("password", { type: "server", message: e.message });
+    },
   });
 
-  function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
+  function onSubmit(formData: z.infer<typeof formSchema>) {
     userLogin.mutate({
       usernameOrEmail: formData.usernameOrEmail,
       password: formData.password,
@@ -91,42 +76,59 @@ export default function UserLogin(props: CreateUserProps) {
    */
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
-      <Input
-        type="text"
-        placeholder="Username or Email"
-        value={formData.usernameOrEmail}
-        onChange={(e) => handleChange("usernameOrEmail", e.target.value)}
-        className="text-black w-full rounded-full px-4 py-2"
-      />
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full flex-col gap-2"
+      >
+        <FormField
+          control={form.control}
+          name="usernameOrEmail"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel className="sr-only">Username or Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Username or Email"
+                    className="text-black w-full rounded-full px-4 py-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+              </FormItem>
+            </>
+          )}
+        />
 
-      {errors.usernameOrEmail && (
-        <p className="pl-4 font-bold text-secondary-red-500">
-          {errors.usernameOrEmail}
-        </p>
-      )}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel className="sr-only">Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    className="text-black w-full rounded-full px-4 py-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+              </FormItem>
+            </>
+          )}
+        />
 
-      <Input
-        type="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={(e) => handleChange("password", e.target.value)}
-        className="text-black w-full rounded-full px-4 py-2"
-      />
-
-      {errors.password && (
-        <p className="pl-4 font-bold text-secondary-red-500">
-          {errors.password}
-        </p>
-      )}
-
-      {submitError && (
-        <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
-      )}
-
-      <Button disabled={userLogin.isLoading}>
-        {userLogin.isLoading ? "Submitting..." : "Submit"}
-      </Button>
-    </form>
+        <Button
+          variant={userLogin.isLoading || isDirty ? "default" : "disabled"}
+        >
+          {userLogin.isLoading ? "Submitting..." : "Submit"}
+        </Button>
+      </form>
+    </Form>
   );
 }
