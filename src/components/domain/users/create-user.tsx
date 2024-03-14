@@ -1,12 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type SyntheticEvent } from "react";
+import { useState } from "react";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
 
 interface CreateUserProps {
   closeModal?: () => void;
@@ -15,18 +25,6 @@ interface CreateUserProps {
 export default function CreateUser(props: CreateUserProps) {
   const { closeModal } = props;
   const router = useRouter();
-  const [errors, setErrors] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
   const [submitError, setSubmitError] = useState("");
 
   const formSchema = z
@@ -41,61 +39,39 @@ export default function CreateUser(props: CreateUserProps) {
       path: ["confirmPassword"],
     });
 
-  function validateFormData(data: typeof formData) {
-    const validatedFormData = formSchema.safeParse(data);
-    if (!validatedFormData.success) {
-      const allErrors = validatedFormData.error.flatten();
-      return setErrors({
-        username: allErrors.fieldErrors.username?.[0] ?? "",
-        email: allErrors.fieldErrors.email?.[0] ?? "",
-        password: allErrors.fieldErrors.password?.[0] ?? "",
-        confirmPassword: allErrors.fieldErrors.confirmPassword?.[0] ?? "",
-      });
-    }
-
-    setErrors({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
       username: "",
       email: "",
       password: "",
       confirmPassword: "",
-    });
-    return validatedFormData.success;
-  }
+    },
+  });
 
-  async function handleChange(name: string, value: string): Promise<void> {
-    const updatedFormData = { ...formData, [name]: value };
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    validateFormData(updatedFormData);
-  }
+  const {
+    formState: { isDirty },
+    setError,
+  } = form;
 
   const createUser = api.user.create.useMutation({
     onSuccess: () => {
       router.push("/apps/login");
-      setFormData({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
       if (closeModal) return closeModal();
     },
     onError: (e) => {
       switch (e.message) {
         case "Username taken.":
-          return setErrors({ ...errors, username: e.message });
+          return setError("username", { type: "server", message: e.message });
         case "Email taken.":
-          return setErrors({ ...errors, email: e.message });
+          return setError("email", { type: "server", message: e.message });
         default:
           return setSubmitError(e.message);
       }
     },
   });
 
-  function handleSubmit(e: SyntheticEvent) {
-    e.preventDefault();
+  function onSubmit(formData: z.infer<typeof formSchema>) {
     createUser.mutate({
       username: formData.username,
       email: formData.email,
@@ -114,68 +90,104 @@ export default function CreateUser(props: CreateUserProps) {
   // TODO: add email verification
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-2">
-      <Input
-        type="text"
-        placeholder="Username"
-        value={formData.username}
-        onChange={(e) => handleChange("username", e.target.value)}
-        className="text-black w-full rounded-full px-4 py-2"
-      />
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex w-full flex-col gap-2"
+      >
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel className="sr-only">Username</FormLabel>
+                <FormControl>
+                  <Input
+                    type="text"
+                    placeholder="Username"
+                    className="text-black w-full rounded-full px-4 py-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+              </FormItem>
+            </>
+          )}
+        />
 
-      {errors.username && (
-        <p className="pl-4 font-bold text-secondary-red-500">
-          {errors.username}
-        </p>
-      )}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel className="sr-only">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    className="text-black w-full rounded-full px-4 py-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+              </FormItem>
+            </>
+          )}
+        />
 
-      <Input
-        type="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={(e) => handleChange("email", e.target.value)}
-        className="text-black w-full rounded-full px-4 py-2"
-      />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel className="sr-only">Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Password"
+                    className="text-black w-full rounded-full px-4 py-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+              </FormItem>
+            </>
+          )}
+        />
 
-      {errors.email && (
-        <p className="pl-4 font-bold text-secondary-red-500">{errors.email}</p>
-      )}
+        <FormField
+          control={form.control}
+          name="confirmPassword"
+          render={({ field }) => (
+            <>
+              <FormItem>
+                <FormLabel className="sr-only">Confirm Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="Confirm Password"
+                    className="text-black w-full rounded-full px-4 py-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+              </FormItem>
+            </>
+          )}
+        />
+        {submitError && (
+          <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
+        )}
 
-      <Input
-        type="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={(e) => handleChange("password", e.target.value)}
-        className="text-black w-full rounded-full px-4 py-2"
-      />
-
-      {errors.password && (
-        <p className="pl-4 font-bold text-secondary-red-500">
-          {errors.password}
-        </p>
-      )}
-
-      <Input
-        type="password"
-        placeholder="Confirm Password"
-        value={formData.confirmPassword}
-        onChange={(e) => handleChange("confirmPassword", e.target.value)}
-        className="text-black w-full rounded-full px-4 py-2"
-      />
-
-      {errors.confirmPassword && (
-        <p className="pl-4 font-bold text-secondary-red-500">
-          {errors.confirmPassword}
-        </p>
-      )}
-
-      {submitError && (
-        <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
-      )}
-
-      <Button disabled={createUser.isLoading}>
-        {createUser.isLoading ? "Submitting..." : "Submit"}
-      </Button>
-    </form>
+        <Button
+          variant={createUser.isLoading || isDirty ? "default" : "disabled"}
+        >
+          {createUser.isLoading ? "Submitting..." : "Submit"}
+        </Button>
+      </form>
+    </Form>
   );
 }
