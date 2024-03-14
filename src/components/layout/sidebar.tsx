@@ -11,7 +11,7 @@ import UserLogout from "../domain/users/logout";
 
 export default async function Sidebar() {
   const cookieStore = cookies();
-  const userSession = cookieStore.get("auth_session");
+  const userSession = cookieStore.get("auth_session")?.value;
 
   const menuItems = await getMenuItems({ slug: "sidebar-menu" });
   const siteSettings = await getSiteSettings();
