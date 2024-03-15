@@ -102,6 +102,7 @@ export const parishes = createTable(
     isActivated: boolean("is_activated").default(false).notNull(),
     createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
     updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+    updatedBy: varchar('updated_by').references(() => users.id),
   }
 )
 
@@ -127,6 +128,7 @@ export const saints = createTable("saints", {
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedBy: varchar('updated_by').references(() => users.id),
 })
 
 export const works = createTable("works", {
@@ -145,6 +147,7 @@ export const works = createTable("works", {
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedBy: varchar('updated_by').references(() => users.id),
 })
 
 // each quote has a citation
@@ -160,6 +163,7 @@ export const citations = createTable("citations", {
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedBy: varchar('updated_by').references(() => users.id),
   // dbdesigner includes "pg_pl: varchar" but there are no notes for what it might be.
 })
 
@@ -175,6 +179,7 @@ export const quotes = createTable("quotes", {
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedBy: varchar('updated_by').references(() => users.id),
 })
 
 // user's collections of quotes
@@ -200,6 +205,7 @@ export const categories = createTable('categories', {
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedBy: varchar('updated_by').references(() => users.id),
 })
 
 // many to many quotes/categories table
@@ -218,6 +224,7 @@ export const service_images = createTable('service_images', {
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedBy: varchar('updated_by').references(() => users.id),
 })
 
 // icons here refers to Orthodox Iconography depicting saints
