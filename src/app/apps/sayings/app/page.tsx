@@ -14,17 +14,28 @@ export default async function SayingsApp() {
           <span className="text-secondary-red-600">Sayings</span> of the Fathers
         </h1>
 
-        <p className="">All Quotes Go Here</p>
+        <p className="">
+          Quote of the Day: <br />
+          &quot;In church I was listening to a reading from the Prophet Isaiah,
+          and at the words, “Wash you make you clean,” I reflected, “Maybe the
+          Mother of God sinned at one time or another, if only in thought.” And,
+          marvelous to relate, in unison with my prayer a voice sounded in my
+          heart, saying clearly, “The Mother of God never sinned even in
+          thought.” Thus did the Holy Spirit bear witness in my heart to her
+          purity. &quot;
+          <br />
+          --
+          <Link href="/apps/sayings/app/saints/saint" className="font-bold">
+            Saint Silouan the Athonite
+          </Link>
+          , as found in
+          <Link href="/apps/sayings/app/works/work" className="italic">
+            St. Silouan the Athonite
+          </Link>
+          , pp. 391-2.
+        </p>
         <p>Search Form Goes Here</p>
         <p>Link to open advanced search modal</p>
-
-        <Link href="/apps/sayings/app/saints/saint">
-          Link to specific saints page for all quotes by one saint
-        </Link>
-
-        <Link href="/apps/sayings/app/works/work">
-          Link to specific works page for all quotes in one work
-        </Link>
 
         <Link href="/apps/sayings/app/categories/category">
           Link to specific categories page for all quotes in one category

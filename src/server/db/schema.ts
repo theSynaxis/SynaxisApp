@@ -133,6 +133,10 @@ export const works = createTable("works", {
   publishedDate: varchar('published_date'),
   // a pseudo-author should be created for anthology works and the hymns
   authorId: integer("author_id").references(() => saints.id).notNull(),
+  // if a work is written by someone else and it contains a quote from a saint:
+  authorName: varchar('author_name'),
+  translatorName: varchar('translator_name'),
+  editorName: varchar('editor_name'),
   // because uses can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
