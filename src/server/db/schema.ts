@@ -137,7 +137,7 @@ export const works = createTable("works", {
   authorName: varchar('author_name'),
   translatorName: varchar('translator_name'),
   editorName: varchar('editor_name'),
-  // because uses can submit works, they need to be approved before publically consumed.
+  // because users can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
