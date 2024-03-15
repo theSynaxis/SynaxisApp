@@ -123,6 +123,8 @@ export const saints = createTable("saints", {
   yearDied: integer("year_died"),
   isBc: boolean("is_bc").notNull(),
   feastDate: date("feast_date"),
+  // because users can submit saints, they need to be approved before publically consumed.
+  isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
 })
@@ -152,7 +154,7 @@ export const citations = createTable("citations", {
   pageEnd: integer('page_end').notNull(),
   isScripture: boolean("is_scripture").default(false).notNull(),
   isPrayer: boolean("is_prayer").default(false).notNull(),
-  // because uses can submit citations, they need to be approved before publically consumed.
+  // because users can submit citations, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
@@ -167,7 +169,7 @@ export const quotes = createTable("quotes", {
   citationId: integer('citation_id').references(() => citations.id).notNull(),
   // id of the user who submitted the quote.
   submitId: varchar('submit_id').references(() => users.id).notNull(),
-  // because uses can submit works, they need to be approved before publically consumed.
+  // because users can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
