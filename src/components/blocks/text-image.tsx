@@ -46,8 +46,8 @@ export function TextImage(props: TextImageProps) {
                         className={`img-fluid rounded-lg shadow-lg`}
                         src={`${text_image.url}`}
                         alt={`${text_image.altText}`}
-                        width={400}
-                        height={200}
+                        width={600}
+                        height={400}
                       />
                     )}
                   </div>
@@ -88,8 +88,8 @@ export function TextImage(props: TextImageProps) {
                         className={`img-fluid rounded-lg shadow-lg`}
                         src={`${text_image.url}`}
                         alt={`${text_image.altText}`}
-                        height={200}
-                        width={400}
+                        width={600}
+                        height={400}
                       />
                     )}
                   </div>
