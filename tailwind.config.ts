@@ -106,7 +106,7 @@ export default {
     fontSize: {
       xs: ['0.625rem', { lineHeight: '1rem' }], // 10px body-xl
       sm: ['0.75rem', { lineHeight: '1.25rem' }], // 12px body-sm
-      base: ['0.875rem', { lineHeight: '1.5rem' }], // 14px body-md
+      base: ['1rem', { lineHeight: '1.5rem' }], // 16px body-md
       lg: ['1.125rem', { lineHeight: '1.75rem' }], // 18px h6/body-lg
       xl: ['1.25rem', { lineHeight: '1.75rem' }], // 20px h5/body-xl
       '2xl': ['1.375rem', { lineHeight: '2rem' }], // 22px h4

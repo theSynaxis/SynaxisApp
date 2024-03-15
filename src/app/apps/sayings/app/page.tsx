@@ -3,14 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "~/components/ui/card";
+import { Card, CardHeader, CardContent } from "~/components/ui/card";
 
 export default async function SayingsApp() {
   noStore();
@@ -25,9 +18,9 @@ export default async function SayingsApp() {
         </h1>
 
         <Card>
-          <CardHeader className="text-lg">Quote of the Day</CardHeader>
+          <CardHeader className="text-xl">Quote of the Day</CardHeader>
 
-          <CardContent className="flex flex-row items-center justify-around gap-8 text-xl">
+          <CardContent className="flex flex-row items-center justify-around gap-8 text-2xl">
             <Image
               src={"/images/saints/St-Silouan-Athonite.jpg"}
               alt="St Silouan The Athonite"
