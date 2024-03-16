@@ -62,6 +62,8 @@ export default function OpenSidebar(props: SidebarProps) {
             </span>
           )}
 
+          {/* TODO: replace text nav links with icons */}
+
           <NavMenu items={menuItems} direction={"left"} />
           {/* TODO: Add user links; add admin links */}
           {/* <Link className="text-md text-primary-gold-400" href="/apps/admin">
