@@ -97,8 +97,8 @@ export default async function SayingsApp() {
             </p>
           </CardContent>
           <CardFooter>
-            <Button>Add Quote to Collection: opens modal</Button>
-            {/* TODO: the modal can create new collection or add quote to existing collection, like youtube saves */}
+            <Button>Add Quote to Collection: opens popover</Button>
+            {/* TODO: the popover can create new collection or add quote to existing collection, like youtube saves */}
           </CardFooter>
         </Card>
         <Card>
@@ -133,8 +133,8 @@ export default async function SayingsApp() {
             </p>
           </CardContent>
           <CardFooter>
-            <Button>Add Quote to Collection: opens modal</Button>
-            {/* TODO: the modal can create new collection or add quote to existing collection, like youtube saves */}
+            <Button>Add Quote to Collection: opens popover</Button>
+            {/* TODO: the popover can create new collection or add quote to existing collection, like youtube saves */}
           </CardFooter>
         </Card>
         <Card>
@@ -169,8 +169,8 @@ export default async function SayingsApp() {
             </p>
           </CardContent>
           <CardFooter>
-            <Button>Add Quote to Collection: opens modal</Button>
-            {/* TODO: the modal can create new collection or add quote to existing collection, like youtube saves */}
+            <Button>Add Quote to Collection: opens popover</Button>
+            {/* TODO: the popover can create new collection or add quote to existing collection, like youtube saves */}
           </CardFooter>
         </Card>
         <Card>
@@ -205,8 +205,8 @@ export default async function SayingsApp() {
             </p>
           </CardContent>
           <CardFooter>
-            <Button>Add Quote to Collection: opens modal</Button>
-            {/* TODO: the modal can create new collection or add quote to existing collection, like youtube saves */}
+            <Button>Add Quote to Collection: opens popover</Button>
+            {/* TODO: the popover can create new collection or add quote to existing collection, like youtube saves */}
           </CardFooter>
         </Card>
         <Card>
@@ -241,8 +241,8 @@ export default async function SayingsApp() {
             </p>
           </CardContent>
           <CardFooter>
-            <Button>Add Quote to Collection: opens modal</Button>
-            {/* TODO: the modal can create new collection or add quote to existing collection, like youtube saves */}
+            <Button>Add Quote to Collection: opens popover</Button>
+            {/* TODO: the popover can create new collection or add quote to existing collection, like youtube saves */}
           </CardFooter>
         </Card>
       </div>

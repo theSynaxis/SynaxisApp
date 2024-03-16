@@ -61,7 +61,7 @@ export default async function SayingsApp() {
           <Button>Submit Quote</Button>
         </Link>
 
-        <Button>Add Quote to Collection: opens modal</Button>
+        <Button>Add Quote to Collection: opens popover</Button>
         {/* the modal can create new collection or add quote to existing collection, like youtube saves */}
       </div>
     </main>
