@@ -1,25 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getMenuItems, getSiteSettings, getSiteLogo } from "@nextwp/core";
-import { cookies } from "next/headers";
 
 // import components
-import NavMenu from "./nav-menu";
-import RegistrationModal from "../domain/users/registration-modal";
-import LoginModal from "../domain/users/login-modal";
-import UserLogout from "../domain/users/logout";
+import NavMenu from "../nav-menu";
+import RegistrationModal from "../../domain/users/registration-modal";
+import LoginModal from "../../domain/users/login-modal";
+import UserLogout from "../../domain/users/logout";
+import { Button } from "~/components/ui/button";
 
-export default async function Sidebar() {
-  const cookieStore = cookies();
-  const userSession = cookieStore.get("auth_session")?.value;
+// import types
+import type { WpMenuItem, WpSettings, WpMediaItem } from "@nextwp/core";
+import type { Dispatch, SetStateAction } from "react";
 
-  const menuItems = await getMenuItems({ slug: "sidebar-menu" });
-  const siteSettings = await getSiteSettings();
-  const logo = await getSiteLogo();
+interface SidebarProps {
+  menuItems: WpMenuItem[];
+  siteSettings: WpSettings;
+  logo: WpMediaItem;
+  userSession: string | undefined;
+  sidebarState: {
+    openSidebar: boolean;
+    setOpenSidebar: Dispatch<SetStateAction<boolean>>;
+  };
+}
+
+export default function OpenSidebar(props: SidebarProps) {
+  const {
+    menuItems,
+    siteSettings,
+    logo,
+    userSession,
+    sidebarState: { openSidebar, setOpenSidebar },
+  } = props;
 
   return (
     <>
-      <div className="flex min-h-dvh w-1/5 flex-col items-center justify-between border-2 border-r-secondary-red-500 bg-neutral-900 uppercase">
+      <div className="flex min-h-dvh w-1/5 flex-col items-start justify-between border-2 border-r-secondary-red-500 bg-neutral-900 p-8 uppercase">
         <span>
           <span className="m-4 flex flex-row items-center justify-between">
             <Link href="/">
@@ -55,6 +70,20 @@ export default async function Sidebar() {
         </span>
 
         {userSession && <UserLogout />}
+
+        <Button
+          variant={"link"}
+          className="flex flex-row items-center justify-between gap-2 text-primary-gold-400"
+          onClick={() => setOpenSidebar(!openSidebar)}
+        >
+          Close Sidebar
+          <Image
+            src={`/images/icons/Arrow-Left-Circle-Gold-Icon.svg`}
+            alt={"Collapse Sidebar"}
+            height={24}
+            width={24}
+          />
+        </Button>
 
         <p className="mx-auto py-4 text-center text-primary-gold-400">
           &copy; {new Date().getFullYear().toString()}
