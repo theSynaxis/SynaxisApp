@@ -53,24 +53,42 @@ export default function QuoteCard() {
             , pp. 391-2.
           </p>
         </CardContent>
+
         <CardFooter className="flex flex-row items-center justify-between">
+          <Button>Add Quote to Collection: opens popover</Button>
+          {/* the modal can create new collection or add quote to existing collection, like youtube saves */}
+
           <Menubar className="border border-neutral-300">
             <MenubarMenu>
-              <MenubarTrigger className="text-base">File</MenubarTrigger>
+              <MenubarTrigger className="text-base">Subscribe</MenubarTrigger>
+              <MenubarContent className="bg-neutral-50">
+                <MenubarItem className="flex flex-row items-center justify-between text-base">
+                  <Image
+                    src={"/images/icons/Person-Icon.svg"}
+                    alt="Subscribe to see more of this saint's quotes."
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                  To St Silouan the Athonite
+                </MenubarItem>
+                <MenubarItem className="flex flex-row items-center justify-between text-base">
+                  <Image
+                    src={"/images/icons/Book-Icon.svg"}
+                    alt="Subscribe to see more of this book's quotes."
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                  To St. Silouan the Athonite
+                </MenubarItem>
+              </MenubarContent>
               <Separator
                 orientation="vertical"
                 className="border border-neutral-300"
               />
-              <MenubarTrigger className="text-base">File</MenubarTrigger>
-              <Separator
-                orientation="vertical"
-                className="border border-neutral-300"
-              />
-              <MenubarTrigger className="text-base">File</MenubarTrigger>
-              <Separator
-                orientation="vertical"
-                className="border border-neutral-300"
-              />
+            </MenubarMenu>
+            <MenubarMenu>
               <MenubarTrigger className="text-base">Share</MenubarTrigger>
               <MenubarContent className="bg-neutral-50">
                 <MenubarItem className="flex flex-row items-center justify-between text-base">
@@ -155,9 +173,16 @@ export default function QuoteCard() {
                 </MenubarItem>
               </MenubarContent>
             </MenubarMenu>
+            <MenubarMenu>
+              <Separator
+                orientation="vertical"
+                className="border border-neutral-300"
+              />
+              <MenubarTrigger className="text-base font-bold text-secondary-red-400">
+                Report
+              </MenubarTrigger>
+            </MenubarMenu>
           </Menubar>
-          <Button>Add Quote to Collection: opens popover</Button>
-          {/* the modal can create new collection or add quote to existing collection, like youtube saves */}
         </CardFooter>
       </Card>
     </>
