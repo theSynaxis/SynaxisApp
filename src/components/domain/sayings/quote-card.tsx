@@ -8,13 +8,23 @@ import {
   CardContent,
   CardFooter,
 } from "~/components/ui/card";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "~/components/ui/menubar";
+import { Separator } from "~/components/ui/separator";
 
 export default function QuoteCard() {
   const header = "Quote of the Day";
 
   return (
     <>
-      <Card>
+      <Card className="border border-neutral-300 shadow-lg">
         <CardHeader className="text-xl">{header}</CardHeader>
 
         <CardContent className="flex flex-row items-center justify-around gap-8 text-2xl">
@@ -45,7 +55,109 @@ export default function QuoteCard() {
             , pp. 391-2.
           </p>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-row items-center justify-between">
+          <Menubar className="border border-neutral-300">
+            <MenubarMenu>
+              <MenubarTrigger className="text-base">File</MenubarTrigger>
+              <Separator
+                orientation="vertical"
+                className="border border-neutral-300"
+              />
+              <MenubarTrigger className="text-base">File</MenubarTrigger>
+              <Separator
+                orientation="vertical"
+                className="border border-neutral-300"
+              />
+              <MenubarTrigger className="text-base">File</MenubarTrigger>
+              <Separator
+                orientation="vertical"
+                className="border border-neutral-300"
+              />
+              <MenubarTrigger className="text-base">Share</MenubarTrigger>
+              <MenubarContent className="bg-neutral-50">
+                <MenubarItem className="flex flex-row items-center justify-between text-base">
+                  <Image
+                    src={"/images/icons/Facebook-Icon.svg"}
+                    alt="Share on Facebook!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                  Facebook
+                  <Image
+                    src={"/images/icons/External-Link-Icon.svg"}
+                    alt="Share on Facebook!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                </MenubarItem>
+                <Separator
+                  orientation="horizontal"
+                  className="border border-neutral-300"
+                />
+                <MenubarItem className="flex flex-row items-center justify-between text-base">
+                  <Image
+                    src={"/images/icons/Twitter-Icon.svg"}
+                    alt="Share on Twitter!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                  Twitter
+                  <Image
+                    src={"/images/icons/External-Link-Icon.svg"}
+                    alt="Share on Twitter!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                </MenubarItem>
+                <Separator
+                  orientation="horizontal"
+                  className="border border-neutral-300"
+                />
+                <MenubarItem className="flex flex-row items-center justify-between text-base">
+                  <Image
+                    src={"/images/icons/Discord-Icon.svg"}
+                    alt="Share on Discord!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                  Discord
+                  <Image
+                    src={"/images/icons/External-Link-Icon.svg"}
+                    alt="Share on Discord!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                </MenubarItem>
+                <Separator
+                  orientation="horizontal"
+                  className="border border-neutral-300"
+                />
+                <MenubarItem className="flex flex-row items-center justify-between text-base">
+                  <Image
+                    src={"/images/icons/Mail-Icon.svg"}
+                    alt="Share through Email!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                  Email
+                  <Image
+                    src={"/images/icons/External-Link-Icon.svg"}
+                    alt="Share through Email!"
+                    className="h-6 w-6"
+                    width={24}
+                    height={24}
+                  />
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
           <Button>Add Quote to Collection: opens popover</Button>
           {/* the modal can create new collection or add quote to existing collection, like youtube saves */}
         </CardFooter>
