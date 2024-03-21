@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Button } from "~/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -16,6 +15,8 @@ import {
   MenubarTrigger,
 } from "~/components/ui/menubar";
 import { Separator } from "~/components/ui/separator";
+import AddToCollection from "./user-actions/add-to-collection";
+import ReportQuote from "./user-actions/report-quote";
 
 export default function QuoteCard() {
   const header = "Quote of the Day";
@@ -55,9 +56,7 @@ export default function QuoteCard() {
         </CardContent>
 
         <CardFooter className="flex flex-row items-center justify-between">
-          <Button>Add Quote to Collection: opens popover</Button>
-          {/* the modal can create new collection or add quote to existing collection, like youtube saves */}
-
+          <AddToCollection />
           <Menubar className="border border-neutral-300">
             <MenubarMenu>
               <MenubarTrigger className="text-base">Subscribe</MenubarTrigger>
@@ -178,9 +177,8 @@ export default function QuoteCard() {
                 orientation="vertical"
                 className="border border-neutral-300"
               />
-              <MenubarTrigger className="text-base font-bold text-secondary-red-400">
-                Report
-              </MenubarTrigger>
+
+              <ReportQuote />
             </MenubarMenu>
           </Menubar>
         </CardFooter>
