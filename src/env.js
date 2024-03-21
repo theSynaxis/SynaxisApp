@@ -15,7 +15,7 @@ export const env = createEnv({
         "You forgot to change the default URL"
       ),
     NODE_ENV: z
-      .enum(["development", "test", "production"])
+      .enum(["development", "staging", "production"])
       .default("development"),
   },
 
