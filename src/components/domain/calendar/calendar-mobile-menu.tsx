@@ -2,7 +2,7 @@
 
 import { Fragment } from "react";
 import Image from "next/image";
-import { Menu, Transition } from "@headlessui/react";
+// import { Menu, Transition } from "@headlessui/react";
 
 type Class = string | boolean | undefined;
 
@@ -13,7 +13,7 @@ function classNames(...classes: Class[]) {
 export default function CalendarMobileMenu() {
   return (
     <>
-      <Menu as="div" className="relative ml-6 md:hidden">
+      {/* <Menu as="div" className="relative ml-6 md:hidden">
         <Menu.Button className="border-transparent text-gray-400 hover:text-gray-500 -mx-2 flex items-center rounded-full border p-2">
           <span className="sr-only">Open menu</span>
 
@@ -123,7 +123,7 @@ export default function CalendarMobileMenu() {
             </div>
           </Menu.Items>
         </Transition>
-      </Menu>
+      </Menu> */}
     </>
   );
 }

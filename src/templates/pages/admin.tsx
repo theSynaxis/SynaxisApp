@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import NotFound from "~/app/not-found";
+import NotFound from "~/app/[[...paths]]/not-found";
 
 export default function DefaultPageTemplate() {
   const cookieStore = cookies();
