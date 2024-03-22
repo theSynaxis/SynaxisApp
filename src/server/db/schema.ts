@@ -157,8 +157,6 @@ export const citations = createTable("citations", {
   publicationYear: varchar('publication_year').notNull(),
   pageStart: integer('page_start').notNull(),
   pageEnd: integer('page_end').notNull(),
-  isScripture: boolean("is_scripture").default(false).notNull(),
-  isPrayer: boolean("is_prayer").default(false).notNull(),
   // because users can submit citations, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
@@ -173,6 +171,8 @@ export const quotes = createTable("quotes", {
   authorId: integer('author_id').references(() => saints.id).notNull(),
   workId: integer('work_id').references(() => works.id).notNull(),
   citationId: integer('citation_id').references(() => citations.id).notNull(),
+  isScripture: boolean("is_scripture").default(false).notNull(),
+  isPrayer: boolean("is_prayer").default(false).notNull(),
   // id of the user who submitted the quote.
   submitId: varchar('submit_id').references(() => users.id).notNull(),
   // because users can submit works, they need to be approved before publically consumed.
