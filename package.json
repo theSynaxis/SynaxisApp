@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build",
+    "build": "next build && pnpm db:push",
     "db:push": "drizzle-kit push:pg",
     "db:studio": "drizzle-kit studio",
     "commit": "cz",
