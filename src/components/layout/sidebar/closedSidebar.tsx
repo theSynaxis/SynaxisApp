@@ -66,6 +66,12 @@ export default function ClosedSidebar(props: SidebarProps) {
           </Link> */}
         </span>
 
+        <Link
+          href={"/apps/user-settings"}
+          className="m-4 text-primary-gold-400"
+        >
+          Settings
+        </Link>
         {userSession && <UserLogout />}
 
         <Button
