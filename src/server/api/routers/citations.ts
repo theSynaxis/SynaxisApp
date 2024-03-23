@@ -14,10 +14,10 @@ export const citationRouter = createTRPCRouter({
     }))
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(citations).values({
-        // publicationCity: input.publicationCity,
-        // publicationYear: input.publicationYear,
-        // pageStart: input.pageStart,
-        // pageEnd: input.pageEnd,
+        publicationCity: input.publicationCity,
+        publicationYear: input.publicationYear,
+        pageStart: input.pageStart,
+        pageEnd: input.pageEnd,
       });
     }),
   updateApproval: publicProcedure // TODO: modProcedure
