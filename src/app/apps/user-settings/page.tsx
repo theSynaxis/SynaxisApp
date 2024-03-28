@@ -58,7 +58,7 @@ export default function UserSettingsPage() {
 
         <Separator className="w-full border border-neutral-400" />
 
-        <div className="flex h-full flex-row items-start justify-normal gap-4">
+        <div className="flex h-full w-full flex-row items-start justify-normal gap-4">
           <NavigationMenu>
             <NavigationMenuList className="flex w-64 flex-col items-start justify-center">
               {views.map((item) => {
