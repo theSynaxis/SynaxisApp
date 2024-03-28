@@ -1,19 +1,47 @@
+"use client";
+
+import React, { useState } from "react";
 import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
 import { Separator } from "~/components/ui/separator";
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "~/components/ui/navigation-menu";
+import ProfileSettings from "~/components/domain/users/settings/profile";
+import AccountSettings from "~/components/domain/users/settings/account";
+import AppearanceSettings from "~/components/domain/users/settings/appearance";
+import NotificationsSettings from "~/components/domain/users/settings/notifications";
+import DisplaySettings from "~/components/domain/users/settings/display";
 
-export default async function UserSettingsPage() {
+type View = "profile" | "account" | "appearance" | "notifications" | "display";
+
+export default function UserSettingsPage() {
   noStore();
+  const [view, setView] = useState<View>("profile");
+
+  const views: { title: string; view: View }[] = [
+    {
+      title: "Profile",
+      view: "profile",
+    },
+    {
+      title: "Account",
+      view: "account",
+    },
+    {
+      title: "Appearance",
+      view: "appearance",
+    },
+    {
+      title: "Notifications",
+      view: "notifications",
+    },
+    {
+      title: "Display",
+      view: "display",
+    },
+  ];
 
   return (
     <main className="h-full min-h-screen w-full text-neutral-900">
@@ -33,52 +61,36 @@ export default async function UserSettingsPage() {
         <div className="flex h-full flex-row items-start justify-normal gap-4">
           <NavigationMenu>
             <NavigationMenuList className="flex w-64 flex-col items-start justify-center">
-              <NavigationMenuItem className="w-full">
-                <NavigationMenuLink
-                  key={"component.title"}
-                  title={"component.title"}
-                  href={"/apps/user-settings/profile"}
-                  className={
-                    "text-md block select-none space-y-1 rounded-md p-3 font-medium leading-none no-underline outline-none transition-colors hover:bg-neutral-100 focus:bg-neutral-100"
-                  }
-                >
-                  Profile
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem className="w-full">
-                <NavigationMenuLink
-                  key={"component.title"}
-                  title={"component.title"}
-                  href={"/apps/user-settings/profile"}
-                  className={
-                    "text-md block select-none space-y-1 rounded-md p-3 font-medium leading-none no-underline outline-none transition-colors hover:bg-neutral-100 focus:bg-neutral-100"
-                  }
-                >
-                  Profile
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem className="w-full">
-                <NavigationMenuLink
-                  key={"component.title"}
-                  title={"component.title"}
-                  href={"/apps/user-settings/profile"}
-                  className={
-                    "text-md block select-none space-y-1 rounded-md p-3 font-medium leading-none no-underline outline-none transition-colors hover:bg-neutral-100 focus:bg-neutral-100"
-                  }
-                >
-                  Profile
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+              {views.map((item) => {
+                return (
+                  <React.Fragment key={item.view}>
+                    <NavigationMenuItem className="w-full" key={item.view}>
+                      <span
+                        className={
+                          "text-md block cursor-pointer select-none space-y-1 rounded-md p-3 font-medium leading-none no-underline outline-none transition-colors hover:bg-neutral-100 focus:bg-neutral-100"
+                        }
+                        onClick={() => setView(item.view)}
+                      >
+                        {item.title}
+                      </span>
+                    </NavigationMenuItem>
+                  </React.Fragment>
+                );
+              })}
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="">
-            <h3>Use in the Browser</h3>
-            <p>
-              It&rsquo;s also a browser app! You can use it right here in your
-              favorite browser.
-            </p>
-          </div>
+          {view === "profile" ? (
+            <ProfileSettings />
+          ) : view === "appearance" ? (
+            <AppearanceSettings />
+          ) : view === "account" ? (
+            <AccountSettings />
+          ) : view === "notifications" ? (
+            <NotificationsSettings />
+          ) : (
+            <DisplaySettings />
+          )}
         </div>
       </div>
     </main>
