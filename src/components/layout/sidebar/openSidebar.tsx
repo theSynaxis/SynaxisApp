@@ -71,7 +71,17 @@ export default function OpenSidebar(props: SidebarProps) {
           </Link> */}
         </span>
 
-        {userSession && <UserLogout />}
+        {userSession && (
+          <span className="flex flex-col items-start">
+            <Link
+              href={"/apps/user-settings"}
+              className="mx-4 text-primary-gold-400"
+            >
+              Settings
+            </Link>
+            <UserLogout />
+          </span>
+        )}
 
         <Button
           variant={"link"}

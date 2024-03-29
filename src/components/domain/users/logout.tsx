@@ -22,7 +22,7 @@ export default function UserLogout() {
   return (
     <>
       <Button
-        className="text-md m-2 bg-neutral-900 text-primary-gold-400"
+        className="text-md mx-2 bg-neutral-900 px-2 text-primary-gold-400"
         onClick={handleClick}
       >
         Logout

@@ -11,6 +11,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "~/components/ui/command";
 import {
   Popover,
@@ -35,6 +36,7 @@ export function Combobox(props: ComboboxProps) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
+          size={"sm"}
           variant="outline"
           role="combobox"
           aria-expanded={open}
@@ -46,30 +48,36 @@ export function Combobox(props: ComboboxProps) {
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-fit bg-neutral-50 p-0" align="start">
         <Command>
-          <CommandInput placeholder={placeholder} />
+          <CommandInput
+            placeholder={placeholder}
+            className="text-black w-full rounded-lg bg-neutral-50 px-4 py-2 text-lg"
+          />
           <CommandEmpty>No item found.</CommandEmpty>
-          <CommandGroup>
-            {items.map((item) => (
-              <CommandItem
-                key={item.value}
-                value={item.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === item.value ? "opacity-100" : "opacity-0",
-                  )}
-                />
-                {item.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandList>
+            <CommandGroup>
+              {items.map((item) => (
+                <CommandItem
+                  key={item.value}
+                  value={item.value}
+                  className="text-lg font-bold"
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === item.value ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                  {item.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
