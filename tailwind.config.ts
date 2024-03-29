@@ -102,6 +102,7 @@ export default {
         800: '#827D20',
         900: '#646019',
       },
+      "white": "#FFFFFF",
     },
     fontSize: {
       xs: ['0.625rem', { lineHeight: '1rem' }], // 10px body-xl

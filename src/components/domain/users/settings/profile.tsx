@@ -53,6 +53,7 @@ export default function ProfileSettings() {
       email: formData.email,
     });
   }
+
   return (
     <div className="w-full">
       <h3>Profile</h3>
@@ -75,7 +76,7 @@ export default function ProfileSettings() {
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Username or Email"
+                      placeholder="Username"
                       className="text-black w-2/3 rounded-lg px-4 py-2"
                       {...field}
                     />
@@ -133,6 +134,48 @@ export default function ProfileSettings() {
 
           <FormField
             control={form.control}
+            name="denomination"
+            render={({ field }) => (
+              <>
+                <FormItem>
+                  <FormLabel className="text-base">Denomination</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="denomination"
+                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                </FormItem>
+              </>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="jurisdiction"
+            render={({ field }) => (
+              <>
+                <FormItem>
+                  <FormLabel className="text-base">Jurisdiction</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="jurisdiction"
+                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                </FormItem>
+              </>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="website"
             render={({ field }) => (
               <>
@@ -156,7 +199,7 @@ export default function ProfileSettings() {
             variant={userLogin.isLoading || isDirty ? "default" : "disabled"}
             className="mt-4 w-fit"
           >
-            {userLogin.isLoading ? "Submitting..." : "Submit"}
+            {userLogin.isLoading ? "Submitting..." : "Update Profile"}
           </Button>
         </form>
       </Form>

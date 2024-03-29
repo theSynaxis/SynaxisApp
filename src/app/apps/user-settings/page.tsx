@@ -66,9 +66,7 @@ export default function UserSettingsPage() {
                   <React.Fragment key={item.view}>
                     <NavigationMenuItem className="w-full" key={item.view}>
                       <span
-                        className={
-                          "text-md block cursor-pointer select-none space-y-1 rounded-md p-3 font-medium leading-none no-underline outline-none transition-colors hover:bg-neutral-100 focus:bg-neutral-100"
-                        }
+                        className={`${item.view === view ? "bg-neutral-200" : ""} text-md block cursor-pointer select-none space-y-1 rounded-md p-3 font-medium leading-none no-underline outline-none transition-colors focus:bg-neutral-100`}
                         onClick={() => setView(item.view)}
                       >
                         {item.title}
