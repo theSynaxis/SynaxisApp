@@ -41,8 +41,8 @@ export default function NavMenu(props: {
 
   const sayings = (
     <Image
-      src={"/images/icons/Calendar-Gold-Icon.svg"}
-      alt="Calendar"
+      src={"/images/icons/Chat-Gold-Icon.svg"}
+      alt="Sayings"
       width={32}
       height={32}
       className="ml-auto h-8 w-8"
