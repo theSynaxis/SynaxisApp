@@ -2,7 +2,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { faker } from "@faker-js/faker";
-import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 
 import { cn } from "~/lib/utils";
@@ -28,6 +27,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import Image from "next/image";
 
 const saints = [
   { value: "St Silouan the Athonite", label: "St Silouan the Athonite" },
@@ -187,7 +187,13 @@ export default function AccountSettings() {
                           ) : (
                             <span>Pick a date</span>
                           )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          <Image
+                            src={"/images/icons/Calendar-Icon.svg"}
+                            alt="Calendar"
+                            width={16}
+                            height={16}
+                            className="ml-auto h-4 w-4"
+                          />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
