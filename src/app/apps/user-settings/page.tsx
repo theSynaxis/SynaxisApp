@@ -10,11 +10,8 @@ import {
 } from "~/components/ui/navigation-menu";
 import ProfileSettings from "~/components/domain/users/settings/profile";
 import AccountSettings from "~/components/domain/users/settings/account";
-import AppearanceSettings from "~/components/domain/users/settings/appearance";
-import NotificationsSettings from "~/components/domain/users/settings/notifications";
-import DisplaySettings from "~/components/domain/users/settings/display";
 
-type View = "profile" | "account" | "appearance" | "notifications" | "display";
+type View = "profile" | "account";
 
 export default function UserSettingsPage() {
   noStore();
@@ -28,18 +25,6 @@ export default function UserSettingsPage() {
     {
       title: "Account",
       view: "account",
-    },
-    {
-      title: "Appearance",
-      view: "appearance",
-    },
-    {
-      title: "Notifications",
-      view: "notifications",
-    },
-    {
-      title: "Display",
-      view: "display",
     },
   ];
 
@@ -78,17 +63,7 @@ export default function UserSettingsPage() {
             </NavigationMenuList>
           </NavigationMenu>
 
-          {view === "profile" ? (
-            <ProfileSettings />
-          ) : view === "appearance" ? (
-            <AppearanceSettings />
-          ) : view === "account" ? (
-            <AccountSettings />
-          ) : view === "notifications" ? (
-            <NotificationsSettings />
-          ) : (
-            <DisplaySettings />
-          )}
+          {view === "profile" ? <ProfileSettings /> : <AccountSettings />}
         </div>
       </div>
     </main>

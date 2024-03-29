@@ -77,13 +77,13 @@ export default function ProfileSettings() {
                     <Input
                       type="text"
                       placeholder="Username"
-                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      className="text-black w-[400px] rounded-lg px-4 py-2"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    This is your public display name. It can be your real name
-                    or a pseudonym. You can only change this once every 30 days.
+                    This is your public display name. You can only change this
+                    once every 30 days.
                   </FormDescription>
                   <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                 </FormItem>
@@ -102,7 +102,7 @@ export default function ProfileSettings() {
                     <Input
                       type="email"
                       placeholder="email"
-                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      className="text-black w-[400px] rounded-lg px-4 py-2"
                       {...field}
                     />
                   </FormControl>
@@ -122,7 +122,7 @@ export default function ProfileSettings() {
                   <FormControl>
                     <Textarea
                       placeholder="bio"
-                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      className="text-black w-[400px] rounded-lg px-4 py-2"
                       {...field}
                     />
                   </FormControl>
@@ -143,7 +143,7 @@ export default function ProfileSettings() {
                     <Input
                       type="text"
                       placeholder="denomination"
-                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      className="text-black w-[400px] rounded-lg px-4 py-2"
                       {...field}
                     />
                   </FormControl>
@@ -164,7 +164,7 @@ export default function ProfileSettings() {
                     <Input
                       type="text"
                       placeholder="jurisdiction"
-                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      className="text-black w-[400px] rounded-lg px-4 py-2"
                       {...field}
                     />
                   </FormControl>
@@ -185,7 +185,7 @@ export default function ProfileSettings() {
                     <Input
                       type="text"
                       placeholder="website"
-                      className="text-black w-2/3 rounded-lg px-4 py-2"
+                      className="text-black w-[400px] rounded-lg px-4 py-2"
                       {...field}
                     />
                   </FormControl>
