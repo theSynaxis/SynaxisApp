@@ -25,7 +25,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormDescription,
   FormMessage,
 } from "~/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
@@ -84,10 +83,10 @@ export default function AccountSettings() {
     },
   });
 
-  function onSubmit(formData: z.infer<typeof formSchema>) {
+  function onSubmit() {
     userLogin.mutate({
-      username: formData.username,
-      email: formData.email,
+      usernameOrEmail: "formData.username",
+      password: "formData.email",
     });
   }
 

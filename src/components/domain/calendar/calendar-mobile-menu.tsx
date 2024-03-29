@@ -1,14 +1,7 @@
 "use client";
 
-import { Fragment } from "react";
-import Image from "next/image";
+// import { Fragment } from "react";
 // import { Menu, Transition } from "@headlessui/react";
-
-type Class = string | boolean | undefined;
-
-function classNames(...classes: Class[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function CalendarMobileMenu() {
   return (
