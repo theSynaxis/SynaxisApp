@@ -154,7 +154,7 @@ const MenubarCheckboxItem = React.forwardRef<
           width={16}
           aria-hidden="true"
           className="h-4 w-4"
-        />{" "}
+        />
       </MenubarPrimitive.ItemIndicator>
     </span>
     {children}

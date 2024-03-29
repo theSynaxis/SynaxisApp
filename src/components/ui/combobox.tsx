@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
@@ -18,6 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import Image from "next/image";
 
 interface ComboboxProps {
   items: {
@@ -67,7 +68,12 @@ export function Combobox(props: ComboboxProps) {
                     setOpen(false);
                   }}
                 >
-                  <Check
+                  <Image
+                    src={`/images/icons/Check-Icon.svg`}
+                    alt={"Check"}
+                    height={14}
+                    width={14}
+                    aria-hidden="true"
                     className={cn(
                       "mr-2 h-4 w-4",
                       value === item.value ? "opacity-100" : "opacity-0",
