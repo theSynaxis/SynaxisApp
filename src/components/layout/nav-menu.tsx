@@ -21,8 +21,8 @@ export default function NavMenu(props: {
 
   const home = (
     <Image
-      src={"/images/icons/Calendar-Gold-Icon.svg"}
-      alt="Calendar"
+      src={"/images/icons/Home-Gold-Icon.svg"}
+      alt="Home"
       width={32}
       height={32}
       className="ml-auto h-8 w-8"
@@ -50,9 +50,9 @@ export default function NavMenu(props: {
   );
 
   function sidebarNavIcon(label: string) {
-    return label.includes("calendar")
+    return label.toLowerCase().includes("calendar")
       ? calendar
-      : label.includes("sayings")
+      : label.toLowerCase().includes("sayings")
         ? sayings
         : home;
   }
