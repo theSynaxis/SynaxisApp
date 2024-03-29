@@ -66,13 +66,17 @@ export default function ClosedSidebar(props: SidebarProps) {
           </Link> */}
         </span>
 
-        <Link
-          href={"/apps/user-settings"}
-          className="m-4 text-primary-gold-400"
-        >
-          Settings
-        </Link>
-        {userSession && <UserLogout />}
+        {userSession && (
+          <span className="flex flex-col items-start">
+            <Link
+              href={"/apps/user-settings"}
+              className="mx-4 text-primary-gold-400"
+            >
+              Settings
+            </Link>
+            <UserLogout />
+          </span>
+        )}
 
         <Button
           variant={"link"}
