@@ -122,6 +122,7 @@ export const saints = createTable("saints", {
   isLayman: boolean("is_layman").default(false).notNull(),
   isMartyr: boolean("is_martyr").default(false).notNull(),
   isConfessor: boolean("is_confessor").default(false).notNull(),
+  isMale: boolean("is_male").default(true).notNull(),
   yearBorn: integer("year_born"),
   yearDied: integer("year_died"),
   isBc: boolean("is_bc").notNull(),
