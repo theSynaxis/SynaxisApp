@@ -222,7 +222,7 @@ export default function MonthView() {
             <span className="relative -mx-px h-5 w-px bg-neutral-300 md:hidden" />
             <button
               type="button"
-              className="bg-white flex items-center justify-center rounded-r-md text-neutral-400 hover:text-neutral-800 focus:relative md:w-9 md:px-2 md:hover:bg-neutral-50"
+              className="flex items-center justify-center rounded-r-md text-neutral-400 hover:text-neutral-800 focus:relative md:w-9 md:px-2 md:hover:bg-neutral-50"
             >
               <span className="sr-only">Next month</span>
 

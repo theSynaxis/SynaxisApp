@@ -59,7 +59,7 @@ export default function ClosedSidebar(props: SidebarProps) {
             </span>
           )}
 
-          <NavMenu items={menuItems} direction={"left"} />
+          <NavMenu items={menuItems} direction={"left"} isOpen={openSidebar} />
           {/* TODO: Add user links; add admin links */}
           {/* <Link className="text-md text-primary-gold-400" href="/apps/admin">
             Admin

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
@@ -18,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
+import Image from "next/image";
 
 interface ComboboxProps {
   items: {
@@ -45,7 +45,14 @@ export function Combobox(props: ComboboxProps) {
           {value
             ? items.find((item) => item.value === value)?.label
             : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <Image
+            src={`/images/icons/Chevrons-Up-Down-Icon.svg`}
+            alt={"Selection"}
+            className="ml-2 h-4 w-4 text-neutral-900"
+            height={20}
+            width={20}
+            aria-hidden="true"
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-fit bg-neutral-50 p-0" align="start">
@@ -67,7 +74,12 @@ export function Combobox(props: ComboboxProps) {
                     setOpen(false);
                   }}
                 >
-                  <Check
+                  <Image
+                    src={`/images/icons/Check-Icon.svg`}
+                    alt={"Check"}
+                    height={14}
+                    width={14}
+                    aria-hidden="true"
                     className={cn(
                       "mr-2 h-4 w-4",
                       value === item.value ? "opacity-100" : "opacity-0",

@@ -65,9 +65,9 @@ export default function QuoteCard() {
                   <Image
                     src={"/images/icons/Person-Icon.svg"}
                     alt="Subscribe to see more of this saint's quotes."
-                    className="h-6 w-6"
-                    width={24}
-                    height={24}
+                    className="h-5 w-5"
+                    width={20}
+                    height={20}
                   />
                   To St Silouan the Athonite
                 </MenubarItem>
@@ -75,9 +75,9 @@ export default function QuoteCard() {
                   <Image
                     src={"/images/icons/Book-Icon.svg"}
                     alt="Subscribe to see more of this book's quotes."
-                    className="h-6 w-6"
-                    width={24}
-                    height={24}
+                    className="h-5 w-5"
+                    width={20}
+                    height={20}
                   />
                   To St. Silouan the Athonite
                 </MenubarItem>

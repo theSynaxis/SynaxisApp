@@ -118,7 +118,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
       <DropdownMenuPrimitive.ItemIndicator>
         <Image
           src={`/images/icons/Check-Icon.svg`}
-          alt={"Check?"}
+          alt={"Check"}
           height={16}
           width={16}
           aria-hidden="true"
