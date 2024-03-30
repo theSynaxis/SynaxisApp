@@ -27,6 +27,10 @@ export default function QuotesTable() {
       name: "Silouan the Athonite",
       quote:
         "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim dolor a commodi. Optio molestias deserunt fugit, aperiam possimus neque assumenda repudiandae magni perspiciatis. Libero exercitationem dignissimos dolorem culpa architecto et?",
+      work: {
+        title: "Saint Silouan the Athonite",
+        cover: "/images/books/new-edition-st-silouan.jpg",
+      },
     },
     // ...
   ];
@@ -38,7 +42,7 @@ export default function QuotesTable() {
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border border-neutral-300 shadow-lg">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

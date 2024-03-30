@@ -17,20 +17,17 @@ export default async function SayingsApp() {
           <span className="text-secondary-red-600">Sayings</span> of the Fathers
         </h1>
 
-        {/* <QuoteCard />
+        <QuoteCard />
 
-        <p>Search Form Goes Here</p>
-        <p>Link to open advanced search modal</p>
+        <p>Search Form Goes Here | Link to open advanced search modal</p>
 
+        <QuotesTable />
         <Link href="/apps/sayings/app/categories/category">
           Link to specific categories page for all quotes in one category
         </Link>
-
         <Link href="/apps/sayings/app/submit-quote">
           <Button>Submit Quote</Button>
-        </Link> */}
-
-        <QuotesTable />
+        </Link>
       </div>
     </main>
   );
