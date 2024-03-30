@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
 import QuoteCard from "~/components/domain/sayings/quote-card";
+import QuotesTable from "~/components/domain/sayings/quotes-table";
 
 export default async function SayingsApp() {
   noStore();
@@ -16,7 +17,7 @@ export default async function SayingsApp() {
           <span className="text-secondary-red-600">Sayings</span> of the Fathers
         </h1>
 
-        <QuoteCard />
+        {/* <QuoteCard />
 
         <p>Search Form Goes Here</p>
         <p>Link to open advanced search modal</p>
@@ -27,7 +28,9 @@ export default async function SayingsApp() {
 
         <Link href="/apps/sayings/app/submit-quote">
           <Button>Submit Quote</Button>
-        </Link>
+        </Link> */}
+
+        <QuotesTable />
       </div>
     </main>
   );
