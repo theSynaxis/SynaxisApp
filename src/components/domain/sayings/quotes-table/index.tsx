@@ -151,7 +151,7 @@ export default function QuotesTable() {
           className="flex flex-row items-start justify-end"
           href="/apps/sayings/app/submit-quote"
         >
-          <Button>Submit Quote</Button>
+          <Button>Submit New Quote</Button>
         </Link>
       </div>
     </div>

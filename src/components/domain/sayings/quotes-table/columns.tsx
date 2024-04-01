@@ -3,6 +3,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import Image from "next/image";
 import Link from "next/link";
+
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import {
@@ -21,6 +22,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import {
+  AllCollections,
+  CreateCollection,
+} from "../user-actions/add-to-collection";
 
 export type Payment = {
   id: string;
@@ -154,7 +159,7 @@ export const columns = [
               />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="bg-neutral-50">
+          <DropdownMenuContent align="end" className="mr-2 bg-neutral-50">
             <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
             <DropdownMenuItem
               className="cursor-pointer text-base"
@@ -174,15 +179,15 @@ export const columns = [
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle>Report Quote</DialogTitle>
-                  <DialogDescription>
-                    Bring a quote to the attention of our moderation team.
+                  <DialogTitle>Add Quote To Collection</DialogTitle>
+                  <DialogDescription className="flex flex-col gap-4">
+                    <AllCollections />
+                    <CreateCollection />
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>
             </Dialog>
-            <DropdownMenuSeparator className="bg-neutral-900" />
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            {/* <DropdownMenuSeparator className="bg-neutral-900" /> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
