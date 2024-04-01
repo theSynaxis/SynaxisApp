@@ -36,9 +36,12 @@ export function TextImage(props: TextImageProps) {
     <>
       <Edges>
         <section className="py-8">
-          <div className="flex flex-row items-center justify-between gap-8">
+          <div className="flex flex-col items-center justify-between gap-8 lg:flex-row">
             {String(text_image_position).includes("Left") && (
-              <div className="w-1/2" data-aos="slide-right">
+              <div
+                className="hidden w-full lg:block lg:w-1/2"
+                data-aos="slide-right"
+              >
                 <div className="mb-4">
                   <div className={""}>
                     {text_image?.url && (
@@ -55,7 +58,7 @@ export function TextImage(props: TextImageProps) {
               </div>
             )}
 
-            <div className="wysiwyg w-1/2">
+            <div className="wysiwyg w-full lg:w-1/2">
               <div className="mb-4">
                 {text_image_title && (
                   <h2>{parseHtml(String(text_image_title))}</h2>
@@ -80,7 +83,7 @@ export function TextImage(props: TextImageProps) {
             </div>
 
             {String(text_image_position).includes("Right") && (
-              <div className="w-1/2" data-aos="slide-left">
+              <div className="w-full lg:w-1/2" data-aos="slide-left">
                 <div className="mb-4">
                   <div className={""}>
                     {text_image?.url && (
@@ -98,7 +101,7 @@ export function TextImage(props: TextImageProps) {
             )}
           </div>
 
-          <hr className="mx-auto w-full border border-x-0 border-t-0 border-secondary-red-500 py-5" />
+          <hr className="mx-auto hidden w-full border border-x-0 border-t-0 border-secondary-red-500 py-5 md:block" />
         </section>
       </Edges>
     </>
