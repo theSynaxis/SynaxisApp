@@ -20,9 +20,6 @@ export default async function SayingsApp() {
         <QuoteCard />
 
         <QuotesTable />
-        <Link href="/apps/sayings/app/categories/category">
-          Link to specific categories page for all quotes in one category
-        </Link>
       </div>
     </main>
   );

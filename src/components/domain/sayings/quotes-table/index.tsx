@@ -8,6 +8,7 @@ import {
   getFilteredRowModel,
   type Table as TableType,
   type ColumnFiltersState,
+  type VisibilityState,
 } from "@tanstack/react-table";
 import { faker } from "@faker-js/faker";
 import Link from "next/link";
@@ -41,11 +42,12 @@ const data: Payment[] = [
     saint: "St Silouan the Athonite",
     quote:
       "In church I was listening to a reading from the Prophet Isaiah, and at the words, “Wash you make you clean,” I reflected, “Maybe the Mother of God sinned at one time or another, if only in thought.” And, marvelous to relate, in unison with my prayer a voice sounded in my heart, saying clearly, “The Mother of God never sinned even in thought.” Thus did the Holy Spirit bear witness in my heart to her purity.",
+    categories: ["Theotokos"],
+    tags: ["revelation"],
     source: {
       title: "Saint Silouan the Athonite",
       cover: "/images/books/new-edition-st-silouan.jpg",
     },
-    categories: ["Theotokos"],
   },
 ];
 
@@ -57,11 +59,12 @@ const createFakeSaints = () => {
     icon: "/images/saints/St-Silouan-Athonite.jpg",
     saint: `St ${saint}`,
     quote: faker.lorem.sentences(),
+    categories: ["Test", "Another"],
+    tags: ["test", "another", "next", "last"],
     source: {
       title: "Saint Silouan the Athonite",
       cover: "/images/books/new-edition-st-silouan.jpg",
     },
-    categories: ["Test", "Another"],
   };
 };
 
@@ -70,7 +73,14 @@ for (let index = 0; index < 4; index++) {
 }
 
 export default function QuotesTable() {
-  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    icon: true,
+    saint: true,
+    quote: true,
+    tags: false, //hide this column by default
+    categories: true,
+    source: true,
+  });
   // for client side data filtering. ideal would be server side filtering.
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
