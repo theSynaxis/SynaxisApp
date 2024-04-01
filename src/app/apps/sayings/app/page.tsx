@@ -1,15 +1,14 @@
 import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
 
-import { Button } from "~/components/ui/button";
 import QuoteCard from "~/components/domain/sayings/quote-card";
+import QuotesTable from "~/components/domain/sayings/quotes-table";
 
 export default async function SayingsApp() {
   noStore();
 
   return (
     <main className="flex w-full flex-col items-center justify-center text-neutral-900">
-      <div className="container flex flex-col items-center justify-start gap-12 px-4 py-16 ">
+      <div className="container flex flex-col items-center justify-start gap-8 px-4 py-4">
         <h1
           className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
         >
@@ -18,16 +17,7 @@ export default async function SayingsApp() {
 
         <QuoteCard />
 
-        <p>Search Form Goes Here</p>
-        <p>Link to open advanced search modal</p>
-
-        <Link href="/apps/sayings/app/categories/category">
-          Link to specific categories page for all quotes in one category
-        </Link>
-
-        <Link href="/apps/sayings/app/submit-quote">
-          <Button>Submit Quote</Button>
-        </Link>
+        <QuotesTable />
       </div>
     </main>
   );

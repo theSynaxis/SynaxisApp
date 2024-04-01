@@ -31,7 +31,10 @@ export default function AddToCollection() {
           <Button variant={"outline"}>Add Quote to Collection</Button>
         </PopoverTrigger>
 
-        <PopoverContent className="bg-neutral-50" align="start">
+        <PopoverContent
+          className="flex flex-col gap-4 bg-neutral-50"
+          align="start"
+        >
           <AllCollections />
           <CreateCollection />
         </PopoverContent>
@@ -40,7 +43,7 @@ export default function AddToCollection() {
   );
 }
 
-function AllCollections() {
+export function AllCollections() {
   return (
     <div className="flex w-full flex-col items-start justify-center">
       <Button
@@ -112,7 +115,7 @@ function AllCollections() {
   );
 }
 
-function CreateCollection() {
+export function CreateCollection() {
   const formSchema = z.object({
     collection: z.string().min(1),
   });
@@ -147,7 +150,7 @@ function CreateCollection() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex w-full flex-row items-center justify-center gap-2"
+          className="flex w-full flex-row items-center justify-between gap-2"
         >
           <FormField
             control={form.control}
