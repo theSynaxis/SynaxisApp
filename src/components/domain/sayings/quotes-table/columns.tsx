@@ -20,7 +20,7 @@ const columnHelper = createColumnHelper<Payment>();
 
 export const columns = [
   columnHelper.accessor("icon", {
-    header: () => <></>,
+    header: () => <div className="text-left text-base">Icon</div>,
     cell: (info) => {
       return (
         <Link href="/apps/sayings/app/saints/saint">

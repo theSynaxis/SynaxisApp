@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -12,6 +13,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -57,20 +59,26 @@ const createFakeSaints = () => {
   };
 };
 
-for (let index = 0; index < 9; index++) {
+for (let index = 0; index < 4; index++) {
   data.push(createFakeSaints());
 }
 
 export default function QuotesTable() {
+  const [columnVisibility, setColumnVisibility] = useState({});
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    state: {
+      columnVisibility,
+    },
   });
 
   return (
-    <div className="rounded-md border border-neutral-900 shadow-lg">
-      <div className="flex flex-row items-center justify-between border-b border-neutral-900 p-4">
+    <div className="w-full rounded-md border border-neutral-900 shadow-lg">
+      <div className="flex w-full flex-row items-center justify-between border-b border-neutral-900 p-4">
         <span>Search Form Goes Here</span>
         <div>
           <DropdownMenu>
@@ -99,11 +107,8 @@ export default function QuotesTable() {
           </DropdownMenu>
         </div>
         <span>Link to open advanced search modal</span>
-        <Link href="/apps/sayings/app/submit-quote">
-          <Button>Submit Quote</Button>
-        </Link>
       </div>
-      <Table>
+      <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -145,6 +150,14 @@ export default function QuotesTable() {
           )}
         </TableBody>
       </Table>
+      <div className="flex items-center justify-end space-x-2 border-t border-neutral-900 p-4">
+        <Link
+          className="flex flex-row items-start justify-end"
+          href="/apps/sayings/app/submit-quote"
+        >
+          <Button>Submit Quote</Button>
+        </Link>
+      </div>
     </div>
   );
 }
