@@ -141,7 +141,7 @@ export const columns = [
     },
     footer: (props) => props.column.id,
   }),
-  {
+  columnHelper.display({
     id: "actions",
     header: () => <div className="text-center text-base">Actions</div>,
     cell: (info) => {
@@ -315,7 +315,7 @@ export const columns = [
         </DropdownMenu>
       );
     },
-  },
+  }),
 ];
 
 function SubscribeAction(props: { item: string }) {
