@@ -8,9 +8,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 export type Payment = {
   id: string;
   icon: string;
-  name: string;
+  saint: string;
   quote: string;
-  work: {
+  source: {
     title: string;
     cover: string;
   };
@@ -28,13 +28,13 @@ export const columns = [
             <AvatarImage asChild src={info.getValue()}>
               <Image
                 src={info.getValue()}
-                alt={`${info.row.original.name[0]}`}
+                alt={`${info.row.original.saint[0]}`}
                 width={40}
                 height={40}
               />
             </AvatarImage>
             <AvatarFallback className="text-2xl">
-              {info.row.original.name[0]}
+              {info.row.original.saint[0]}
             </AvatarFallback>
           </Avatar>
         </Link>
@@ -42,7 +42,7 @@ export const columns = [
     },
     footer: (props) => props.column.id,
   }),
-  columnHelper.accessor("name", {
+  columnHelper.accessor("saint", {
     header: () => <div className="text-left text-base">Saint</div>,
     cell: (info) => {
       return (
@@ -60,7 +60,7 @@ export const columns = [
     },
     footer: (props) => props.column.id,
   }),
-  columnHelper.accessor("work", {
+  columnHelper.accessor("source", {
     header: () => <div className="text-center text-base">Source</div>,
     cell: (info) => {
       return (
