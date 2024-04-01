@@ -87,13 +87,13 @@ export default function QuotesTable() {
 
   return (
     <div className="w-full rounded-md border border-neutral-900 shadow-lg">
-      <div className="flex w-full flex-row items-start justify-between border-b border-neutral-900 p-4">
-        <SearchQuotes table={table} />
+      <div className="flex w-full flex-row items-start justify-between border-b-2 border-secondary-red-500 bg-neutral-900 p-4 text-lg uppercase text-primary-gold-400">
         <ColumnVisibilityActions table={table} />
-        <span>Link to open advanced search modal</span>
+        <SearchQuotes table={table} />
+        {/* <span>Link to open advanced search modal</span> */}
       </div>
       <Table className="w-full">
-        <TableHeader>
+        <TableHeader className="">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -155,7 +155,7 @@ function SearchQuotes(props: { table: TableType<Payment> }) {
           <span className="flex cursor-pointer flex-row items-center justify-between gap-2">
             Search
             <Image
-              src={"/images/icons/Chevron-Down-Icon.svg"}
+              src={"/images/icons/Chevron-Down-Gold-Icon.svg"}
               alt="Column Visibility"
               width={12}
               height={12}
@@ -164,7 +164,7 @@ function SearchQuotes(props: { table: TableType<Payment> }) {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          align="start"
+          align="end"
           className="flex flex-col items-start gap-4 bg-neutral-50 px-4 py-6"
         >
           <span className="gap-4">
@@ -221,7 +221,7 @@ function ColumnVisibilityActions(props: { table: TableType<Payment> }) {
           <span className="flex cursor-pointer flex-row items-center justify-between gap-2">
             Columns
             <Image
-              src={"/images/icons/Chevron-Down-Icon.svg"}
+              src={"/images/icons/Chevron-Down-Gold-Icon.svg"}
               alt="Column Visibility"
               width={12}
               height={12}
