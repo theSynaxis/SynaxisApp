@@ -3,6 +3,7 @@ import { sourceSansPro, synaxisHeader } from "../fonts";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { Toaster } from "~/components/ui/toaster";
 import Sidebar from "~/components/layout/sidebar";
 import "~/styles/globals.css";
 
@@ -35,6 +36,7 @@ export default async function RootLayout({
             userSession={userSession}
           />
           {children}
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>

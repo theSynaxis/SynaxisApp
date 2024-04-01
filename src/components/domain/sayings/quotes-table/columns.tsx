@@ -22,10 +22,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { useToast } from "~/components/ui/use-toast";
 import {
   AllCollections,
   CreateCollection,
 } from "../user-actions/add-to-collection";
+import { Separator } from "~/components/ui/separator";
 
 export type Payment = {
   id: string;
@@ -143,7 +145,7 @@ export const columns = [
     id: "actions",
     header: () => <div className="text-center text-base">Actions</div>,
     cell: (info) => {
-      const { quote } = info.row.original;
+      const { quote, saint, source } = info.row.original;
 
       return (
         <DropdownMenu>
@@ -165,8 +167,106 @@ export const columns = [
               className="cursor-pointer text-base"
               onClick={() => navigator.clipboard.writeText(quote)}
             >
-              Copy quote
+              Copy Quote
             </DropdownMenuItem>
+            <DropdownMenuSeparator className="bg-neutral-900" />
+            <Dialog>
+              <DialogTrigger>
+                <DropdownMenuItem
+                  className="cursor-pointer text-base"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  Share Quote
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Share Quote</DialogTitle>
+                  <DialogDescription className="flex flex-col gap-4 pt-8">
+                    <div className="flex w-full flex-row items-center justify-between text-base">
+                      <Image
+                        src={"/images/icons/Facebook-Icon.svg"}
+                        alt="Share on Facebook!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                      Facebook
+                      <Image
+                        src={"/images/icons/External-Link-Icon.svg"}
+                        alt="Share on Facebook!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <Separator
+                      orientation="horizontal"
+                      className="border border-neutral-300"
+                    />
+                    <div className="flex w-full flex-row items-center justify-between text-base">
+                      <Image
+                        src={"/images/icons/Twitter-Icon.svg"}
+                        alt="Share on Twitter!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                      Twitter
+                      <Image
+                        src={"/images/icons/External-Link-Icon.svg"}
+                        alt="Share on Twitter!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <Separator
+                      orientation="horizontal"
+                      className="border border-neutral-300"
+                    />
+                    <div className="flex w-full flex-row items-center justify-between text-base">
+                      <Image
+                        src={"/images/icons/Discord-Icon.svg"}
+                        alt="Share on Discord!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                      Discord
+                      <Image
+                        src={"/images/icons/External-Link-Icon.svg"}
+                        alt="Share on Discord!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <Separator
+                      orientation="horizontal"
+                      className="border border-neutral-300"
+                    />
+                    <div className="flex w-full flex-row items-center justify-between text-base">
+                      <Image
+                        src={"/images/icons/Mail-Icon.svg"}
+                        alt="Share through Email!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                      Email
+                      <Image
+                        src={"/images/icons/External-Link-Icon.svg"}
+                        alt="Share through Email!"
+                        className="h-6 w-6"
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
             <DropdownMenuSeparator className="bg-neutral-900" />
             <Dialog>
               <DialogTrigger>
@@ -180,6 +280,30 @@ export const columns = [
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle>Add Quote To Collection</DialogTitle>
+                  <DialogDescription className="flex flex-col gap-4 pt-4">
+                    <AllCollections />
+                    <CreateCollection />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+            <DropdownMenuSeparator className="bg-neutral-900" />
+            <SubscribeAction item={saint} />
+            <DropdownMenuSeparator className="bg-neutral-900" />
+            <SubscribeAction item={source.title} />
+            <DropdownMenuSeparator className="bg-neutral-900" />
+            <Dialog>
+              <DialogTrigger>
+                <DropdownMenuItem
+                  className="cursor-pointer text-base text-secondary-red-500"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  Report
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Add Quote To Collection</DialogTitle>
                   <DialogDescription className="flex flex-col gap-4">
                     <AllCollections />
                     <CreateCollection />
@@ -187,10 +311,30 @@ export const columns = [
                 </DialogHeader>
               </DialogContent>
             </Dialog>
-            {/* <DropdownMenuSeparator className="bg-neutral-900" /> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   },
 ];
+
+function SubscribeAction(props: { item: string }) {
+  const { item } = props;
+  const { toast } = useToast();
+
+  return (
+    <>
+      <DropdownMenuItem
+        className="cursor-pointer text-base"
+        onClick={() =>
+          toast({
+            title: `Success`,
+            description: `Subscribed to ${item}!`,
+          })
+        }
+      >
+        {`Subscribe to ${item}`}
+      </DropdownMenuItem>
+    </>
+  );
+}
