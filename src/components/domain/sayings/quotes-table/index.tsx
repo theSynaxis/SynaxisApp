@@ -29,6 +29,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import Image from "next/image";
 
 const data: Payment[] = [
   {
@@ -83,9 +84,18 @@ export default function QuotesTable() {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <span className="cursor-pointer">Columns</span>
+              <span className="flex cursor-pointer flex-row items-center justify-between gap-2">
+                Columns
+                <Image
+                  src={"/images/icons/Chevron-Down-Icon.svg"}
+                  alt="Column Visibility"
+                  width={12}
+                  height={12}
+                  className="h-3 w-3"
+                />
+              </span>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-neutral-50">
+            <DropdownMenuContent align="start" className="bg-neutral-50">
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
@@ -130,10 +140,7 @@ export default function QuotesTable() {
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+              <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

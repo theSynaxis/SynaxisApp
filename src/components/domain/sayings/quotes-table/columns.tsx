@@ -33,7 +33,9 @@ export const columns = [
                 height={40}
               />
             </AvatarImage>
-            <AvatarFallback>{info.row.original.name[0]}</AvatarFallback>
+            <AvatarFallback className="text-2xl">
+              {info.row.original.name[0]}
+            </AvatarFallback>
           </Avatar>
         </Link>
       );
