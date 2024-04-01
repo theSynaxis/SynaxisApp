@@ -38,13 +38,14 @@ const data: Payment[] = [
   {
     id: "728ed52f",
     icon: "/images/saints/St-Silouan-Athonite.jpg",
-    saint: "Silouan the Athonite",
+    saint: "St Silouan the Athonite",
     quote:
       "In church I was listening to a reading from the Prophet Isaiah, and at the words, “Wash you make you clean,” I reflected, “Maybe the Mother of God sinned at one time or another, if only in thought.” And, marvelous to relate, in unison with my prayer a voice sounded in my heart, saying clearly, “The Mother of God never sinned even in thought.” Thus did the Holy Spirit bear witness in my heart to her purity.",
     source: {
       title: "Saint Silouan the Athonite",
       cover: "/images/books/new-edition-st-silouan.jpg",
     },
+    categories: ["Theotokos"],
   },
 ];
 
@@ -55,11 +56,12 @@ const createFakeSaints = () => {
     id: faker.string.uuid(),
     icon: "/images/saints/St-Silouan-Athonite.jpg",
     saint: `St ${saint}`,
-    quote: faker.lorem.sentence(),
+    quote: faker.lorem.sentences(),
     source: {
       title: "Saint Silouan the Athonite",
       cover: "/images/books/new-edition-st-silouan.jpg",
     },
+    categories: ["Test", "Another"],
   };
 };
 

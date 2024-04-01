@@ -14,6 +14,7 @@ export type Payment = {
     title: string;
     cover: string;
   };
+  categories: string[];
 };
 
 const columnHelper = createColumnHelper<Payment>();
@@ -57,6 +58,25 @@ export const columns = [
     header: () => <div className="text-center text-base">Saying</div>,
     cell: (info) => {
       return <span className="text-base">{info.getValue()}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("categories", {
+    header: () => <div className="text-center text-base">Categories</div>,
+    cell: (info) => {
+      const cats = info.getValue();
+      return (
+        <div>
+          {cats.map((cat, i) => (
+            <div
+              className="my-2 rounded-full bg-success-green-600 px-2 py-1 text-center text-base text-neutral-900"
+              key={i}
+            >
+              {cat}
+            </div>
+          ))}
+        </div>
+      );
     },
     footer: (props) => props.column.id,
   }),
