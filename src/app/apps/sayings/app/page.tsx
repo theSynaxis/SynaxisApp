@@ -1,7 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
-import Link from "next/link";
 
-import { Button } from "~/components/ui/button";
 import QuoteCard from "~/components/domain/sayings/quote-card";
 import QuotesTable from "~/components/domain/sayings/quotes-table";
 
