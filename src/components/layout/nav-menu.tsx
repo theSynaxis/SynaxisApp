@@ -60,7 +60,7 @@ export default function NavMenu(props: {
 
   return (
     <>
-      <div className="md:hidden">
+      <div className={`md:hidden ${direction === "left" ? "hidden" : ""}`}>
         <Popover>
           <PopoverTrigger>
             <Image
@@ -107,7 +107,7 @@ export default function NavMenu(props: {
         </Popover>
       </div>
       <ul
-        className={`hidden md:flex flex-${flexDir} items-${alignItems} justify-around gap-4`}
+        className={`${direction === "top" ? "hidden md:flex" : "flex"}  flex-${flexDir} items-${alignItems} justify-around gap-4`}
       >
         {items?.map((item) => {
           return (
@@ -127,7 +127,9 @@ export default function NavMenu(props: {
                 )}
                 {isOpen ? (
                   <>
-                    <div className="hidden md:inline-block">
+                    <div
+                      className={`${direction === "left" ? "hidden lg:inline-block" : "hidden md:inline-block"}`}
+                    >
                       {parseHtml(`${item.label}`)}
                     </div>
                   </>

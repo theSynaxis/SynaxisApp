@@ -34,7 +34,7 @@ export default function OpenSidebar(props: SidebarProps) {
 
   return (
     <>
-      <div className="flex min-h-dvh w-1/5 flex-col items-start justify-between border-2 border-r-secondary-red-500 bg-neutral-900 p-8 uppercase">
+      <div className="flex min-h-dvh w-1/5 min-w-40 flex-col items-start justify-between border-2 border-r-secondary-red-500 bg-neutral-900 p-8 uppercase">
         <span>
           <span className="m-4 flex flex-row items-center justify-between">
             <Link href="/">
@@ -43,11 +43,12 @@ export default function OpenSidebar(props: SidebarProps) {
                 alt={`${siteSettings.title}`}
                 width={48}
                 height={48}
+                className="h-12 w-full"
               />
             </Link>
 
             <Link
-              className="m-2 font-synaxisHeader text-2xl text-primary-gold-400"
+              className="m-2 hidden font-synaxisHeader text-2xl text-primary-gold-400 xl:inline-block"
               href="/"
             >
               {siteSettings.title}
@@ -85,10 +86,10 @@ export default function OpenSidebar(props: SidebarProps) {
 
         <Button
           variant={"link"}
-          className="flex flex-row items-center justify-between gap-2 text-primary-gold-400"
+          className="flex-row items-center justify-between gap-2 text-primary-gold-400 lg:flex"
           onClick={() => setOpenSidebar(!openSidebar)}
         >
-          Close Sidebar
+          <p className="hidden md:inline-block">Close Sidebar</p>
           <Image
             src={`/images/icons/Arrow-Left-Circle-Gold-Icon.svg`}
             alt={"Collapse Sidebar"}
@@ -99,6 +100,7 @@ export default function OpenSidebar(props: SidebarProps) {
 
         <p className="mx-auto py-4 text-center text-primary-gold-400">
           &copy; {new Date().getFullYear().toString()}
+          <br className="" />
           <Link className="m-2 font-synaxisHeader" href="/">
             {siteSettings.title}
           </Link>
