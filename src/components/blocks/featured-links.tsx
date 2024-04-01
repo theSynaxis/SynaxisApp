@@ -38,16 +38,16 @@ export function FeaturedLinks(props: FeaturedLinksProps) {
               <span className="w-3/5 text-center">
                 {featured_links_text && <p>{featured_links_text}</p>}
               </span>
-              <span className="flex flex-row items-center divide-x-2 divide-secondary-red-500">
+              <span className="flex w-full flex-col items-center divide-y-2 divide-secondary-red-500 md:flex-row md:divide-x-2 md:divide-y-0">
                 {featured_links?.map((featuredLink) => {
                   const { link, text, icon } = featuredLink;
 
                   return (
-                    <div key={`${link?.title}-${link?.url}`}>
+                    <div key={`${link?.title}-${link?.url}`} className="w-full">
                       {link && (
                         <Link
                           href={`${link.url}`}
-                          className="flex flex-col items-center justify-between gap-4 p-6"
+                          className="flex w-full flex-col items-center justify-between gap-4 p-6"
                         >
                           {icon && (
                             <Image
