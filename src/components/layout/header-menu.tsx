@@ -12,7 +12,7 @@ export default async function HeaderMenu() {
   return (
     <header className="sticky top-0 z-50 w-full border-2 border-b-secondary-red-500 bg-neutral-900 uppercase">
       <Edges>
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex w-full flex-row items-center justify-between">
           <span className="flex flex-row items-center justify-between px-2 py-2 sm:px-4 lg:px-0">
             <Link href="/">
               <Image

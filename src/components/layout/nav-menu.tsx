@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { type WpMenuItem } from "@nextwp/core";
 import { parseHtml } from "~/lib/utils";
 import Image from "next/image";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
 export default function NavMenu(props: {
   items: WpMenuItem[];
@@ -58,30 +59,86 @@ export default function NavMenu(props: {
   }
 
   return (
-    <ul
-      className={`flex flex-${flexDir} items-${alignItems} justify-around gap-4`}
-    >
-      {items?.map((item) => {
-        return (
-          <li key={`${item.label}`} className="mx-4">
-            <Link
-              className={`${direction === "left" ? "text-xl" : activeLink(`${item.path}`)} flex flex-row items-center gap-4 text-primary-gold-400`}
-              href={`${item.path}`}
+    <>
+      <div className="md:hidden">
+        <Popover>
+          <PopoverTrigger>
+            <Image
+              src={"/images/icons/Menu-Gold-Icon.svg"}
+              alt="Menu"
+              width={32}
+              height={32}
+              className="h-8 w-8"
+            />
+          </PopoverTrigger>
+          <PopoverContent className="w-fit bg-neutral-900" align="end">
+            <ul
+              className={`flex flex-col items-${alignItems} justify-around gap-4`}
             >
-              {direction === "left" ? (
-                <>
-                  <div className="border-4 border-primary-gold-400 p-1">
-                    {sidebarNavIcon(`${item.label}`)}
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
-              {isOpen ? parseHtml(`${item.label}`) : ""}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+              {items?.map((item) => {
+                return (
+                  <li key={`${item.label}`} className="mx-4">
+                    <Link
+                      className={`${direction === "left" ? "text-xl" : activeLink(`${item.path}`)} flex flex-col items-center gap-4 text-primary-gold-400`}
+                      href={`${item.path}`}
+                    >
+                      {direction === "left" ? (
+                        <>
+                          <div className="border-4 border-primary-gold-400 p-1">
+                            {sidebarNavIcon(`${item.label}`)}
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                      {isOpen ? (
+                        <>
+                          <div className="">{parseHtml(`${item.label}`)}</div>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </PopoverContent>
+        </Popover>
+      </div>
+      <ul
+        className={`hidden md:flex flex-${flexDir} items-${alignItems} justify-around gap-4`}
+      >
+        {items?.map((item) => {
+          return (
+            <li key={`${item.label}`} className="mx-4">
+              <Link
+                className={`${direction === "left" ? "text-xl" : activeLink(`${item.path}`)} flex flex-row items-center gap-4 text-primary-gold-400`}
+                href={`${item.path}`}
+              >
+                {direction === "left" ? (
+                  <>
+                    <div className="border-4 border-primary-gold-400 p-1">
+                      {sidebarNavIcon(`${item.label}`)}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+                {isOpen ? (
+                  <>
+                    <div className="hidden md:inline-block">
+                      {parseHtml(`${item.label}`)}
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }
