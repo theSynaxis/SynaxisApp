@@ -60,14 +60,13 @@ export default function QuoteCard() {
               />
 
               <p>
-                &quot;In church I was listening to a reading from the Prophet
-                Isaiah, and at the words, “Wash you make you clean,” I
-                reflected, “Maybe the Mother of God sinned at one time or
-                another, if only in thought.” And, marvelous to relate, in
-                unison with my prayer a voice sounded in my heart, saying
-                clearly, “The Mother of God never sinned even in thought.” Thus
-                did the Holy Spirit bear witness in my heart to her purity.
-                &quot;
+                In church I was listening to a reading from the Prophet Isaiah,
+                and at the words, “Wash you make you clean,” I reflected, “Maybe
+                the Mother of God sinned at one time or another, if only in
+                thought.” And, marvelous to relate, in unison with my prayer a
+                voice sounded in my heart, saying clearly, “The Mother of God
+                never sinned even in thought.” Thus did the Holy Spirit bear
+                witness in my heart to her purity.
                 <br />
                 --
                 <Link

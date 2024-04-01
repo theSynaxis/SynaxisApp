@@ -5,6 +5,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { faker } from "@faker-js/faker";
+import Link from "next/link";
 
 import {
   Table,
@@ -18,23 +20,48 @@ import {
   type Payment,
   columns,
 } from "~/components/domain/sayings/quotes-table/columns";
+import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+
+const data: Payment[] = [
+  {
+    id: "728ed52f",
+    icon: "/images/saints/St-Silouan-Athonite.jpg",
+    name: "Silouan the Athonite",
+    quote:
+      "In church I was listening to a reading from the Prophet Isaiah, and at the words, “Wash you make you clean,” I reflected, “Maybe the Mother of God sinned at one time or another, if only in thought.” And, marvelous to relate, in unison with my prayer a voice sounded in my heart, saying clearly, “The Mother of God never sinned even in thought.” Thus did the Holy Spirit bear witness in my heart to her purity.",
+    work: {
+      title: "Saint Silouan the Athonite",
+      cover: "/images/books/new-edition-st-silouan.jpg",
+    },
+  },
+];
+
+const createFakeSaints = () => {
+  const saint = faker.person.firstName();
+
+  return {
+    id: faker.string.uuid(),
+    icon: "/images/saints/St-Silouan-Athonite.jpg",
+    name: `St ${saint}`,
+    quote: faker.lorem.sentence(),
+    work: {
+      title: "Saint Silouan the Athonite",
+      cover: "/images/books/new-edition-st-silouan.jpg",
+    },
+  };
+};
+
+for (let index = 0; index < 9; index++) {
+  data.push(createFakeSaints());
+}
 
 export default function QuotesTable() {
-  const data: Payment[] = [
-    {
-      id: "728ed52f",
-      icon: "/images/saints/St-Silouan-Athonite.jpg",
-      name: "Silouan the Athonite",
-      quote:
-        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim dolor a commodi. Optio molestias deserunt fugit, aperiam possimus neque assumenda repudiandae magni perspiciatis. Libero exercitationem dignissimos dolorem culpa architecto et?",
-      work: {
-        title: "Saint Silouan the Athonite",
-        cover: "/images/books/new-edition-st-silouan.jpg",
-      },
-    },
-    // ...
-  ];
-
   const table = useReactTable({
     data,
     columns,
@@ -42,7 +69,40 @@ export default function QuotesTable() {
   });
 
   return (
-    <div className="rounded-md border border-neutral-300 shadow-lg">
+    <div className="rounded-md border border-neutral-900 shadow-lg">
+      <div className="flex flex-row items-center justify-between border-b border-neutral-900 p-4">
+        <span>Search Form Goes Here</span>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <span className="cursor-pointer">Columns</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-neutral-50">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <span>Link to open advanced search modal</span>
+        <Link href="/apps/sayings/app/submit-quote">
+          <Button>Submit Quote</Button>
+        </Link>
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
