@@ -38,26 +38,24 @@ export function Hero(props: HeroProps) {
             <Image
               src={hero_background_image.url}
               alt="Cover Image"
-              className="border-l-2 border-secondary-red-500 object-cover"
-              style={{
-                clipPath: "polygon(60% 0, 100% 0%, 100% 100%, 40% 100%)",
-              }}
+              className="hero-bg-image object-cover opacity-30 lg:opacity-100"
               fill
               priority
-              // placeholder="blur"
               quality={100}
             />
           )}
         </div>
 
         <div className="relative z-10 min-h-[50vh] pb-4 pt-8">
-          <div className="w-1/2">
+          <div className="w-full lg:w-1/2">
             <div className="flex flex-col gap-4">
               {hero_title && (
                 <h1 className="font-synaxisHeader">{hero_title}</h1>
               )}
 
-              <span className="w-4/5">{hero_text && <p>{hero_text}</p>}</span>
+              <span className="w-full lg:w-4/5">
+                {hero_text && <p>{hero_text}</p>}
+              </span>
               <span className="flex flex-row items-center gap-4">
                 {hero_primary_button && (
                   <Link href={`${hero_primary_button.url}`}>
@@ -72,7 +70,9 @@ export function Hero(props: HeroProps) {
                     href={`${hero_secondary_button.url}`}
                     className="hover:underline"
                   >
-                    {hero_secondary_button.title}
+                    <Button className="text-bold text-md" variant={"link"}>
+                      {hero_secondary_button.title}
+                    </Button>
                   </Link>
                 )}
               </span>
