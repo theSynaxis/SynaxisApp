@@ -19,7 +19,6 @@ import {
 } from "~/components/ui/form";
 import { useToast } from "~/components/ui/use-toast";
 import { Checkbox } from "~/components/ui/checkbox";
-import { Label } from "~/components/ui/label";
 
 export default function SubmitSaint() {
   const { toast } = useToast();
@@ -102,7 +101,10 @@ export default function SubmitSaint() {
                   Did this saint live before the incarnation?
                 </FormLabel>
                 <FormControl>
-                  <Checkbox {...field} />
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
                   {/* // className="text-black w-full rounded-full px-4 py-2" */}
                 </FormControl>
                 <FormDescription>
