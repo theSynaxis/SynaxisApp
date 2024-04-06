@@ -136,7 +136,7 @@ export const saints = createTable("saints", {
   yearBorn: integer("year_born"),
   yearDied: integer("year_died"),
   isBc: boolean("is_bc").notNull(),
-  feastDate: date("feast_date"),
+  feastDate: varchar("feast_date").notNull(),
   // because users can submit saints, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),

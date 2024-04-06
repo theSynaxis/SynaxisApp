@@ -27,6 +27,10 @@ export default function SubmitSaint() {
   const formSchema = z.object({
     name: z.string().min(3),
     isBc: z.boolean(),
+    feastDate: z.object({
+      month: z.coerce.number().min(1).max(12),
+      day: z.coerce.number().min(1).max(31),
+    }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,6 +38,10 @@ export default function SubmitSaint() {
     defaultValues: {
       name: "",
       isBc: false,
+      feastDate: {
+        month: 0,
+        day: 0,
+      },
     },
   });
 
@@ -58,6 +66,10 @@ export default function SubmitSaint() {
     createSaint.mutate({
       name: formData.name,
       isBc: formData.isBc,
+      feastDate: {
+        month: Number(formData.feastDate.month),
+        day: Number(formData.feastDate.day),
+      },
     });
   }
 
@@ -90,6 +102,58 @@ export default function SubmitSaint() {
             </>
           )}
         />
+
+        <span>
+          <FormLabel className="text-base">Feast Day</FormLabel>
+
+          <span className="flex flex-row items-center justify-normal gap-4">
+            <FormField
+              control={form.control}
+              name="feastDate.month"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormLabel className="sr-only">Month</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Month"
+                        className="text-black w-full rounded-full px-4"
+                        min="1"
+                        max="12"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="feastDate.day"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormLabel className="sr-only">Day</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="Day"
+                        className="text-black w-full rounded-full px-4"
+                        min="1"
+                        max="31"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+          </span>
+        </span>
 
         <FormField
           control={form.control}
