@@ -30,6 +30,16 @@ export default function NavMenu(props: {
     />
   );
 
+  const lives = (
+    <Image
+      src={"/images/icons/Calendar-Gold-Icon.svg"}
+      alt="Calendar"
+      width={32}
+      height={32}
+      className="ml-auto h-8 w-8"
+    />
+  );
+
   const calendar = (
     <Image
       src={"/images/icons/Calendar-Gold-Icon.svg"}
@@ -51,11 +61,17 @@ export default function NavMenu(props: {
   );
 
   function sidebarNavIcon(label: string) {
-    return label.toLowerCase().includes("calendar")
-      ? calendar
-      : label.toLowerCase().includes("sayings")
-        ? sayings
-        : home;
+    const lowerCaseLabel = label.toLowerCase();
+    switch (lowerCaseLabel) {
+      case "calendar":
+        return calendar;
+      case "sayings":
+        return sayings;
+      case "lives":
+        return lives;
+      default:
+        return home;
+    }
   }
 
   return (
