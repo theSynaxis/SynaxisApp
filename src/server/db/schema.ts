@@ -41,6 +41,8 @@ export const users = createTable(
     sex: varchar("sex", { length: 256 }),
     joinedDate: timestamp("joined_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
     updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+    isBanned: boolean("is_banned").default(false),
+    isDeleted: boolean("is_deleted").default(false),
   }
 )
 
@@ -103,6 +105,7 @@ export const parishes = createTable(
     createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
     updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
     updatedBy: varchar('updated_by').references(() => users.id),
+    isDeleted: boolean("is_deleted").default(false),
   }
 )
 
@@ -110,14 +113,21 @@ export const saints = createTable("saints", {
   id: serial('id').primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
   life: varchar("life"),
+  // one of the 12/13
+  isApostle: boolean("is_apostle").default(false).notNull(),
+  // one of the 70/72
+  isLxx: boolean("is_lxx").default(false).notNull(),
+  isEqualToApostle: boolean("is_equal_to_apostle").default(false).notNull(),
   isPatriarch: boolean("is_patriarch").default(false).notNull(),
   isBishop: boolean("is_bishop").default(false).notNull(),
   isPriest: boolean("is_priest").default(false).notNull(),
   isDeacon: boolean("is_deacon").default(false).notNull(),
+  // isElder is for the holy elders who have not yet made it to the calendar, like Elder Ephrem
   isElder: boolean("is_elder").default(false).notNull(),
   isMonk: boolean("is_monk").default(false).notNull(),
   isProphet: boolean("is_prophet").default(false).notNull(),
-  isRuler: boolean("is_ruler").default(false).notNull(),
+  // royal: Emperor, Empress, King, Queen, Prince, Princess, Duke, etc.
+  royal: varchar("is_ruler"),
   isMarried: boolean("is_married").default(false).notNull(),
   isLayman: boolean("is_layman").default(false).notNull(),
   isMartyr: boolean("is_martyr").default(false).notNull(),
@@ -132,6 +142,7 @@ export const saints = createTable("saints", {
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedBy: varchar('updated_by').references(() => users.id),
+  isDeleted: boolean("is_deleted").default(false),
 })
 
 export const works = createTable("works", {
@@ -151,6 +162,7 @@ export const works = createTable("works", {
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedBy: varchar('updated_by').references(() => users.id),
+  isDeleted: boolean("is_deleted").default(false),
 })
 
 // each quote has a citation
@@ -165,6 +177,7 @@ export const citations = createTable("citations", {
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedBy: varchar('updated_by').references(() => users.id),
+  isDeleted: boolean("is_deleted").default(false),
   // dbdesigner includes "pg_pl: varchar" but there are no notes for what it might be.
 })
 
@@ -183,6 +196,7 @@ export const quotes = createTable("quotes", {
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedBy: varchar('updated_by').references(() => users.id),
+  isDeleted: boolean("is_deleted").default(false),
 })
 
 // user's collections of quotes
@@ -192,6 +206,7 @@ export const collections = createTable("collections", {
   userId: varchar('user_id').references(() => users.id).notNull(),
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  isDeleted: boolean("is_deleted").default(false),
 })
 
 // many to many quotes/collections table
@@ -209,6 +224,7 @@ export const categories = createTable('categories', {
   createdDate: timestamp("created_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedDate: timestamp("updated_date").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedBy: varchar('updated_by').references(() => users.id),
+  isDeleted: boolean("is_deleted").default(false),
 })
 
 // many to many quotes/categories table
