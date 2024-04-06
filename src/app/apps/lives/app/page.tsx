@@ -27,36 +27,8 @@ export default async function SayingsApp() {
 
         <p className="text-base">life of saint Silouan goes here</p>
 
-        <h3>Related Books</h3>
-
-        {/* gallery of all related books goes here */}
-
-        <div className="flex flex-row flex-wrap items-center justify-between gap-8">
-          <Link href="/apps/sayings/app/works/work">
-            <Image
-              src={"/images/books/st-silouan-the-athonite.webp"}
-              alt="Saint Silouan The Athonite"
-              width={340}
-              height={400}
-            />
-            {/* isbn: 9780881411959 */}
-          </Link>
-
-          <Link href="/apps/sayings/app/works/work">
-            <Image
-              src={"/images/books/new-edition-st-silouan.jpg"}
-              alt="Saint Silouan The Athonite"
-              width={340}
-              height={400}
-            />
-            {/* isbn: 9780881416817 */}
-          </Link>
-        </div>
-
-        <h3>Sayings</h3>
-
-        <Link href="/apps/sayings/app/submit-quote">
-          <Button>Submit Quote</Button>
+        <Link href="/apps/lives/app/submit-saint">
+          <Button>Submit Saint</Button>
         </Link>
       </div>
     </main>
