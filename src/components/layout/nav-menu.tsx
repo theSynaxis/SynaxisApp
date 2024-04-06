@@ -32,7 +32,7 @@ export default function NavMenu(props: {
 
   const lives = (
     <Image
-      src={"/images/icons/Calendar-Gold-Icon.svg"}
+      src={"/images/icons/Book-Gold-Icon.svg"}
       alt="Calendar"
       width={32}
       height={32}
