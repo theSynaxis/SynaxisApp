@@ -20,7 +20,7 @@ export default async function SayingsApp() {
           <span className="text-secondary-red-600">Sayings</span> of the Fathers
         </h1>
 
-        <div className="w-96">
+        <div className="w-3/5">
           <SubmitSaint />
         </div>
       </div>
