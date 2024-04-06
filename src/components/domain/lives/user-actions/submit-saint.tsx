@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,82 +11,56 @@ import { Input } from "~/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
+import { useToast } from "~/components/ui/use-toast";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Label } from "~/components/ui/label";
 
-interface SubmitSaintProps {
-  closeModal?: () => void;
-}
-
-export default function SubmitSaint(props: SubmitSaintProps) {
-  const { closeModal } = props;
-  const router = useRouter();
+export default function SubmitSaint() {
+  const { toast } = useToast();
   const [submitError, setSubmitError] = useState("");
 
-  const formSchema = z
-    .object({
-      username: z.string().min(3),
-      email: z.string().email(),
-      password: z.string().min(6),
-      confirmPassword: z.string(),
-    })
-    .refine((data) => data.password === data.confirmPassword, {
-      message: "Password doesn't match",
-      path: ["confirmPassword"],
-    });
+  const formSchema = z.object({
+    name: z.string().min(3),
+    isBc: z.boolean(),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: "",
+      isBc: false,
     },
   });
 
   const {
     formState: { isDirty },
-    setError,
+    // setError,
   } = form;
 
-  const createUser = api.user.create.useMutation({
-    onSuccess: () => {
-      router.push("/apps/login");
-      if (closeModal) return closeModal();
+  const createSaint = api.saint.create.useMutation({
+    onSuccess: (_data, variables) => {
+      toast({
+        title: `Success`,
+        description: `St. ${variables.name} has been submitted!`,
+      });
     },
     onError: (e) => {
-      switch (e.message) {
-        case "Username taken.":
-          return setError("username", { type: "server", message: e.message });
-        case "Email taken.":
-          return setError("email", { type: "server", message: e.message });
-        default:
-          return setSubmitError(e.message);
-      }
+      return setSubmitError(e.message);
     },
   });
 
   function onSubmit(formData: z.infer<typeof formSchema>) {
-    createUser.mutate({
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
+    createSaint.mutate({
+      name: formData.name,
+      isBc: formData.isBc,
     });
   }
-
-  // TODO: add logic for secure passwords:
-  // example:
-  // minLength: 8,
-  // minLowercase: 1,
-  // minUppercase: 1,
-  // minNumbers: 1,
-  // minSymbols: 1,
-
-  // TODO: add email verification
 
   return (
     <Form {...form}>
@@ -97,19 +70,22 @@ export default function SubmitSaint(props: SubmitSaintProps) {
       >
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <>
               <FormItem>
-                <FormLabel className="sr-only">Username</FormLabel>
+                <FormLabel className="sr-only">Saint Name</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder="Username"
+                    placeholder="Saint Name"
                     className="text-black w-full rounded-full px-4 py-2"
                     {...field}
                   />
                 </FormControl>
+                <FormDescription className="ml-4">
+                  Please do not include &quot;Saint&quot; or &quot;St&quot;.
+                </FormDescription>
                 <FormMessage className="pl-4 font-bold text-secondary-red-500" />
               </FormItem>
             </>
@@ -118,74 +94,34 @@ export default function SubmitSaint(props: SubmitSaintProps) {
 
         <FormField
           control={form.control}
-          name="email"
+          name="isBc"
           render={({ field }) => (
             <>
-              <FormItem>
-                <FormLabel className="sr-only">Email</FormLabel>
+              <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                <FormLabel className="sr-only">
+                  Did this saint live before the incarnation?
+                </FormLabel>
                 <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    className="text-black w-full rounded-full px-4 py-2"
-                    {...field}
-                  />
+                  <Checkbox {...field} />
+                  {/* // className="text-black w-full rounded-full px-4 py-2" */}
                 </FormControl>
+                <FormDescription>
+                  Did this saint live before the incarnation?
+                </FormDescription>
                 <FormMessage className="pl-4 font-bold text-secondary-red-500" />
               </FormItem>
             </>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <>
-              <FormItem>
-                <FormLabel className="sr-only">Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    className="text-black w-full rounded-full px-4 py-2"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-              </FormItem>
-            </>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="confirmPassword"
-          render={({ field }) => (
-            <>
-              <FormItem>
-                <FormLabel className="sr-only">Confirm Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Confirm Password"
-                    className="text-black w-full rounded-full px-4 py-2"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-              </FormItem>
-            </>
-          )}
-        />
         {submitError && (
           <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
         )}
 
         <Button
-          variant={createUser.isLoading || isDirty ? "default" : "disabled"}
+          variant={createSaint.isLoading || isDirty ? "default" : "disabled"}
         >
-          {createUser.isLoading ? "Submitting..." : "Submit"}
+          {createSaint.isLoading ? "Submitting..." : "Submit"}
         </Button>
       </form>
     </Form>

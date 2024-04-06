@@ -1,9 +1,15 @@
 import { unstable_noStore as noStore } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import SubmitSaint from "~/components/domain/lives/user-actions/submit-saint";
 
 export default async function SayingsApp() {
   noStore();
+  const cookieStore = cookies();
+  const userSession = cookieStore.get("auth_session");
+
+  if (!userSession) redirect("/apps");
 
   return (
     <main className="flex w-full flex-col items-center justify-center text-neutral-900">

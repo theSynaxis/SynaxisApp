@@ -1,11 +1,14 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 import { Button } from "~/components/ui/button";
 
-export default async function SayingsApp() {
+export default async function LivesApp() {
   noStore();
+  const cookieStore = cookies();
+  const userSession = cookieStore.get("auth_session");
 
   return (
     <main className="flex w-full flex-col items-center justify-center text-neutral-900">
@@ -27,9 +30,13 @@ export default async function SayingsApp() {
 
         <p className="text-base">life of saint Silouan goes here</p>
 
-        <Link href="/apps/lives/app/submit-saint">
-          <Button>Submit Saint</Button>
-        </Link>
+        {userSession?.value ? (
+          <Link href="/apps/lives/app/submit-saint">
+            <Button>Submit Saint</Button>
+          </Link>
+        ) : (
+          <></>
+        )}
       </div>
     </main>
   );
