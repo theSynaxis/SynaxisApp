@@ -34,6 +34,7 @@ export const saintRouter = createTRPCRouter({
       isBc: input.isBc,
       feastDate: `${input.feastDate.month}/${input.feastDate.day}`,
       apostle: input.apostle,
+      clergy: input.clergy,
     })
   })
 });
