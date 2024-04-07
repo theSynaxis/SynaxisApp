@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -58,12 +58,10 @@ export default function SubmitSaint() {
 
   const {
     formState: { isDirty },
-    getValues,
     setValue,
+    reset,
     // setError,
   } = form;
-
-  const { isBc, isApostle, isLxx, isEqualToApostle } = getValues();
 
   function beforeChrist() {
     // if the saint lived before the incarnation, then he isn't the following things too
@@ -99,6 +97,7 @@ export default function SubmitSaint() {
         title: `Success`,
         description: `St. ${variables.name} has been submitted!`,
       });
+      return reset();
     },
     onError: (e) => {
       return setSubmitError(e.message);
@@ -129,7 +128,7 @@ export default function SubmitSaint() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full flex-col gap-12"
       >
-        <span className="flex flex-row items-center justify-normal gap-4">
+        <span className="flex flex-row items-center justify-normal gap-12">
           <FormField
             control={form.control}
             name="name"
@@ -137,6 +136,9 @@ export default function SubmitSaint() {
               <>
                 <FormItem>
                   <FormLabel className="text-lg">Saint Name</FormLabel>
+                  <FormDescription className="italic">
+                    Please do not include &quot;Saint&quot;.
+                  </FormDescription>
                   <FormControl>
                     <Input
                       type="text"
@@ -145,9 +147,6 @@ export default function SubmitSaint() {
                       {...field}
                     />
                   </FormControl>
-                  {/* <FormDescription className="ml-4">
-                    Please do not include &quot;Saint&quot; or &quot;St&quot;.
-                  </FormDescription> */}
                   <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                 </FormItem>
               </>
@@ -164,12 +163,12 @@ export default function SubmitSaint() {
                 render={({ field }) => (
                   <>
                     <FormItem>
-                      <FormLabel className="sr-only">Month</FormLabel>
+                      <FormLabel className="text-sm">Month</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           placeholder="Month"
-                          className="text-black w-full rounded-full px-4"
+                          className="text-black w-20 rounded-full px-4"
                           min="1"
                           max="12"
                           {...field}
@@ -187,12 +186,12 @@ export default function SubmitSaint() {
                 render={({ field }) => (
                   <>
                     <FormItem>
-                      <FormLabel className="sr-only">Day</FormLabel>
+                      <FormLabel className="text-sm">Day</FormLabel>
                       <FormControl>
                         <Input
                           type="number"
                           placeholder="Day"
-                          className="text-black w-full rounded-full px-4"
+                          className="text-black w-20 rounded-full px-4"
                           min="1"
                           max="31"
                           {...field}
