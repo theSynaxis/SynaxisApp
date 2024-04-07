@@ -114,24 +114,21 @@ export const saints = createTable("saints", {
   name: varchar("name", { length: 256 }).notNull(),
   life: varchar("life"),
   apostle: varchar("apostle"),
-  isPatriarch: boolean("is_patriarch").default(false).notNull(),
-  isBishop: boolean("is_bishop").default(false).notNull(),
-  isPriest: boolean("is_priest").default(false).notNull(),
-  isDeacon: boolean("is_deacon").default(false).notNull(),
+  clergy: varchar("clergy"),
   // isElder is for the holy elders who have not yet made it to the calendar, like Elder Ephrem
   isElder: boolean("is_elder").default(false).notNull(),
+  // a saint is either a monk or a layman
   isMonk: boolean("is_monk").default(false).notNull(),
-  isProphet: boolean("is_prophet").default(false).notNull(),
   // royal: Emperor, Empress, King, Queen, Prince, Princess, Duke, etc.
   royal: varchar("is_ruler"),
   isMarried: boolean("is_married").default(false).notNull(),
-  isLayman: boolean("is_layman").default(false).notNull(),
   isMartyr: boolean("is_martyr").default(false).notNull(),
   isConfessor: boolean("is_confessor").default(false).notNull(),
   isMale: boolean("is_male").default(true).notNull(),
+  isProphet: boolean("is_prophet").default(false).notNull(),
+  isBc: boolean("is_bc").notNull(),
   yearBorn: integer("year_born"),
   yearDied: integer("year_died"),
-  isBc: boolean("is_bc").notNull(),
   feastDate: varchar("feast_date").notNull(),
   // because users can submit saints, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),

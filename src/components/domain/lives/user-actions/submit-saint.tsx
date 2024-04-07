@@ -20,7 +20,11 @@ import {
 import { useToast } from "~/components/ui/use-toast";
 import { Checkbox } from "~/components/ui/checkbox";
 import {
+  BISHOP,
+  DEACON,
   EQUAL_TO_THE_APOSTLES,
+  PATRIARCH,
+  PRIEST,
   SEVENTY_APOSTLES,
   TWELVE_APOSTLES,
 } from "~/lib/constants";
@@ -39,6 +43,10 @@ export default function SubmitSaint() {
     isApostle: z.boolean(),
     isLxx: z.boolean(),
     isEqualToApostle: z.boolean(),
+    isPatriarch: z.boolean(),
+    isBishop: z.boolean(),
+    isPriest: z.boolean(),
+    isDeacon: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,6 +61,10 @@ export default function SubmitSaint() {
       isApostle: false,
       isLxx: false,
       isEqualToApostle: false,
+      isPatriarch: false,
+      isBishop: false,
+      isPriest: false,
+      isDeacon: false,
     },
   });
 
@@ -67,6 +79,10 @@ export default function SubmitSaint() {
     // if the saint lived before the incarnation, then he isn't the following things too
     setValue("isApostle", false);
     setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
     return setValue("isEqualToApostle", false);
   }
 
@@ -74,14 +90,19 @@ export default function SubmitSaint() {
     // if the saint is an Apostle, then he isn't the following things too
     setValue("isBc", false);
     setValue("isLxx", false);
-    return setValue("isEqualToApostle", false);
+    setValue("isEqualToApostle", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    return setValue("isDeacon", false);
   }
 
   function ofTheSeventyApostles() {
     // if the saint is one of the 70, then he isn't the following things too
     setValue("isBc", false);
     setValue("isApostle", false);
-    return setValue("isEqualToApostle", false);
+    setValue("isEqualToApostle", false);
+    return setValue("isPatriarch", false);
   }
 
   function equalToTheApostles() {
@@ -89,6 +110,39 @@ export default function SubmitSaint() {
     setValue("isBc", false);
     setValue("isApostle", false);
     return setValue("isLxx", false);
+  }
+
+  function patriarch() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    return setValue("isDeacon", false);
+  }
+
+  function bishop() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isPatriarch", false);
+    setValue("isPriest", false);
+    return setValue("isDeacon", false);
+  }
+
+  function priest() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    return setValue("isDeacon", false);
+  }
+
+  function deacon() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    return setValue("isPriest", false);
   }
 
   const createSaint = api.saint.create.useMutation({
@@ -111,6 +165,13 @@ export default function SubmitSaint() {
       if (formData.isEqualToApostle) return EQUAL_TO_THE_APOSTLES;
       return null;
     };
+    const clergy = () => {
+      if (formData.isPatriarch) return PATRIARCH;
+      if (formData.isBishop) return BISHOP;
+      if (formData.isPriest) return PRIEST;
+      if (formData.isDeacon) return DEACON;
+      return null;
+    };
     createSaint.mutate({
       name: formData.name,
       isBc: formData.isBc,
@@ -119,6 +180,7 @@ export default function SubmitSaint() {
         day: Number(formData.feastDate.day),
       },
       apostle: apostle(),
+      clergy: clergy(),
     });
   }
 
@@ -206,118 +268,223 @@ export default function SubmitSaint() {
           </span>
         </span>
 
-        <span className="flex flex-col gap-6">
-          <FormLabel className="text-lg">Extra Information</FormLabel>
+        <FormLabel className="text-lg">Extra Information</FormLabel>
+        <span className="flex flex-row items-start justify-normal gap-32">
+          <span className="flex flex-col items-start justify-normal gap-4">
+            <FormField
+              control={form.control}
+              name="isBc"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormLabel className="text-base">
+                      Old or New Testament
+                    </FormLabel>
+                    <span className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return beforeChrist();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Did this saint live before the incarnation?
+                      </FormDescription>
+                    </span>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="isBc"
-            render={({ field }) => (
-              <>
-                <FormItem>
-                  <FormLabel className="text-base">
-                    Old or New Testament
-                  </FormLabel>
-                  <span className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return beforeChrist();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Did this saint live before the incarnation?
-                    </FormDescription>
-                  </span>
-                  <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                </FormItem>
-              </>
-            )}
-          />
+            <span>
+              <FormLabel className="text-base">Apostle</FormLabel>
+              <FormField
+                control={form.control}
+                name="isApostle"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint one of the 12 Apostles?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return ofTheTwelveApostles();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint one of the 12 Apostles?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isLxx"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint one of the 70 Apostles?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return ofTheSeventyApostles();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint one of the 70 Apostles?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isEqualToApostle"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint considered Equal to the Apostles?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return equalToTheApostles();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint considered Equal to the Apostles?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+            </span>
+          </span>
 
-          <span>
-            <FormLabel className="text-base">Apostle</FormLabel>
-            <FormField
-              control={form.control}
-              name="isApostle"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint one of the 12 Apostles?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return ofTheTwelveApostles();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Is this saint one of the 12 Apostles?
-                    </FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isLxx"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint one of the 70 Apostles?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return ofTheSeventyApostles();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Is this saint one of the 70 Apostles?
-                    </FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isEqualToApostle"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint considered Equal to the Apostles?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return equalToTheApostles();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Is this saint considered Equal to the Apostles?
-                    </FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
+          <span className="flex flex-col items-start justify-normal gap-8">
+            <span>
+              <FormLabel className="text-base">Clergy</FormLabel>
+              <FormField
+                control={form.control}
+                name="isPatriarch"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a Patriarch?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return patriarch();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a Patriarch?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isBishop"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a bishop?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return bishop();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a bishop?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPriest"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a priest?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return priest();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a priest?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isDeacon"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a deacon?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return deacon();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a deacon?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+            </span>
           </span>
         </span>
 
