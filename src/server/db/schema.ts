@@ -113,11 +113,7 @@ export const saints = createTable("saints", {
   id: serial('id').primaryKey(),
   name: varchar("name", { length: 256 }).notNull(),
   life: varchar("life"),
-  // one of the 12/13
-  isApostle: boolean("is_apostle").default(false).notNull(),
-  // one of the 70/72
-  isLxx: boolean("is_lxx").default(false).notNull(),
-  isEqualToApostle: boolean("is_equal_to_apostle").default(false).notNull(),
+  apostle: varchar("apostle"),
   isPatriarch: boolean("is_patriarch").default(false).notNull(),
   isBishop: boolean("is_bishop").default(false).notNull(),
   isPriest: boolean("is_priest").default(false).notNull(),

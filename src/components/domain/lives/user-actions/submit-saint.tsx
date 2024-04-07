@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,11 @@ import {
 } from "~/components/ui/form";
 import { useToast } from "~/components/ui/use-toast";
 import { Checkbox } from "~/components/ui/checkbox";
+import {
+  EQUAL_TO_THE_APOSTLES,
+  SEVENTY_APOSTLES,
+  TWELVE_APOSTLES,
+} from "~/lib/constants";
 
 export default function SubmitSaint() {
   const { toast } = useToast();
@@ -53,8 +58,40 @@ export default function SubmitSaint() {
 
   const {
     formState: { isDirty },
+    getValues,
+    setValue,
     // setError,
   } = form;
+
+  const { isBc, isApostle, isLxx, isEqualToApostle } = getValues();
+
+  function beforeChrist() {
+    // if the saint lived before the incarnation, then he isn't the following things too
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    return setValue("isEqualToApostle", false);
+  }
+
+  function ofTheTwelveApostles() {
+    // if the saint is an Apostle, then he isn't the following things too
+    setValue("isBc", false);
+    setValue("isLxx", false);
+    return setValue("isEqualToApostle", false);
+  }
+
+  function ofTheSeventyApostles() {
+    // if the saint is one of the 70, then he isn't the following things too
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    return setValue("isEqualToApostle", false);
+  }
+
+  function equalToTheApostles() {
+    // if the saint is Equal to the Apostles, then he isn't the following things too
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    return setValue("isLxx", false);
+  }
 
   const createSaint = api.saint.create.useMutation({
     onSuccess: (_data, variables) => {
@@ -69,6 +106,12 @@ export default function SubmitSaint() {
   });
 
   function onSubmit(formData: z.infer<typeof formSchema>) {
+    const apostle = () => {
+      if (formData.isApostle) return TWELVE_APOSTLES;
+      if (formData.isLxx) return SEVENTY_APOSTLES;
+      if (formData.isEqualToApostle) return EQUAL_TO_THE_APOSTLES;
+      return null;
+    };
     createSaint.mutate({
       name: formData.name,
       isBc: formData.isBc,
@@ -76,9 +119,7 @@ export default function SubmitSaint() {
         month: Number(formData.feastDate.month),
         day: Number(formData.feastDate.day),
       },
-      isApostle: formData.isApostle,
-      isLxx: formData.isLxx,
-      isEqualToApostle: formData.isEqualToApostle,
+      apostle: apostle(),
     });
   }
 
@@ -183,6 +224,9 @@ export default function SubmitSaint() {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return beforeChrist();
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
@@ -210,6 +254,9 @@ export default function SubmitSaint() {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return ofTheTwelveApostles();
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
@@ -233,6 +280,9 @@ export default function SubmitSaint() {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return ofTheSeventyApostles();
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
@@ -256,6 +306,9 @@ export default function SubmitSaint() {
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return equalToTheApostles();
+                        }}
                       />
                     </FormControl>
                     <FormDescription>
