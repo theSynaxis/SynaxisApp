@@ -116,11 +116,9 @@ export const saints = createTable("saints", {
   apostle: varchar("apostle"),
   clergy: varchar("clergy"),
   royal: varchar("is_ruler"),
+  martyr: varchar("martyr"),
   isMonk: boolean("is_monk").default(false).notNull(),
   isMarried: boolean("is_married").default(false).notNull(),
-  isMartyr: boolean("is_martyr").default(false).notNull(),
-  isConfessor: boolean("is_confessor").default(false).notNull(),
-  // isPassionBearer?
   isMale: boolean("is_male").default(true).notNull(),
   isProphet: boolean("is_prophet").default(false).notNull(),
   isBc: boolean("is_bc").notNull(),

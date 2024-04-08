@@ -21,6 +21,7 @@ import { useToast } from "~/components/ui/use-toast";
 import { Checkbox } from "~/components/ui/checkbox";
 import {
   BISHOP,
+  CONFESSOR,
   DEACON,
   DESPOT,
   DUCHESS,
@@ -31,6 +32,8 @@ import {
   GRAND_PRINCE,
   GRAND_PRINCESS,
   KING,
+  MARTYR,
+  PASSION_BEARER,
   PATRIARCH,
   PRIEST,
   PRINCE,
@@ -70,6 +73,9 @@ export default function SubmitSaint() {
     isPrincess: z.boolean(),
     isKing: z.boolean(),
     isQueen: z.boolean(),
+    isMartyr: z.boolean(),
+    isConfessor: z.boolean(),
+    isPassionBearer: z.boolean(),
     isMonk: z.boolean(),
     isMale: z.boolean(),
   });
@@ -101,6 +107,9 @@ export default function SubmitSaint() {
       isPrincess: false,
       isKing: false,
       isQueen: false,
+      isMartyr: false,
+      isConfessor: false,
+      isPassionBearer: false,
       isMonk: false,
       isMale: true,
     },
@@ -131,6 +140,8 @@ export default function SubmitSaint() {
     setValue("isGrandPrincess", false);
     setValue("isPrince", false);
     setValue("isPrincess", false);
+    setValue("isConfessor", false);
+    setValue("isPassionBearer", false);
     return setValue("isMonk", false);
   }
 
@@ -504,9 +515,27 @@ export default function SubmitSaint() {
     return setValue("isLxx", false);
   }
 
+  function martyr() {
+    setValue("isConfessor", false);
+    return setValue("isPassionBearer", false);
+  }
+
+  function confessor() {
+    setValue("isBc", false);
+    setValue("isMartyr", false);
+    return setValue("isPassionBearer", false);
+  }
+
+  function passionBearer() {
+    setValue("isBc", false);
+    setValue("isMartyr", false);
+    return setValue("isConfessor", false);
+  }
+
   function sex(value: boolean) {
     // if the saint is male, then he cannot have these female titles:
     if (value) {
+      alert("true");
       setValue("isDuchess", false);
       setValue("isEmpress", false);
       setValue("isGrandPrincess", false);
@@ -515,6 +544,7 @@ export default function SubmitSaint() {
     }
 
     // if the saint is female, then she cannot have these titles:
+    alert("false");
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -570,6 +600,12 @@ export default function SubmitSaint() {
       if (formData.isQueen) return QUEEN;
       return null;
     };
+    const martyr = () => {
+      if (formData.isMartyr) return MARTYR;
+      if (formData.isConfessor) return CONFESSOR;
+      if (formData.isPassionBearer) return PASSION_BEARER;
+      return null;
+    };
 
     createSaint.mutate({
       name: formData.name,
@@ -581,6 +617,7 @@ export default function SubmitSaint() {
       apostle: apostle(),
       clergy: clergy(),
       royal: royalty(),
+      martyr: martyr(),
       isMonk: formData.isMonk,
       isMale: formData.isMale,
     });
@@ -1194,32 +1231,113 @@ export default function SubmitSaint() {
               />
             </span>
           </span>
-          <span>
-            <FormLabel className="text-base">Misc</FormLabel>
-            <FormField
-              control={form.control}
-              name="isMonk"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a monk?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return monk();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a monk?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
+          <span className="flex flex-col items-start gap-4">
+            <span>
+              <FormLabel className="text-base">Martyrdom</FormLabel>
+              <FormField
+                control={form.control}
+                name="isMartyr"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a martyr?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return martyr();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a martyr?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isConfessor"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a confessor?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return confessor();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a confessor?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPassionBearer"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a passion bearer?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return passionBearer();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a passion bearer?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+            </span>
+            <span>
+              <FormLabel className="text-base">Misc</FormLabel>
+              <FormField
+                control={form.control}
+                name="isMonk"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a monk?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return monk();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a monk?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+            </span>
           </span>
         </span>
 

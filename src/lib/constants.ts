@@ -19,3 +19,7 @@ export const PRINCE = "PRINCE";
 export const PRINCESS = "PRINCESS";
 export const KING = "KING";
 export const QUEEN = "QUEEN";
+// Martyr:
+export const MARTYR = "MARTYR";
+export const CONFESSOR = "CONFESSOR";
+export const PASSION_BEARER = "PASSION_BEARER";

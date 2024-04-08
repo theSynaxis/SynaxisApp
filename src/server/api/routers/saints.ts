@@ -4,6 +4,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { saints } from "~/server/db/schema";
 import {
   BISHOP,
+  CONFESSOR,
   DEACON,
   DESPOT,
   DUCHESS,
@@ -14,6 +15,8 @@ import {
   GRAND_PRINCE,
   GRAND_PRINCESS,
   KING,
+  MARTYR,
+  PASSION_BEARER,
   PATRIARCH,
   PRIEST,
   PRINCE,
@@ -53,6 +56,11 @@ export const saintRouter = createTRPCRouter({
       z.literal(PRINCESS),
       z.literal(QUEEN),
     ]).nullable(),
+    martyr: z.union([
+      z.literal(MARTYR),
+      z.literal(CONFESSOR),
+      z.literal(PASSION_BEARER),
+    ]).nullable(),
     isMonk: z.boolean(),
     isMale: z.boolean(),
   })).mutation(async ({ ctx, input }) => {
@@ -63,6 +71,7 @@ export const saintRouter = createTRPCRouter({
       apostle: input.apostle,
       clergy: input.clergy,
       royal: input.royal,
+      martyr: input.martyr,
       isMonk: input.isMonk,
       isMale: input.isMale,
     })
