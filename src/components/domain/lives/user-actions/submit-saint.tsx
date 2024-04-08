@@ -22,9 +22,20 @@ import { Checkbox } from "~/components/ui/checkbox";
 import {
   BISHOP,
   DEACON,
+  DESPOT,
+  DUCHESS,
+  DUKE,
+  EMPEROR,
+  EMPRESS,
   EQUAL_TO_THE_APOSTLES,
+  GRAND_PRINCE,
+  GRAND_PRINCESS,
+  KING,
   PATRIARCH,
   PRIEST,
+  PRINCE,
+  PRINCESS,
+  QUEEN,
   SEVENTY_APOSTLES,
   TWELVE_APOSTLES,
 } from "~/lib/constants";
@@ -47,6 +58,17 @@ export default function SubmitSaint() {
     isBishop: z.boolean(),
     isPriest: z.boolean(),
     isDeacon: z.boolean(),
+    isDespot: z.boolean(),
+    isDuchess: z.boolean(),
+    isDuke: z.boolean(),
+    isEmperor: z.boolean(),
+    isEmpress: z.boolean(),
+    isGrandPrince: z.boolean(),
+    isGrandPrincess: z.boolean(),
+    isPrince: z.boolean(),
+    isPrincess: z.boolean(),
+    isKing: z.boolean(),
+    isQueen: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,6 +87,17 @@ export default function SubmitSaint() {
       isBishop: false,
       isPriest: false,
       isDeacon: false,
+      isDespot: false,
+      isDuchess: false,
+      isDuke: false,
+      isEmperor: false,
+      isEmpress: false,
+      isGrandPrince: false,
+      isGrandPrincess: false,
+      isPrince: false,
+      isPrincess: false,
+      isKing: false,
+      isQueen: false,
     },
   });
 
@@ -83,7 +116,16 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
-    return setValue("isEqualToApostle", false);
+    setValue("isEqualToApostle", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    return setValue("isPrincess", false);
   }
 
   function ofTheTwelveApostles() {
@@ -94,7 +136,18 @@ export default function SubmitSaint() {
     setValue("isPatriarch", false);
     setValue("isBishop", false);
     setValue("isPriest", false);
-    return setValue("isDeacon", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
   }
 
   function ofTheSeventyApostles() {
@@ -102,7 +155,18 @@ export default function SubmitSaint() {
     setValue("isBc", false);
     setValue("isApostle", false);
     setValue("isEqualToApostle", false);
-    return setValue("isPatriarch", false);
+    setValue("isPatriarch", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
   }
 
   function equalToTheApostles() {
@@ -118,7 +182,18 @@ export default function SubmitSaint() {
     setValue("isLxx", false);
     setValue("isBishop", false);
     setValue("isPriest", false);
-    return setValue("isDeacon", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
   }
 
   function bishop() {
@@ -126,7 +201,18 @@ export default function SubmitSaint() {
     setValue("isApostle", false);
     setValue("isPatriarch", false);
     setValue("isPriest", false);
-    return setValue("isDeacon", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
   }
 
   function priest() {
@@ -134,7 +220,18 @@ export default function SubmitSaint() {
     setValue("isApostle", false);
     setValue("isPatriarch", false);
     setValue("isBishop", false);
-    return setValue("isDeacon", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
   }
 
   function deacon() {
@@ -142,7 +239,238 @@ export default function SubmitSaint() {
     setValue("isApostle", false);
     setValue("isPatriarch", false);
     setValue("isBishop", false);
-    return setValue("isPriest", false);
+    setValue("isPriest", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function despot() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function duchess() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function duke() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function emperor() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function empress() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function grandPrince() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function grandPrincess() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function prince() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function princess() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isKing", false);
+    return setValue("isQueen", false);
+  }
+
+  function king() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    return setValue("isQueen", false);
+  }
+
+  function queen() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    return setValue("isKing", false);
   }
 
   const createSaint = api.saint.create.useMutation({
@@ -172,6 +500,21 @@ export default function SubmitSaint() {
       if (formData.isDeacon) return DEACON;
       return null;
     };
+    const royalty = () => {
+      if (formData.isDespot) return DESPOT;
+      if (formData.isDuchess) return DUCHESS;
+      if (formData.isDuke) return DUKE;
+      if (formData.isEmperor) return EMPEROR;
+      if (formData.isEmpress) return EMPRESS;
+      if (formData.isGrandPrince) return GRAND_PRINCE;
+      if (formData.isGrandPrincess) return GRAND_PRINCESS;
+      if (formData.isPrince) return PRINCE;
+      if (formData.isPrincess) return PRINCESS;
+      if (formData.isKing) return KING;
+      if (formData.isQueen) return QUEEN;
+      return null;
+    };
+
     createSaint.mutate({
       name: formData.name,
       isBc: formData.isBc,
@@ -181,6 +524,7 @@ export default function SubmitSaint() {
       },
       apostle: apostle(),
       clergy: clergy(),
+      royal: royalty(),
     });
   }
 
@@ -485,6 +829,277 @@ export default function SubmitSaint() {
                 )}
               />
             </span>
+          </span>
+          <span>
+            <FormLabel className="text-base">Royalty</FormLabel>
+            <FormField
+              control={form.control}
+              name="isDespot"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a despot?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return despot();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a despot?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isDuchess"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a duchess?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return duchess();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a duchess?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isDuke"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a duke?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return duke();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a duke?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isEmperor"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint an emperor?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return emperor();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint an emperor?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isEmpress"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint an empress?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return empress();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint an empress?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isGrandPrince"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a grand prince?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return grandPrince();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Is this saint a grand prince?
+                    </FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isGrandPrincess"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a grand princess?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return grandPrincess();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Is this saint a grand princess?
+                    </FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isPrince"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a prince?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return prince();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a prince?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isPrincess"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a princess?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return princess();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a princess?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isKing"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a king?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return king();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a king?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isQueen"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                    <FormLabel className="sr-only">
+                      Is this saint a queen?
+                    </FormLabel>
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onClick={() => {
+                          return queen();
+                        }}
+                      />
+                    </FormControl>
+                    <FormDescription>Is this saint a queen?</FormDescription>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
           </span>
         </span>
 

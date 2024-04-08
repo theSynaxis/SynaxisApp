@@ -115,15 +115,13 @@ export const saints = createTable("saints", {
   life: varchar("life"),
   apostle: varchar("apostle"),
   clergy: varchar("clergy"),
-  // isElder is for the holy elders who have not yet made it to the calendar, like Elder Ephrem
-  isElder: boolean("is_elder").default(false).notNull(),
+  royal: varchar("is_ruler"),
   // a saint is either a monk or a layman
   isMonk: boolean("is_monk").default(false).notNull(),
-  // royal: Emperor, Empress, King, Queen, Prince, Princess, Duke, etc.
-  royal: varchar("is_ruler"),
   isMarried: boolean("is_married").default(false).notNull(),
   isMartyr: boolean("is_martyr").default(false).notNull(),
   isConfessor: boolean("is_confessor").default(false).notNull(),
+  // isPassionBearer?
   isMale: boolean("is_male").default(true).notNull(),
   isProphet: boolean("is_prophet").default(false).notNull(),
   isBc: boolean("is_bc").notNull(),
