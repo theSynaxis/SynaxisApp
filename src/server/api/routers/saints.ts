@@ -38,6 +38,7 @@ export const saintRouter = createTRPCRouter({
       z.literal(BISHOP),
       z.literal(PRIEST),
       z.literal(DEACON),
+      // TODO: DEACONESS
     ]).nullable(),
     royal: z.union([
       z.literal(DESPOT),
@@ -53,6 +54,7 @@ export const saintRouter = createTRPCRouter({
       z.literal(QUEEN),
     ]).nullable(),
     isMonk: z.boolean(),
+    isMale: z.boolean(),
   })).mutation(async ({ ctx, input }) => {
     await ctx.db.insert(saints).values({
       name: input.name,
@@ -62,6 +64,7 @@ export const saintRouter = createTRPCRouter({
       clergy: input.clergy,
       royal: input.royal,
       isMonk: input.isMonk,
+      isMale: input.isMale,
     })
   })
 });

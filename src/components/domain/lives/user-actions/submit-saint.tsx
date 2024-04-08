@@ -39,6 +39,7 @@ import {
   SEVENTY_APOSTLES,
   TWELVE_APOSTLES,
 } from "~/lib/constants";
+import { Switch } from "~/components/ui/switch";
 
 export default function SubmitSaint() {
   const { toast } = useToast();
@@ -70,6 +71,7 @@ export default function SubmitSaint() {
     isKing: z.boolean(),
     isQueen: z.boolean(),
     isMonk: z.boolean(),
+    isMale: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -100,6 +102,7 @@ export default function SubmitSaint() {
       isKing: false,
       isQueen: false,
       isMonk: false,
+      isMale: true,
     },
   });
 
@@ -151,7 +154,8 @@ export default function SubmitSaint() {
     setValue("isPrincess", false);
     setValue("isKing", false);
     setValue("isQueen", false);
-    return setValue("isMonk", false);
+    setValue("isMonk", false);
+    return setValue("isMale", true);
   }
 
   function ofTheSeventyApostles() {
@@ -171,7 +175,8 @@ export default function SubmitSaint() {
     setValue("isPrincess", false);
     setValue("isKing", false);
     setValue("isQueen", false);
-    return setValue("isMonk", false);
+    setValue("isMonk", false);
+    return setValue("isMale", true);
   }
 
   function equalToTheApostles() {
@@ -198,7 +203,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function bishop() {
@@ -217,7 +223,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function priest() {
@@ -236,7 +243,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function deacon() {
@@ -255,7 +263,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function despot() {
@@ -275,7 +284,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function duchess() {
@@ -295,7 +305,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", false);
   }
 
   function duke() {
@@ -315,7 +326,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function emperor() {
@@ -335,7 +347,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function empress() {
@@ -355,7 +368,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", false);
   }
 
   function grandPrince() {
@@ -375,7 +389,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function grandPrincess() {
@@ -395,7 +410,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", false);
   }
 
   function prince() {
@@ -415,7 +431,8 @@ export default function SubmitSaint() {
     setValue("isGrandPrincess", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function princess() {
@@ -435,7 +452,8 @@ export default function SubmitSaint() {
     setValue("isGrandPrincess", false);
     setValue("isPrince", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", false);
   }
 
   function king() {
@@ -455,7 +473,8 @@ export default function SubmitSaint() {
     setValue("isGrandPrincess", false);
     setValue("isPrince", false);
     setValue("isPrincess", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMale", true);
   }
 
   function queen() {
@@ -475,13 +494,39 @@ export default function SubmitSaint() {
     setValue("isGrandPrincess", false);
     setValue("isPrince", false);
     setValue("isPrincess", false);
-    return setValue("isKing", false);
+    setValue("isKing", false);
+    return setValue("isMale", false);
   }
 
   function monk() {
     setValue("isBc", false);
     setValue("isApostle", false);
     return setValue("isLxx", false);
+  }
+
+  function sex(value: boolean) {
+    // if the saint is male, then he cannot have these female titles:
+    if (value) {
+      setValue("isDuchess", false);
+      setValue("isEmpress", false);
+      setValue("isGrandPrincess", false);
+      setValue("isPrincess", false);
+      return setValue("isQueen", false);
+    }
+
+    // if the saint is female, then she cannot have these titles:
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isGrandPrince", false);
+    setValue("isPrince", false);
+    return setValue("isKing", false);
   }
 
   const createSaint = api.saint.create.useMutation({
@@ -537,6 +582,7 @@ export default function SubmitSaint() {
       clergy: clergy(),
       royal: royalty(),
       isMonk: formData.isMonk,
+      isMale: formData.isMale,
     });
   }
 
@@ -622,6 +668,32 @@ export default function SubmitSaint() {
               />
             </span>
           </span>
+
+          <FormField
+            control={form.control}
+            name="isMale"
+            render={({ field }) => (
+              <FormItem className="flex flex-col items-start justify-between">
+                <FormLabel className="text-lg">Sex</FormLabel>
+                <FormDescription className="italic">
+                  <br />
+                </FormDescription>
+                <FormControl>
+                  <div className="flex flex-row items-center justify-normal gap-4">
+                    Female
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      onClick={() => {
+                        return sex(field.value);
+                      }}
+                    />
+                    Male
+                  </div>
+                </FormControl>
+              </FormItem>
+            )}
+          />
         </span>
 
         <FormLabel className="text-lg">Extra Information</FormLabel>
