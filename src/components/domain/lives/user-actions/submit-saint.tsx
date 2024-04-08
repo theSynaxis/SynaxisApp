@@ -69,6 +69,7 @@ export default function SubmitSaint() {
     isPrincess: z.boolean(),
     isKing: z.boolean(),
     isQueen: z.boolean(),
+    isMonk: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -98,6 +99,7 @@ export default function SubmitSaint() {
       isPrincess: false,
       isKing: false,
       isQueen: false,
+      isMonk: false,
     },
   });
 
@@ -125,7 +127,8 @@ export default function SubmitSaint() {
     setValue("isGrandPrince", false);
     setValue("isGrandPrincess", false);
     setValue("isPrince", false);
-    return setValue("isPrincess", false);
+    setValue("isPrincess", false);
+    return setValue("isMonk", false);
   }
 
   function ofTheTwelveApostles() {
@@ -147,7 +150,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMonk", false);
   }
 
   function ofTheSeventyApostles() {
@@ -166,7 +170,8 @@ export default function SubmitSaint() {
     setValue("isPrince", false);
     setValue("isPrincess", false);
     setValue("isKing", false);
-    return setValue("isQueen", false);
+    setValue("isQueen", false);
+    return setValue("isMonk", false);
   }
 
   function equalToTheApostles() {
@@ -473,6 +478,12 @@ export default function SubmitSaint() {
     return setValue("isKing", false);
   }
 
+  function monk() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    return setValue("isLxx", false);
+  }
+
   const createSaint = api.saint.create.useMutation({
     onSuccess: (_data, variables) => {
       toast({
@@ -525,6 +536,7 @@ export default function SubmitSaint() {
       apostle: apostle(),
       clergy: clergy(),
       royal: royalty(),
+      isMonk: formData.isMonk,
     });
   }
 
@@ -725,9 +737,7 @@ export default function SubmitSaint() {
                 )}
               />
             </span>
-          </span>
 
-          <span className="flex flex-col items-start justify-normal gap-8">
             <span>
               <FormLabel className="text-base">Clergy</FormLabel>
               <FormField
@@ -830,271 +840,309 @@ export default function SubmitSaint() {
               />
             </span>
           </span>
+
+          <span className="flex flex-col items-start justify-normal gap-8">
+            <span>
+              <FormLabel className="text-base">Royalty</FormLabel>
+              <FormField
+                control={form.control}
+                name="isDespot"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a despot?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return despot();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a despot?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isDuchess"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a duchess?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return duchess();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a duchess?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isDuke"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a duke?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return duke();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a duke?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isEmperor"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint an emperor?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return emperor();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint an emperor?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isEmpress"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint an empress?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return empress();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint an empress?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isGrandPrince"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a grand prince?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return grandPrince();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a grand prince?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isGrandPrincess"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a grand princess?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return grandPrincess();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a grand princess?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPrince"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a prince?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return prince();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a prince?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPrincess"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a princess?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return princess();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a princess?
+                      </FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isKing"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a king?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return king();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a king?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isQueen"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a queen?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return queen();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a queen?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+            </span>
+          </span>
           <span>
-            <FormLabel className="text-base">Royalty</FormLabel>
+            <FormLabel className="text-base">Misc</FormLabel>
             <FormField
               control={form.control}
-              name="isDespot"
+              name="isMonk"
               render={({ field }) => (
                 <>
                   <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
                     <FormLabel className="sr-only">
-                      Is this saint a despot?
+                      Is this saint a monk?
                     </FormLabel>
                     <FormControl>
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
                         onClick={() => {
-                          return despot();
+                          return monk();
                         }}
                       />
                     </FormControl>
-                    <FormDescription>Is this saint a despot?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isDuchess"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a duchess?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return duchess();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a duchess?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isDuke"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a duke?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return duke();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a duke?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isEmperor"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint an emperor?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return emperor();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint an emperor?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isEmpress"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint an empress?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return empress();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint an empress?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isGrandPrince"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a grand prince?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return grandPrince();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Is this saint a grand prince?
-                    </FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isGrandPrincess"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a grand princess?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return grandPrincess();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Is this saint a grand princess?
-                    </FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isPrince"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a prince?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return prince();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a prince?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isPrincess"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a princess?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return princess();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a princess?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isKing"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a king?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return king();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a king?</FormDescription>
-                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                  </FormItem>
-                </>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isQueen"
-              render={({ field }) => (
-                <>
-                  <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
-                    <FormLabel className="sr-only">
-                      Is this saint a queen?
-                    </FormLabel>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        onClick={() => {
-                          return queen();
-                        }}
-                      />
-                    </FormControl>
-                    <FormDescription>Is this saint a queen?</FormDescription>
+                    <FormDescription>Is this saint a monk?</FormDescription>
                     <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                   </FormItem>
                 </>

@@ -52,6 +52,7 @@ export const saintRouter = createTRPCRouter({
       z.literal(PRINCESS),
       z.literal(QUEEN),
     ]).nullable(),
+    isMonk: z.boolean(),
   })).mutation(async ({ ctx, input }) => {
     await ctx.db.insert(saints).values({
       name: input.name,
@@ -60,6 +61,7 @@ export const saintRouter = createTRPCRouter({
       apostle: input.apostle,
       clergy: input.clergy,
       royal: input.royal,
+      isMonk: input.isMonk,
     })
   })
 });

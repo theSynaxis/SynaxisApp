@@ -116,7 +116,6 @@ export const saints = createTable("saints", {
   apostle: varchar("apostle"),
   clergy: varchar("clergy"),
   royal: varchar("is_ruler"),
-  // a saint is either a monk or a layman
   isMonk: boolean("is_monk").default(false).notNull(),
   isMarried: boolean("is_married").default(false).notNull(),
   isMartyr: boolean("is_martyr").default(false).notNull(),
