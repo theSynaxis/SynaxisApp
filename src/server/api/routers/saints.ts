@@ -6,6 +6,7 @@ import {
   BISHOP,
   CONFESSOR,
   DEACON,
+  DEACONESS,
   DESPOT,
   DUCHESS,
   DUKE,
@@ -41,7 +42,7 @@ export const saintRouter = createTRPCRouter({
       z.literal(BISHOP),
       z.literal(PRIEST),
       z.literal(DEACON),
-      // TODO: DEACONESS
+      z.literal(DEACONESS),
     ]).nullable(),
     royal: z.union([
       z.literal(DESPOT),

@@ -23,6 +23,7 @@ import {
   BISHOP,
   CONFESSOR,
   DEACON,
+  DEACONESS,
   DESPOT,
   DUCHESS,
   DUKE,
@@ -62,6 +63,7 @@ export default function SubmitSaint() {
     isBishop: z.boolean(),
     isPriest: z.boolean(),
     isDeacon: z.boolean(),
+    isDeaconess: z.boolean(),
     isDespot: z.boolean(),
     isDuchess: z.boolean(),
     isDuke: z.boolean(),
@@ -96,6 +98,7 @@ export default function SubmitSaint() {
       isBishop: false,
       isPriest: false,
       isDeacon: false,
+      isDeaconess: false,
       isDespot: false,
       isDuchess: false,
       isDuke: false,
@@ -130,6 +133,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isEqualToApostle", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
@@ -154,6 +158,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -204,6 +209,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -224,6 +230,7 @@ export default function SubmitSaint() {
     setValue("isPatriarch", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -244,6 +251,7 @@ export default function SubmitSaint() {
     setValue("isPatriarch", false);
     setValue("isBishop", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -264,6 +272,7 @@ export default function SubmitSaint() {
     setValue("isPatriarch", false);
     setValue("isBishop", false);
     setValue("isPriest", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -278,6 +287,29 @@ export default function SubmitSaint() {
     return setValue("isMale", true);
   }
 
+  function deaconess() {
+    setValue("isBc", false);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isKing", false);
+    setValue("isQueen", false);
+    setValue("isMonk", false);
+    return setValue("isMale", false);
+  }
+
   function despot() {
     setValue("isBc", false);
     setValue("isApostle", false);
@@ -286,6 +318,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
     setValue("isEmperor", false);
@@ -307,6 +340,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuke", false);
     setValue("isEmperor", false);
@@ -328,6 +362,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isEmperor", false);
@@ -349,6 +384,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -370,6 +406,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -391,6 +428,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -412,6 +450,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -433,6 +472,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -454,6 +494,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -475,6 +516,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -496,6 +538,7 @@ export default function SubmitSaint() {
     setValue("isBishop", false);
     setValue("isPriest", false);
     setValue("isDeacon", false);
+    setValue("isDeaconess", false);
     setValue("isDespot", false);
     setValue("isDuchess", false);
     setValue("isDuke", false);
@@ -536,6 +579,7 @@ export default function SubmitSaint() {
     // if the saint is male, then he cannot have these female titles:
     if (value) {
       alert("true");
+      setValue("isDeaconess", false);
       setValue("isDuchess", false);
       setValue("isEmpress", false);
       setValue("isGrandPrincess", false);
@@ -584,6 +628,7 @@ export default function SubmitSaint() {
       if (formData.isBishop) return BISHOP;
       if (formData.isPriest) return PRIEST;
       if (formData.isDeacon) return DEACON;
+      if (formData.isDeaconess) return DEACONESS;
       return null;
     };
     const royalty = () => {
@@ -942,6 +987,32 @@ export default function SubmitSaint() {
                         />
                       </FormControl>
                       <FormDescription>Is this saint a deacon?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isDeaconess"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Is this saint a deaconess?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return deaconess();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a deaconess?
+                      </FormDescription>
                       <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                     </FormItem>
                   </>
