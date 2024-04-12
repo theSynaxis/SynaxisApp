@@ -67,6 +67,7 @@ export const saintRouter = createTRPCRouter({
     isMonk: z.boolean(),
     isMarried: z.boolean(),
     isMale: z.boolean(),
+    isLevite: z.boolean(),
     yearBorn: z.number().nullable(),
     yearDied: z.number().nullable(),
   })).mutation(async ({ ctx, input }) => {
@@ -81,6 +82,7 @@ export const saintRouter = createTRPCRouter({
       isMonk: input.isMonk,
       isMarried: input.isMarried,
       isMale: input.isMale,
+      isLevite: input.isLevite,
       yearBorn: input.yearBorn,
       yearDied: input.yearDied,
     })

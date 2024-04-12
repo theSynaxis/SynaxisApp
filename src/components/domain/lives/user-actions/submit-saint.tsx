@@ -57,8 +57,8 @@ export default function SubmitSaint() {
       month: z.coerce.number().min(1).max(12),
       day: z.coerce.number().min(1).max(31),
     }),
-    yearBorn: z.coerce.number(),
-    yearDied: z.coerce.number(),
+    yearBorn: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
+    yearDied: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
     isProphet: z.boolean(),
     isApostle: z.boolean(),
     isLxx: z.boolean(),
@@ -85,6 +85,7 @@ export default function SubmitSaint() {
     isMonk: z.boolean(),
     isMarried: z.boolean(),
     isMale: z.boolean(),
+    isLevite: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -124,6 +125,7 @@ export default function SubmitSaint() {
       isMonk: false,
       isMarried: false,
       isMale: true,
+      isLevite: false,
     },
   });
 
@@ -162,6 +164,28 @@ export default function SubmitSaint() {
     setValue("isBc", true);
     setValue("isApostle", false);
     setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDeaconess", false);
+    setValue("isEqualToApostle", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isConfessor", false);
+    setValue("isPassionBearer", false);
+    return setValue("isMonk", false);
+  }
+
+  function levite() {
+    setValue("isBc", true);
     setValue("isPatriarch", false);
     setValue("isBishop", false);
     setValue("isPriest", false);
@@ -719,8 +743,9 @@ export default function SubmitSaint() {
       isMonk: formData.isMonk,
       isMarried: formData.isMarried,
       isMale: formData.isMale,
-      yearBorn: formData.yearBorn,
-      yearDied: formData.yearDied,
+      isLevite: formData.isLevite,
+      yearBorn: formData.yearBorn ?? null,
+      yearDied: formData.yearDied ?? null,
     });
   }
 
@@ -928,6 +953,29 @@ export default function SubmitSaint() {
                       <FormDescription>
                         Is this saint a prophet?
                       </FormDescription>
+                    </span>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isLevite"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <span className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return levite();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Is this saint a Levite?</FormDescription>
                     </span>
                     <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                   </FormItem>
