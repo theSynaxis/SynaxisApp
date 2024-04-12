@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -19,6 +18,11 @@ import {
 } from "~/components/ui/form";
 import { useToast } from "~/components/ui/use-toast";
 import { Checkbox } from "~/components/ui/checkbox";
+import { Switch } from "~/components/ui/switch";
+import { saintLogic } from "./saint-logic";
+import { formSchema } from "./formSchema";
+
+// import constants
 import {
   BISHOP,
   CONFESSOR,
@@ -43,50 +47,41 @@ import {
   QUEEN,
   SEVENTY_APOSTLES,
   TWELVE_APOSTLES,
+  isApostle,
+  isBc,
+  isBishop,
+  isConfessor,
+  isDeacon,
+  isDeaconess,
+  isDespot,
+  isDuchess,
+  isDuke,
+  isEmperor,
+  isEmpress,
+  isEqualToApostle,
+  isGrandPrince,
+  isGrandPrincess,
+  isKing,
+  isLevite,
+  isLxx,
+  isMarried,
+  isMartyr,
+  isMonk,
+  isPassionBearer,
+  isPatriarch,
+  isPriest,
+  isPrince,
+  isPrincess,
+  isProphet,
+  isQueen,
 } from "~/lib/constants";
-import { Switch } from "~/components/ui/switch";
+
+// import types
+import { type z } from "zod";
 
 export default function SubmitSaint() {
   const { toast } = useToast();
   const [submitError, setSubmitError] = useState("");
-
-  const formSchema = z.object({
-    name: z.string().min(3),
-    isBc: z.boolean(),
-    feastDate: z.object({
-      month: z.coerce.number().min(1).max(12),
-      day: z.coerce.number().min(1).max(31),
-    }),
-    yearBorn: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
-    yearDied: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
-    isProphet: z.boolean(),
-    isApostle: z.boolean(),
-    isLxx: z.boolean(),
-    isEqualToApostle: z.boolean(),
-    isPatriarch: z.boolean(),
-    isBishop: z.boolean(),
-    isPriest: z.boolean(),
-    isDeacon: z.boolean(),
-    isDeaconess: z.boolean(),
-    isDespot: z.boolean(),
-    isDuchess: z.boolean(),
-    isDuke: z.boolean(),
-    isEmperor: z.boolean(),
-    isEmpress: z.boolean(),
-    isGrandPrince: z.boolean(),
-    isGrandPrincess: z.boolean(),
-    isPrince: z.boolean(),
-    isPrincess: z.boolean(),
-    isKing: z.boolean(),
-    isQueen: z.boolean(),
-    isMartyr: z.boolean(),
-    isConfessor: z.boolean(),
-    isPassionBearer: z.boolean(),
-    isMonk: z.boolean(),
-    isMarried: z.boolean(),
-    isMale: z.boolean(),
-    isLevite: z.boolean(),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -135,521 +130,6 @@ export default function SubmitSaint() {
     reset,
     // setError,
   } = form;
-
-  function beforeChrist() {
-    // if the saint lived before the incarnation, then he isn't the following things too
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isEqualToApostle", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isConfessor", false);
-    setValue("isPassionBearer", false);
-    return setValue("isMonk", false);
-  }
-
-  function prophet() {
-    setValue("isBc", true);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isEqualToApostle", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isConfessor", false);
-    setValue("isPassionBearer", false);
-    return setValue("isMonk", false);
-  }
-
-  function levite() {
-    setValue("isBc", true);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isEqualToApostle", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isConfessor", false);
-    setValue("isPassionBearer", false);
-    return setValue("isMonk", false);
-  }
-
-  function ofTheTwelveApostles() {
-    // if the saint is an Apostle, then he isn't the following things too
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isLxx", false);
-    setValue("isEqualToApostle", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    setValue("isMonk", false);
-    return setValue("isMale", true);
-  }
-
-  function ofTheSeventyApostles() {
-    // if the saint is one of the 70, then he isn't the following things too
-    setValue("isBc", false);
-    setValue("isApostle", false);
-    setValue("isEqualToApostle", false);
-    setValue("isPatriarch", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    setValue("isMonk", false);
-    return setValue("isMale", true);
-  }
-
-  function equalToTheApostles() {
-    // if the saint is Equal to the Apostles, then he isn't the following things too
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    return setValue("isLxx", false);
-  }
-
-  function patriarch() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function bishop() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isPatriarch", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function priest() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function deacon() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function deaconess() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    setValue("isMonk", false);
-    return setValue("isMale", false);
-  }
-
-  function despot() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function duchess() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", false);
-  }
-
-  function duke() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function emperor() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function empress() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", false);
-  }
-
-  function grandPrince() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function grandPrincess() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", false);
-  }
-
-  function prince() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function princess() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isKing", false);
-    setValue("isQueen", false);
-    return setValue("isMale", false);
-  }
-
-  function king() {
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isQueen", false);
-    return setValue("isMale", true);
-  }
-
-  function queen() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDeaconess", false);
-    setValue("isDespot", false);
-    setValue("isDuchess", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isEmpress", false);
-    setValue("isGrandPrince", false);
-    setValue("isGrandPrincess", false);
-    setValue("isPrince", false);
-    setValue("isPrincess", false);
-    setValue("isKing", false);
-    return setValue("isMale", false);
-  }
-
-  function monk() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isApostle", false);
-    return setValue("isLxx", false);
-  }
-
-  function martyr() {
-    setValue("isConfessor", false);
-    return setValue("isPassionBearer", false);
-  }
-
-  function confessor() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isMartyr", false);
-    return setValue("isPassionBearer", false);
-  }
-
-  function passionBearer() {
-    setValue("isBc", false);
-    setValue("isProphet", false);
-    setValue("isMartyr", false);
-    return setValue("isConfessor", false);
-  }
 
   function sex(value: boolean) {
     // if the saint is male, then he cannot have these female titles:
@@ -908,7 +388,7 @@ export default function SubmitSaint() {
           <span className="flex flex-col items-start justify-normal gap-2">
             <FormField
               control={form.control}
-              name="isBc"
+              name={isBc}
               render={({ field }) => (
                 <>
                   <FormItem>
@@ -921,7 +401,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return beforeChrist();
+                            return saintLogic(isBc, setValue);
                           }}
                         />
                       </FormControl>
@@ -936,7 +416,7 @@ export default function SubmitSaint() {
             />
             <FormField
               control={form.control}
-              name="isProphet"
+              name={isProphet}
               render={({ field }) => (
                 <>
                   <FormItem>
@@ -946,7 +426,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return prophet();
+                            return saintLogic(isProphet, setValue);
                           }}
                         />
                       </FormControl>
@@ -961,7 +441,7 @@ export default function SubmitSaint() {
             />
             <FormField
               control={form.control}
-              name="isLevite"
+              name={isLevite}
               render={({ field }) => (
                 <>
                   <FormItem>
@@ -971,7 +451,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return levite();
+                            return saintLogic(isLevite, setValue);
                           }}
                         />
                       </FormControl>
@@ -987,7 +467,7 @@ export default function SubmitSaint() {
               <FormLabel className="text-base">Apostle</FormLabel>
               <FormField
                 control={form.control}
-                name="isApostle"
+                name={isApostle}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -999,7 +479,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return ofTheTwelveApostles();
+                            return saintLogic(isApostle, setValue);
                           }}
                         />
                       </FormControl>
@@ -1013,7 +493,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isLxx"
+                name={isLxx}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1025,7 +505,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return ofTheSeventyApostles();
+                            return saintLogic(isLxx, setValue);
                           }}
                         />
                       </FormControl>
@@ -1039,7 +519,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isEqualToApostle"
+                name={isEqualToApostle}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1051,7 +531,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return equalToTheApostles();
+                            return saintLogic(isEqualToApostle, setValue);
                           }}
                         />
                       </FormControl>
@@ -1069,7 +549,7 @@ export default function SubmitSaint() {
               <FormLabel className="text-base">Clergy</FormLabel>
               <FormField
                 control={form.control}
-                name="isPatriarch"
+                name={isPatriarch}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1081,7 +561,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return patriarch();
+                            return saintLogic(isPatriarch, setValue);
                           }}
                         />
                       </FormControl>
@@ -1095,7 +575,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isBishop"
+                name={isBishop}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1107,7 +587,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return bishop();
+                            return saintLogic(isBishop, setValue);
                           }}
                         />
                       </FormControl>
@@ -1119,7 +599,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isPriest"
+                name={isPriest}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1131,7 +611,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return priest();
+                            return saintLogic(isPriest, setValue);
                           }}
                         />
                       </FormControl>
@@ -1143,7 +623,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isDeacon"
+                name={isDeacon}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1155,7 +635,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return deacon();
+                            return saintLogic(isDeacon, setValue);
                           }}
                         />
                       </FormControl>
@@ -1167,7 +647,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isDeaconess"
+                name={isDeaconess}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1179,7 +659,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return deaconess();
+                            return saintLogic(isDeaconess, setValue);
                           }}
                         />
                       </FormControl>
@@ -1199,7 +679,7 @@ export default function SubmitSaint() {
               <FormLabel className="text-base">Royalty</FormLabel>
               <FormField
                 control={form.control}
-                name="isDespot"
+                name={isDespot}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1211,7 +691,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return despot();
+                            return saintLogic(isDespot, setValue);
                           }}
                         />
                       </FormControl>
@@ -1223,7 +703,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isDuchess"
+                name={isDuchess}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1235,7 +715,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return duchess();
+                            return saintLogic(isDuchess, setValue);
                           }}
                         />
                       </FormControl>
@@ -1249,7 +729,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isDuke"
+                name={isDuke}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1261,7 +741,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return duke();
+                            return saintLogic(isDuke, setValue);
                           }}
                         />
                       </FormControl>
@@ -1273,7 +753,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isEmperor"
+                name={isEmperor}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1285,7 +765,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return emperor();
+                            return saintLogic(isEmperor, setValue);
                           }}
                         />
                       </FormControl>
@@ -1299,7 +779,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isEmpress"
+                name={isEmpress}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1311,7 +791,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return empress();
+                            return saintLogic(isEmpress, setValue);
                           }}
                         />
                       </FormControl>
@@ -1325,7 +805,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isGrandPrince"
+                name={isGrandPrince}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1337,7 +817,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return grandPrince();
+                            return saintLogic(isGrandPrince, setValue);
                           }}
                         />
                       </FormControl>
@@ -1351,7 +831,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isGrandPrincess"
+                name={isGrandPrincess}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1363,7 +843,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return grandPrincess();
+                            return saintLogic(isGrandPrincess, setValue);
                           }}
                         />
                       </FormControl>
@@ -1377,7 +857,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isPrince"
+                name={isPrince}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1389,7 +869,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return prince();
+                            return saintLogic(isPrince, setValue);
                           }}
                         />
                       </FormControl>
@@ -1401,7 +881,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isPrincess"
+                name={isPrincess}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1413,7 +893,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return princess();
+                            return saintLogic(isPrincess, setValue);
                           }}
                         />
                       </FormControl>
@@ -1427,7 +907,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isKing"
+                name={isKing}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1439,7 +919,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return king();
+                            return saintLogic(isKing, setValue);
                           }}
                         />
                       </FormControl>
@@ -1451,7 +931,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isQueen"
+                name={isQueen}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1463,7 +943,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return queen();
+                            return saintLogic(isQueen, setValue);
                           }}
                         />
                       </FormControl>
@@ -1480,7 +960,7 @@ export default function SubmitSaint() {
               <FormLabel className="text-base">Martyrdom</FormLabel>
               <FormField
                 control={form.control}
-                name="isMartyr"
+                name={isMartyr}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1492,7 +972,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return martyr();
+                            return saintLogic(isMartyr, setValue);
                           }}
                         />
                       </FormControl>
@@ -1504,7 +984,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isConfessor"
+                name={isConfessor}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1516,7 +996,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return confessor();
+                            return saintLogic(isConfessor, setValue);
                           }}
                         />
                       </FormControl>
@@ -1530,7 +1010,7 @@ export default function SubmitSaint() {
               />
               <FormField
                 control={form.control}
-                name="isPassionBearer"
+                name={isPassionBearer}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1542,7 +1022,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return passionBearer();
+                            return saintLogic(isPassionBearer, setValue);
                           }}
                         />
                       </FormControl>
@@ -1559,7 +1039,7 @@ export default function SubmitSaint() {
               <FormLabel className="text-base">Misc</FormLabel>
               <FormField
                 control={form.control}
-                name="isMonk"
+                name={isMonk}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
@@ -1571,7 +1051,7 @@ export default function SubmitSaint() {
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           onClick={() => {
-                            return monk();
+                            return saintLogic(isMonk, setValue);
                           }}
                         />
                       </FormControl>
@@ -1584,7 +1064,7 @@ export default function SubmitSaint() {
 
               <FormField
                 control={form.control}
-                name="isMarried"
+                name={isMarried}
                 render={({ field }) => (
                   <>
                     <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
