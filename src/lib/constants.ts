@@ -8,6 +8,7 @@ export const BISHOP = "BISHOP";
 export const PRIEST = "PRIEST";
 export const DEACON = "DEACON";
 export const DEACONESS = "DEACONESS";
+export const PROPHET = "PROPHET";
 // Royalty:
 export const DESPOT = "DESPOT";
 export const DUCHESS = "DUCHESS";

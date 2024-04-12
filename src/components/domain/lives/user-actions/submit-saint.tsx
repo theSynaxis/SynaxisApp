@@ -39,6 +39,7 @@ import {
   PRIEST,
   PRINCE,
   PRINCESS,
+  PROPHET,
   QUEEN,
   SEVENTY_APOSTLES,
   TWELVE_APOSTLES,
@@ -56,6 +57,7 @@ export default function SubmitSaint() {
       month: z.coerce.number().min(1).max(12),
       day: z.coerce.number().min(1).max(31),
     }),
+    isProphet: z.boolean(),
     isApostle: z.boolean(),
     isLxx: z.boolean(),
     isEqualToApostle: z.boolean(),
@@ -91,6 +93,7 @@ export default function SubmitSaint() {
         month: 0,
         day: 0,
       },
+      isProphet: false,
       isApostle: false,
       isLxx: false,
       isEqualToApostle: false,
@@ -149,9 +152,34 @@ export default function SubmitSaint() {
     return setValue("isMonk", false);
   }
 
+  function prophet() {
+    setValue("isBc", true);
+    setValue("isApostle", false);
+    setValue("isLxx", false);
+    setValue("isPatriarch", false);
+    setValue("isBishop", false);
+    setValue("isPriest", false);
+    setValue("isDeacon", false);
+    setValue("isDeaconess", false);
+    setValue("isEqualToApostle", false);
+    setValue("isDespot", false);
+    setValue("isDuchess", false);
+    setValue("isDuke", false);
+    setValue("isEmperor", false);
+    setValue("isEmpress", false);
+    setValue("isGrandPrince", false);
+    setValue("isGrandPrincess", false);
+    setValue("isPrince", false);
+    setValue("isPrincess", false);
+    setValue("isConfessor", false);
+    setValue("isPassionBearer", false);
+    return setValue("isMonk", false);
+  }
+
   function ofTheTwelveApostles() {
     // if the saint is an Apostle, then he isn't the following things too
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isLxx", false);
     setValue("isEqualToApostle", false);
     setValue("isPatriarch", false);
@@ -198,12 +226,14 @@ export default function SubmitSaint() {
   function equalToTheApostles() {
     // if the saint is Equal to the Apostles, then he isn't the following things too
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     return setValue("isLxx", false);
   }
 
   function patriarch() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isBishop", false);
@@ -226,6 +256,7 @@ export default function SubmitSaint() {
 
   function bishop() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isPatriarch", false);
     setValue("isPriest", false);
@@ -247,6 +278,7 @@ export default function SubmitSaint() {
 
   function priest() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isPatriarch", false);
     setValue("isBishop", false);
@@ -268,6 +300,7 @@ export default function SubmitSaint() {
 
   function deacon() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isPatriarch", false);
     setValue("isBishop", false);
@@ -289,6 +322,7 @@ export default function SubmitSaint() {
 
   function deaconess() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -312,6 +346,7 @@ export default function SubmitSaint() {
 
   function despot() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -334,6 +369,7 @@ export default function SubmitSaint() {
 
   function duchess() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -356,6 +392,7 @@ export default function SubmitSaint() {
 
   function duke() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -378,6 +415,7 @@ export default function SubmitSaint() {
 
   function emperor() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -400,6 +438,7 @@ export default function SubmitSaint() {
 
   function empress() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -422,6 +461,7 @@ export default function SubmitSaint() {
 
   function grandPrince() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -444,6 +484,7 @@ export default function SubmitSaint() {
 
   function grandPrincess() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -466,6 +507,7 @@ export default function SubmitSaint() {
 
   function prince() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -488,6 +530,7 @@ export default function SubmitSaint() {
 
   function princess() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -509,7 +552,6 @@ export default function SubmitSaint() {
   }
 
   function king() {
-    setValue("isBc", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -532,6 +574,7 @@ export default function SubmitSaint() {
 
   function queen() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     setValue("isLxx", false);
     setValue("isPatriarch", false);
@@ -554,6 +597,7 @@ export default function SubmitSaint() {
 
   function monk() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isApostle", false);
     return setValue("isLxx", false);
   }
@@ -565,12 +609,14 @@ export default function SubmitSaint() {
 
   function confessor() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isMartyr", false);
     return setValue("isPassionBearer", false);
   }
 
   function passionBearer() {
     setValue("isBc", false);
+    setValue("isProphet", false);
     setValue("isMartyr", false);
     return setValue("isConfessor", false);
   }
@@ -629,6 +675,7 @@ export default function SubmitSaint() {
       if (formData.isPriest) return PRIEST;
       if (formData.isDeacon) return DEACON;
       if (formData.isDeaconess) return DEACONESS;
+      if (formData.isProphet) return PROPHET;
       return null;
     };
     const royalty = () => {
@@ -780,7 +827,7 @@ export default function SubmitSaint() {
 
         <FormLabel className="text-lg">Extra Information</FormLabel>
         <span className="flex flex-row items-start justify-normal gap-32">
-          <span className="flex flex-col items-start justify-normal gap-4">
+          <span className="flex flex-col items-start justify-normal gap-2">
             <FormField
               control={form.control}
               name="isBc"
@@ -802,6 +849,31 @@ export default function SubmitSaint() {
                       </FormControl>
                       <FormDescription>
                         Did this saint live before the incarnation?
+                      </FormDescription>
+                    </span>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isProphet"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <span className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return prophet();
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Is this saint a prophet?
                       </FormDescription>
                     </span>
                     <FormMessage className="pl-4 font-bold text-secondary-red-500" />

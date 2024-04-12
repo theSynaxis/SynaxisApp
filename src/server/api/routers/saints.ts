@@ -22,6 +22,7 @@ import {
   PRIEST,
   PRINCE,
   PRINCESS,
+  PROPHET,
   QUEEN,
   SEVENTY_APOSTLES,
   TWELVE_APOSTLES,
@@ -43,6 +44,7 @@ export const saintRouter = createTRPCRouter({
       z.literal(PRIEST),
       z.literal(DEACON),
       z.literal(DEACONESS),
+      z.literal(PROPHET),
     ]).nullable(),
     royal: z.union([
       z.literal(DESPOT),
