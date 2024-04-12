@@ -67,6 +67,8 @@ export const saintRouter = createTRPCRouter({
     isMonk: z.boolean(),
     isMarried: z.boolean(),
     isMale: z.boolean(),
+    yearBorn: z.number().nullable(),
+    yearDied: z.number().nullable(),
   })).mutation(async ({ ctx, input }) => {
     await ctx.db.insert(saints).values({
       name: input.name,
@@ -79,6 +81,8 @@ export const saintRouter = createTRPCRouter({
       isMonk: input.isMonk,
       isMarried: input.isMarried,
       isMale: input.isMale,
+      yearBorn: input.yearBorn,
+      yearDied: input.yearDied,
     })
   })
 });

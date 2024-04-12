@@ -57,6 +57,8 @@ export default function SubmitSaint() {
       month: z.coerce.number().min(1).max(12),
       day: z.coerce.number().min(1).max(31),
     }),
+    yearBorn: z.coerce.number(),
+    yearDied: z.coerce.number(),
     isProphet: z.boolean(),
     isApostle: z.boolean(),
     isLxx: z.boolean(),
@@ -94,6 +96,8 @@ export default function SubmitSaint() {
         month: 0,
         day: 0,
       },
+      yearBorn: undefined,
+      yearDied: undefined,
       isProphet: false,
       isApostle: false,
       isLxx: false,
@@ -715,6 +719,8 @@ export default function SubmitSaint() {
       isMonk: formData.isMonk,
       isMarried: formData.isMarried,
       isMale: formData.isMale,
+      yearBorn: formData.yearBorn,
+      yearDied: formData.yearDied,
     });
   }
 
@@ -828,7 +834,51 @@ export default function SubmitSaint() {
           />
         </span>
 
-        <FormLabel className="text-lg">Extra Information</FormLabel>
+        <span>
+          <FormLabel className="text-lg">Extra Information</FormLabel>
+          <span className="flex flex-row items-center justify-normal gap-12">
+            <FormField
+              control={form.control}
+              name="yearBorn"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormLabel className="text-base">Year Born</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder=""
+                        className="text-black w-full rounded-full px-4 py-2"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="yearDied"
+              render={({ field }) => (
+                <>
+                  <FormItem>
+                    <FormLabel className="text-base">Year Died</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder=""
+                        className="text-black w-full rounded-full px-4 py-2"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+          </span>
+        </span>
         <span className="flex flex-row items-start justify-normal gap-32">
           <span className="flex flex-col items-start justify-normal gap-2">
             <FormField
