@@ -81,6 +81,7 @@ export default function SubmitSaint() {
     isConfessor: z.boolean(),
     isPassionBearer: z.boolean(),
     isMonk: z.boolean(),
+    isMarried: z.boolean(),
     isMale: z.boolean(),
   });
 
@@ -117,6 +118,7 @@ export default function SubmitSaint() {
       isConfessor: false,
       isPassionBearer: false,
       isMonk: false,
+      isMarried: false,
       isMale: true,
     },
   });
@@ -711,6 +713,7 @@ export default function SubmitSaint() {
       royal: royalty(),
       martyr: martyr(),
       isMonk: formData.isMonk,
+      isMarried: formData.isMarried,
       isMale: formData.isMale,
     });
   }
@@ -1475,6 +1478,28 @@ export default function SubmitSaint() {
                         />
                       </FormControl>
                       <FormDescription>Is this saint a monk?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isMarried"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Was this saint married?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormDescription>Was this saint married?</FormDescription>
                       <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                     </FormItem>
                   </>

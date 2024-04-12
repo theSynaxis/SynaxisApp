@@ -114,6 +114,7 @@ export const saints = createTable("saints", {
   name: varchar("name", { length: 256 }).notNull(),
   life: varchar("life"),
   apostle: varchar("apostle"),
+  // TODO: LEVITE missing; where should it go if a LEVITE can be a PROPHET, but PROPHET is in clergy?
   clergy: varchar("clergy"),
   royal: varchar("is_ruler"),
   martyr: varchar("martyr"),
