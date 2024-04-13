@@ -135,28 +135,28 @@ export default function SubmitSaint() {
     // if the saint is male, then he cannot have these female titles:
     if (value) {
       alert("true");
-      setValue("isDeaconess", false);
-      setValue("isDuchess", false);
-      setValue("isEmpress", false);
-      setValue("isGrandPrincess", false);
-      setValue("isPrincess", false);
-      return setValue("isQueen", false);
+      setValue(isDeaconess, false);
+      setValue(isDuchess, false);
+      setValue(isEmpress, false);
+      setValue(isGrandPrincess, false);
+      setValue(isPrincess, false);
+      return setValue(isQueen, false);
     }
 
     // if the saint is female, then she cannot have these titles:
     alert("false");
-    setValue("isApostle", false);
-    setValue("isLxx", false);
-    setValue("isPatriarch", false);
-    setValue("isBishop", false);
-    setValue("isPriest", false);
-    setValue("isDeacon", false);
-    setValue("isDespot", false);
-    setValue("isDuke", false);
-    setValue("isEmperor", false);
-    setValue("isGrandPrince", false);
-    setValue("isPrince", false);
-    return setValue("isKing", false);
+    setValue(isApostle, false);
+    setValue(isLxx, false);
+    setValue(isPatriarch, false);
+    setValue(isBishop, false);
+    setValue(isPriest, false);
+    setValue(isDeacon, false);
+    setValue(isDespot, false);
+    setValue(isDuke, false);
+    setValue(isEmperor, false);
+    setValue(isGrandPrince, false);
+    setValue(isPrince, false);
+    return setValue(isKing, false);
   }
 
   const createSaint = api.saint.create.useMutation({
@@ -242,7 +242,9 @@ export default function SubmitSaint() {
             render={({ field }) => (
               <>
                 <FormItem>
-                  <FormLabel className="text-lg">Saint Name</FormLabel>
+                  <FormLabel className="text-lg">
+                    Saint Name <span className="text-secondary-red-500">*</span>
+                  </FormLabel>
                   <FormDescription className="italic">
                     Please do not include &quot;Saint&quot;.
                   </FormDescription>
@@ -261,7 +263,9 @@ export default function SubmitSaint() {
           />
 
           <span>
-            <FormLabel className="text-lg">Feast Day</FormLabel>
+            <FormLabel className="text-lg">
+              Feast Day <span className="text-secondary-red-500">*</span>
+            </FormLabel>
 
             <span className="flex flex-row items-center justify-normal gap-4">
               <FormField
@@ -317,7 +321,9 @@ export default function SubmitSaint() {
             name="isMale"
             render={({ field }) => (
               <FormItem className="flex flex-col items-start justify-between">
-                <FormLabel className="text-lg">Sex</FormLabel>
+                <FormLabel className="text-lg">
+                  Sex <span className="text-secondary-red-500">*</span>
+                </FormLabel>
                 <FormDescription className="italic">
                   <br />
                 </FormDescription>
