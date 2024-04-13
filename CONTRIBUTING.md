@@ -56,6 +56,7 @@ Our commonly used scopes are:
 - (apps): for changes made to the browser apps that affect them both, like a sidebar change.
 - (calendar): for changes made to the calendar browser app.
 - (sayings): for changes made to the quotes browser app.
+- (lives): for changes made to the lives browser app.
 - (ui): for changes made to ui components used in both the website and browser apps.
 - (server): for changes made to the tRPC routes and procedures.
 - (db): for changes made to the database schema.
