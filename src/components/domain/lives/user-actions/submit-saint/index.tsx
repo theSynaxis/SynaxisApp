@@ -134,7 +134,6 @@ export default function SubmitSaint() {
   function sex(value: boolean) {
     // if the saint is male, then he cannot have these female titles:
     if (value) {
-      alert("true");
       setValue(isDeaconess, false);
       setValue(isDuchess, false);
       setValue(isEmpress, false);
@@ -144,7 +143,6 @@ export default function SubmitSaint() {
     }
 
     // if the saint is female, then she cannot have these titles:
-    alert("false");
     setValue(isApostle, false);
     setValue(isLxx, false);
     setValue(isPatriarch, false);
@@ -334,7 +332,8 @@ export default function SubmitSaint() {
                       checked={field.value}
                       onCheckedChange={field.onChange}
                       onClick={() => {
-                        return sex(field.value);
+                        // field.value sends the current value, not the updated value, so we need to pass the opposite to sex().
+                        return sex(!field.value);
                       }}
                     />
                     Male
