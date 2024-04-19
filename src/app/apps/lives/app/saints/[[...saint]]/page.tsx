@@ -19,7 +19,7 @@ export default async function SayingsApp() {
         <h1
           className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
         >
-          <span className="text-secondary-red-600">Sayings</span> of the Fathers
+          <span className="text-secondary-red-600">Lives</span> of the Saints
         </h1>
 
         <h2>Saint Silouan the Athonite</h2>
