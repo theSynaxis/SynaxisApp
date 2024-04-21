@@ -28,16 +28,16 @@ import {
 
 // import types
 import { type z } from "zod";
-import { type formSchema } from "../sayings/user-actions/submit-quote/formSchema";
+import { type formSchema as SubmitQuoteSchema } from "../sayings/user-actions/submit-quote/formSchema";
+import { type formSchema as PatronSaintSchema } from "../users/settings/account/formSchema";
 
-// The following is an example of what the type could look like when this component is used in another form in the app:
-// import { type formSchema as SaintSchema } from "../lives/user-actions/submit-saint/formSchema";
-// type FormSetValue = UseFormSetValue<
-//   z.infer<typeof formSchema | typeof SaintSchema>
-// >;
-
-type FormSetValue = UseFormSetValue<z.infer<typeof formSchema>>;
-type FormField = ControllerRenderProps<z.infer<typeof formSchema>, "saint">;
+type FormSetValue = UseFormSetValue<
+  z.infer<typeof SubmitQuoteSchema | typeof PatronSaintSchema>
+>;
+type FormField = ControllerRenderProps<
+  z.infer<typeof SubmitQuoteSchema>,
+  "saint"
+>;
 
 interface SaintComboboxProps {
   field: FormField;
