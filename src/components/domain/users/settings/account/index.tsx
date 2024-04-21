@@ -1,9 +1,9 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { faker } from "@faker-js/faker";
 import { format } from "date-fns";
+import Image from "next/image";
 
+// import components
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 import { toast } from "~/components/ui/use-toast";
@@ -11,7 +11,6 @@ import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { Combobox } from "~/components/ui/combobox";
 import { Calendar } from "~/components/ui/calendar";
 import {
   Popover,
@@ -27,36 +26,17 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
-import Image from "next/image";
+import SaintCombobox from "../../../common/saint-combobox";
+import { formSchema } from "./formSchema";
 
-const saints = [
-  { value: "St Silouan the Athonite", label: "St Silouan the Athonite" },
-];
-
-const createFakeSaints = () => {
-  const saint = faker.person.firstName();
-
-  return {
-    value: `St ${saint}`,
-    label: `St ${saint}`,
-  };
-};
-
-for (let index = 0; index < 1000; index++) {
-  saints.push(createFakeSaints());
-}
+// import types
+import { type z } from "zod";
 
 export default function AccountSettings() {
-  const formSchema = z.object({
-    patron: z.string(),
-    firstName: z.string().min(2),
-    lastName: z.string().min(1),
-  });
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      patron: "",
+      saint: 0,
       firstName: "",
       lastName: "",
     },
@@ -64,6 +44,7 @@ export default function AccountSettings() {
 
   const {
     formState: { isDirty },
+    setValue,
     setError,
   } = form;
 
@@ -149,17 +130,12 @@ export default function AccountSettings() {
           <span className="flex w-full flex-row items-center justify-start gap-8">
             <FormField
               control={form.control}
-              name="patron"
+              name="saint"
               render={({ field }) => (
                 <>
                   <FormItem className="flex flex-col">
                     <FormLabel className="text-base">Patron Saint</FormLabel>
-                    <Combobox
-                      items={saints}
-                      placeholder="Patron Saint"
-                      {...field}
-                    />
-                    <FormControl></FormControl>
+                    <SaintCombobox field={field} setValue={setValue} />
                     <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                   </FormItem>
                 </>
@@ -178,7 +154,7 @@ export default function AccountSettings() {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "bg-white w-[200px] pl-3 text-left font-normal",
+                            "w-[200px] bg-white pl-3 text-left font-normal",
                             !field.value && "text-muted-foreground",
                           )}
                         >
