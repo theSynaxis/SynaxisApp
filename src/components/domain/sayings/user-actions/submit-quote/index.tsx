@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { type z } from "zod";
 
 import { api } from "~/trpc/react";
+import { formSchema } from "./formSchema";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
@@ -18,46 +19,11 @@ import {
 } from "~/components/ui/form";
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
-import { Combobox } from "~/components/ui/combobox";
-
-import { faker } from "@faker-js/faker";
+import SaintCombobox from "~/components/domain/common/saint-combobox";
 
 export default function SubmitQuote() {
   const [submitError, setSubmitError] = useState("");
   const { toast } = useToast();
-
-  const saints = [
-    { value: "St Silouan the Athonite", label: "St Silouan the Athonite" },
-  ];
-
-  const createFakeSaints = () => {
-    const saint = faker.person.firstName();
-
-    return {
-      value: `St ${saint}`,
-      label: `St ${saint}`,
-    };
-  };
-
-  for (let index = 0; index < 1000; index++) {
-    saints.push(createFakeSaints());
-  }
-
-  const formSchema = z.object({
-    text: z.string().min(1),
-    saint: z.object({
-      id: z.number(),
-      name: z.string().min(3),
-      feastDate: z.object({
-        month: z.coerce.number().min(1).max(12),
-        day: z.coerce.number().min(1).max(31),
-      }),
-    }),
-    publicationCity: z.string().min(1),
-    publicationYear: z.string().min(1),
-    pageStart: z.string().min(1),
-    pageEnd: z.string().min(1),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,15 +38,16 @@ export default function SubmitQuote() {
 
   const {
     formState: { isDirty },
+    setValue,
     setError,
     reset,
   } = form;
 
   const createQuote = api.quote.create.useMutation({
-    onSuccess: (_data, variables) => {
+    onSuccess: (data) => {
       toast({
         title: `Success`,
-        description: `Saying of St. ${variables.saint} has been submitted!`,
+        description: `Saying of St. ${data.saint} has been submitted!`,
       });
       return reset();
     },
@@ -92,10 +59,12 @@ export default function SubmitQuote() {
   function onSubmit(formData: z.infer<typeof formSchema>) {
     createQuote.mutate({
       text: formData.text,
-      publicationCity: formData.publicationCity, // supplied by ISBN lookup
-      publicationYear: formData.publicationYear, // supplied by ISBN lookup
-      pageStart: formData.pageStart,
-      pageEnd: formData.pageEnd,
+      citation: {
+        publicationCity: formData.publicationCity, // supplied by ISBN lookup
+        publicationYear: formData.publicationYear, // supplied by ISBN lookup
+        pageStart: formData.pageStart,
+        pageEnd: formData.pageEnd,
+      },
     });
   }
 
@@ -136,9 +105,7 @@ export default function SubmitQuote() {
                 <>
                   <FormItem className="flex flex-col">
                     <FormLabel className="text-base">Saint</FormLabel>
-                    <FormControl>
-                      <Combobox items={saints} placeholder="Saint" {...field} />
-                    </FormControl>
+                    <SaintCombobox field={field} setValue={setValue} />
                     <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                   </FormItem>
                 </>

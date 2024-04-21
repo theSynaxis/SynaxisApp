@@ -22,6 +22,8 @@ export const quoteRouter = createTRPCRouter({
         workId: input.workId,
         citationId: input.citationId,
       });
+      // should create all Scripture references using quoteId after successfully adding quote.
+      // should return the saint name after successfully adding the quote, for toast notification.
     }),
   updateApproval: publicProcedure // TODO: modProcedure
     .input(
