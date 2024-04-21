@@ -1,17 +1,22 @@
-import { type z } from "zod";
-import { faker } from "@faker-js/faker";
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import {
   type UseFormSetValue,
   type ControllerRenderProps,
 } from "react-hook-form";
 
+// import components
+import { api } from "~/trpc/react";
+import { cn } from "~/lib/utils";
+import { FormControl } from "~/components/ui/form";
+import { Button } from "~/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/ui/popover";
-import { cn } from "~/lib/utils";
-import Image from "next/image";
 import {
   Command,
   CommandEmpty,
@@ -20,8 +25,9 @@ import {
   CommandItem,
   CommandList,
 } from "~/components/ui/command";
-import { FormControl } from "~/components/ui/form";
-import { Button } from "~/components/ui/button";
+
+// import types
+import { type z } from "zod";
 import { type formSchema } from "../sayings/user-actions/submit-quote/formSchema";
 
 // The following is an example of what the type could look like when this component is used in another form in the app:
@@ -40,25 +46,23 @@ interface SaintComboboxProps {
 
 export default function SaintCombobox(props: SaintComboboxProps) {
   const { field, setValue } = props;
-  const saints = [{ value: "0", label: "St Silouan the Athonite (Sept 24)" }];
+  const [open, setOpen] = useState(false);
 
-  const createFakeSaints = (index: number) => {
-    const saintName = faker.person.firstName();
-    const feastDay = `${faker.date.month()} ${faker.number.int({ min: 1, max: 31 })}`;
+  const { data, isLoading, isError } = api.saint.list.useQuery();
 
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>ERROR</p>;
+
+  const saints = data.map((saint) => {
     return {
-      value: `${index}`,
-      label: `St ${saintName} (${feastDay})`,
+      value: saint.id,
+      label: `St. ${saint.name} (${saint.feastDate})`,
     };
-  };
-
-  for (let index = 1; index < 1000; index++) {
-    saints.push(createFakeSaints(index));
-  }
+  });
 
   return (
     <>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <FormControl>
             <Button
@@ -97,6 +101,7 @@ export default function SaintCombobox(props: SaintComboboxProps) {
                     className="cursor-pointer text-lg font-bold"
                     onSelect={() => {
                       setValue("saint", Number(saint.value));
+                      setOpen(false);
                     }}
                   >
                     <Image
