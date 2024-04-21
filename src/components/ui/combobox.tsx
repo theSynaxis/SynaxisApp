@@ -25,10 +25,14 @@ interface ComboboxProps {
     label: string;
   }[];
   placeholder: string;
+  classes?: {
+    button?: string;
+    input?: string;
+  };
 }
 
 export function Combobox(props: ComboboxProps) {
-  const { items, placeholder } = props;
+  const { items, placeholder, classes } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 

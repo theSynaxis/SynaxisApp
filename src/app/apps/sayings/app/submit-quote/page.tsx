@@ -1,4 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
+import SubmitQuote from "~/components/domain/sayings/user-actions/submit-quote";
 
 export default async function SayingsApp() {
   noStore();
@@ -12,7 +13,9 @@ export default async function SayingsApp() {
           <span className="text-secondary-red-600">Sayings</span> of the Fathers
         </h1>
 
-        <p className="w-1/2">Submit New Quote Here</p>
+        <div className="w-3/5">
+          <SubmitQuote />
+        </div>
       </div>
     </main>
   );
