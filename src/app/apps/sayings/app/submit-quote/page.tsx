@@ -13,7 +13,9 @@ export default async function SayingsApp() {
           <span className="text-secondary-red-600">Sayings</span> of the Fathers
         </h1>
 
-        <SubmitQuote />
+        <div className="w-3/5">
+          <SubmitQuote />
+        </div>
       </div>
     </main>
   );
