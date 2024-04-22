@@ -20,6 +20,7 @@ import {
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
 import SaintCombobox from "~/components/domain/common/saint-combobox";
+import BookCombobox from "./book-combobox";
 
 export default function SubmitQuote() {
   const [submitError, setSubmitError] = useState("");
@@ -97,7 +98,7 @@ export default function SubmitQuote() {
         <span className="flex flex-col items-start justify-between gap-4">
           <FormLabel className="text-lg">Citation Details</FormLabel>
 
-          <span>
+          <span className="flex flex-row items-center justify-normal gap-16">
             <FormField
               control={form.control}
               name="saint"
@@ -106,6 +107,20 @@ export default function SubmitQuote() {
                   <FormItem className="flex flex-col">
                     <FormLabel className="text-base">Saint</FormLabel>
                     <SaintCombobox field={field} setValue={setValue} />
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="book"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-col">
+                    <FormLabel className="text-base">Book</FormLabel>
+                    <BookCombobox />
                     <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                   </FormItem>
                 </>
