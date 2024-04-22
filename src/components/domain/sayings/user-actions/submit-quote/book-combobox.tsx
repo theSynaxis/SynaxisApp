@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { api } from "~/trpc/react";
 
 // import components
@@ -17,111 +14,77 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { useToast } from "~/components/ui/use-toast";
 
 export default function BookCombobox() {
+  // isbn search cannot be a form, proper.
+  // if this form is nested in the larger SubmitQuote form
+  // submitting this form will trigger submit for that form
+  // there are "solutions" online but I don't have the patience today
+  const [isbnValue, setIsbnValue] = useState("");
   const [submitError, setSubmitError] = useState("");
+  const [addBookOpen, setAddBookOpen] = useState(false);
   const { toast } = useToast();
 
-  const formSchema = z.object({
-    isbn: z.union([z.string().min(10).max(10), z.string().min(13).max(13)]),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      isbn: "",
-    },
-  });
-
-  const {
-    formState: { isDirty },
-    setValue,
-    setError,
-    reset,
-  } = form;
-
-  const createQuote = api.work.isbnSearch.useMutation({
+  const createBook = api.work.isbnSearch.useMutation({
     onSuccess: (data) => {
       toast({
         title: `Success`,
         description: `${data?.volumeInfo.title} has been submitted!`,
       });
-      return reset();
+      return setAddBookOpen(false);
     },
     onError: (e) => {
-      return setSubmitError(e.message);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      return setSubmitError(JSON.parse(e.message)[0].message);
     },
   });
 
-  function onSubmit(formData: z.infer<typeof formSchema>) {
-    createQuote.mutate({
-      isbn: formData.isbn,
+  function onSubmit(isbn: string) {
+    createBook.mutate({
+      isbn: isbn,
     });
   }
 
   return (
     <>
-      <Dialog>
+      <Dialog open={addBookOpen} onOpenChange={setAddBookOpen}>
         <DialogTrigger asChild>
-          <Button>Add Book</Button>
+          <Button onClick={() => setAddBookOpen(true)}>Add Book</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Report Quote</DialogTitle>
+            <DialogTitle>Submit a New Book</DialogTitle>
             <DialogDescription>
-              Bring a quote to the attention of our moderation team.
+              Our list of approved books are ever expanding. Help us out by
+              adding one!
             </DialogDescription>
           </DialogHeader>
 
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex w-full flex-col gap-2"
-            >
-              <FormField
-                control={form.control}
-                name="isbn"
-                render={({ field }) => (
-                  <>
-                    <FormItem>
-                      <FormLabel className="text-base">
-                        Add Book via ISBN
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="ISBN"
-                          className="text-black w-full rounded-full px-4 py-2"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
-                    </FormItem>
-                  </>
-                )}
-              />
+          <Input
+            type="text"
+            placeholder="ISBN"
+            className="text-black w-full rounded-full px-4 py-2"
+            value={isbnValue}
+            onChange={(e) => setIsbnValue(e.target.value)}
+          />
 
-              <DialogFooter>
-                <Button
-                  variant={
-                    createQuote.isLoading || isDirty ? "default" : "disabled"
-                  }
-                >
-                  {createQuote.isLoading ? "Submitting..." : "Submit"}
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
+          {submitError && (
+            <p className="pl-4 font-bold text-secondary-red-500">
+              {submitError}
+            </p>
+          )}
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant={createBook.isLoading ? "disabled" : "default"}
+              onClick={() => onSubmit(isbnValue)}
+            >
+              {createBook.isLoading ? "Submitting..." : "Submit"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

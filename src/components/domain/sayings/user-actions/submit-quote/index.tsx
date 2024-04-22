@@ -30,10 +30,16 @@ export default function SubmitQuote() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       text: "",
-      publicationCity: "",
-      publicationYear: "",
-      pageStart: "",
-      pageEnd: "",
+      citation: {
+        book: {
+          title: "",
+          authors: [],
+        },
+        publicationCity: "",
+        publicationYear: "",
+        pageStart: "",
+        pageEnd: "",
+      },
     },
   });
 
@@ -61,10 +67,10 @@ export default function SubmitQuote() {
     createQuote.mutate({
       text: formData.text,
       citation: {
-        publicationCity: formData.publicationCity, // supplied by ISBN lookup
-        publicationYear: formData.publicationYear, // supplied by ISBN lookup
-        pageStart: formData.pageStart,
-        pageEnd: formData.pageEnd,
+        publicationCity: formData.citation.publicationCity, // supplied by ISBN lookup
+        publicationYear: formData.citation.publicationYear, // supplied by ISBN lookup
+        pageStart: formData.citation.pageStart,
+        pageEnd: formData.citation.pageEnd,
       },
     });
   }
@@ -115,7 +121,7 @@ export default function SubmitQuote() {
 
             <FormField
               control={form.control}
-              name="book"
+              name="citation.book"
               render={({ field }) => (
                 <>
                   <FormItem className="flex flex-col">
@@ -131,7 +137,7 @@ export default function SubmitQuote() {
           <span className="flex flex-row items-center justify-normal gap-12">
             <FormField
               control={form.control}
-              name="pageStart"
+              name="citation.pageStart"
               render={({ field }) => (
                 <>
                   <FormItem>
@@ -152,7 +158,7 @@ export default function SubmitQuote() {
 
             <FormField
               control={form.control}
-              name="pageEnd"
+              name="citation.pageEnd"
               render={({ field }) => (
                 <>
                   <FormItem>
