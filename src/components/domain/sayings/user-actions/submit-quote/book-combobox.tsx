@@ -27,13 +27,28 @@ export default function BookCombobox() {
   const [addBookOpen, setAddBookOpen] = useState(false);
   const { toast } = useToast();
 
-  const createBook = api.work.isbnSearch.useMutation({
+  const createBook = api.work.create.useMutation({
     onSuccess: (data) => {
       toast({
         title: `Success`,
-        description: `${data?.volumeInfo.title} has been submitted!`,
+        description: `${data?.title} has been submitted!`,
       });
       return setAddBookOpen(false);
+    },
+    onError: (e) => {
+      return setSubmitError(e.message);
+    },
+  });
+
+  const searchIsbn = api.work.isbnSearch.useMutation({
+    onSuccess: (data, variables) => {
+      return createBook.mutate({
+        title: data.title,
+        authors: data.authors,
+        publishedDate: data.publishedDate,
+        authorId: null, // TODO: add authorId to connect with saints later
+        isbn: variables.isbn,
+      });
     },
     onError: (e) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
@@ -42,7 +57,7 @@ export default function BookCombobox() {
   });
 
   function onSubmit(isbn: string) {
-    createBook.mutate({
+    searchIsbn.mutate({
       isbn: isbn,
     });
   }
@@ -79,10 +94,10 @@ export default function BookCombobox() {
           <DialogFooter>
             <Button
               type="button"
-              variant={createBook.isLoading ? "disabled" : "default"}
+              variant={searchIsbn.isLoading ? "disabled" : "default"}
               onClick={() => onSubmit(isbnValue)}
             >
-              {createBook.isLoading ? "Submitting..." : "Submit"}
+              {searchIsbn.isLoading ? "Submitting..." : "Submit"}
             </Button>
           </DialogFooter>
         </DialogContent>

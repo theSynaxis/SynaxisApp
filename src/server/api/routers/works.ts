@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { works } from "~/server/db/schema";
+import { TRPCError } from "@trpc/server";
 
 interface GoogleBooksApiItem {
   kind: string;
@@ -75,22 +76,44 @@ export const workRouter = createTRPCRouter({
 
       const response = await fetch(url);
       const data = (await response.json()) as GoogleBooksApi;
-      return data.items[0];
+      const book = data.items[0];
+
+      if (!book) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Could not find book with the ISBN provided.",
+        });
+      }
+
+      return {
+        title: book.volumeInfo.title,
+        authors: book.volumeInfo.authors,
+        publishedDate: book.volumeInfo.publishedDate,
+      };
     }),
   create: publicProcedure
     .input(
       z.object({
         title: z.string().min(1),
-        authorId: z.number(),
-        publishedDate: z.string().nullable(),
+        authors: z.array(z.string()),
+        isbn: z.union([z.string().min(10).max(10), z.string().min(13).max(13)]),
+        authorId: z.number().nullable(),
+        publishedDate: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(works).values({
         title: input.title,
+        isbn: input.isbn,
         authorId: input.authorId,
         publishedDate: input.publishedDate,
       });
+
+      const book = await ctx.db
+        .select()
+        .from(works)
+        .where(eq(works.isbn, input.isbn));
+      return book[0];
     }),
   updateApproval: publicProcedure // TODO: modProcedure
     .input(
