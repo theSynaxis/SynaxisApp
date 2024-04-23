@@ -71,7 +71,6 @@ export const workRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      // const isbn = "9780881416817";
       const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${input.isbn}`;
 
       const response = await fetch(url);
@@ -107,6 +106,7 @@ export const workRouter = createTRPCRouter({
         isbn: input.isbn,
         authorId: input.authorId,
         publishedDate: input.publishedDate,
+        authors: input.authors,
       });
 
       const book = await ctx.db

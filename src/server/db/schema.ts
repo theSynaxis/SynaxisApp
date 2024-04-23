@@ -148,9 +148,9 @@ export const works = createTable("works", {
   // authorId should be nullable; most books with quotes aren't written by saints
   authorId: integer("author_id").references(() => saints.id),
   // if a work is written by someone else and it contains a quote from a saint:
-  authors: varchar("author_name"),
-  translators: varchar("translator_name"),
-  editors: varchar("editor_name"),
+  authors: varchar("authors").array(),
+  translators: varchar("translators").array(),
+  editors: varchar("editors").array(),
   isbn: varchar("isbn"),
   blurb: varchar("blurb"),
   // because users can submit works, they need to be approved before publically consumed.
