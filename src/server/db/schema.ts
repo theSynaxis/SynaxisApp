@@ -152,6 +152,7 @@ export const works = createTable("works", {
   translators: varchar("translators").array(),
   editors: varchar("editors").array(),
   isbn: varchar("isbn"),
+  coverImage: varchar("cover_image"),
   blurb: varchar("blurb"),
   // because users can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),

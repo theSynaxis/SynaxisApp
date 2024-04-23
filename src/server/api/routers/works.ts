@@ -63,6 +63,10 @@ interface GoogleBooksApi {
   items: GoogleBooksApiItem[];
 }
 
+interface BookCover {
+  url: string;
+}
+
 export const workRouter = createTRPCRouter({
   isbnSearch: publicProcedure
     .input(
@@ -84,10 +88,21 @@ export const workRouter = createTRPCRouter({
         });
       }
 
+      // search for book cover url after finding book:
+      const coverIsbn =
+        input.isbn.length === 13 && input.isbn.includes("978")
+          ? `978-${input.isbn.substring(3)}` // if ISBN-13, add hiphen after 978
+          : `978-${input.isbn}`; // if ISBN-10, add 978- before number
+
+      const coverUrl = `http://bookcover.longitood.com/bookcover/${coverIsbn}`;
+      const coverResponse = await fetch(coverUrl);
+      const coverData = (await coverResponse.json()) as BookCover;
+
       return {
         title: book.volumeInfo.title,
         authors: book.volumeInfo.authors,
         publishedDate: book.volumeInfo.publishedDate,
+        coverImage: coverData.url,
       };
     }),
   create: publicProcedure
@@ -98,6 +113,7 @@ export const workRouter = createTRPCRouter({
         isbn: z.union([z.string().min(10).max(10), z.string().min(13).max(13)]),
         authorId: z.number().nullable(),
         publishedDate: z.string(),
+        coverImage: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -107,6 +123,7 @@ export const workRouter = createTRPCRouter({
         authorId: input.authorId,
         publishedDate: input.publishedDate,
         authors: input.authors,
+        coverImage: input.coverImage,
       });
 
       const book = await ctx.db

@@ -48,6 +48,7 @@ export default function BookCombobox() {
         publishedDate: data.publishedDate,
         authorId: null, // TODO: add authorId to connect with saints later
         isbn: variables.isbn,
+        coverImage: data.coverImage,
       });
     },
     onError: (e) => {
