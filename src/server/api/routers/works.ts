@@ -8,6 +8,7 @@ import {
 } from "~/server/api/trpc";
 import { works } from "~/server/db/schema";
 import { isbnSearch } from "../helpers";
+import { TRPCError } from "@trpc/server";
 
 export const workRouter = createTRPCRouter({
   isbnSearch: publicProcedure
@@ -43,18 +44,28 @@ export const workRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(works).values({
-        title: input.title,
-        authorId: input.authorId,
-        authors: input.authors,
-        isbn: input.isbn,
-        blurb: input.blurb,
-        coverImage: input.coverImage,
-        publisher: input.publisher,
-        publicationCity: input.publicationCity,
-        publicationYear: input.publicationYear,
-        submitId: ctx.user.id,
-      });
+      await ctx.db
+        .insert(works)
+        .values({
+          title: input.title,
+          authorId: input.authorId,
+          authors: input.authors,
+          isbn: input.isbn,
+          blurb: input.blurb,
+          coverImage: input.coverImage,
+          publisher: input.publisher,
+          publicationCity: input.publicationCity,
+          publicationYear: input.publicationYear,
+          submitId: ctx.user.id,
+        })
+        .catch((e) => {
+          if (String(e).includes("synaxis-app_works_isbn_unique")) {
+            throw new TRPCError({
+              code: "UNPROCESSABLE_CONTENT",
+              message: "We already have this book in our database.",
+            });
+          }
+        });
 
       // return for toast success message
       const book = await ctx.db
