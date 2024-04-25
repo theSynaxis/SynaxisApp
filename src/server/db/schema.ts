@@ -143,17 +143,19 @@ export const saints = createTable("saints", {
 export const works = createTable("works", {
   id: serial("id").primaryKey(),
   title: varchar("title").notNull(),
-  publishedDate: varchar("published_date").notNull(),
   // a pseudo-author should be created for anthology works and the hymns
   // authorId should be nullable; most books with quotes aren't written by saints
   authorId: integer("author_id").references(() => saints.id),
   // if a work is written by someone else and it contains a quote from a saint:
-  authors: varchar("authors").array(),
+  authors: varchar("authors").array().notNull(),
   translators: varchar("translators").array(),
   editors: varchar("editors").array(),
-  isbn: varchar("isbn"),
-  coverImage: varchar("cover_image"),
+  isbn: varchar("isbn").notNull(),
   blurb: varchar("blurb"),
+  coverImage: varchar("cover_image"),
+  publisher: varchar("publisher"),
+  publicationCity: varchar("publication_city"),
+  publicationYear: varchar("publication_year").notNull(),
   // because users can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
   createdDate: timestamp("created_date")
@@ -169,8 +171,6 @@ export const works = createTable("works", {
 // each quote has a citation
 export const citations = createTable("citations", {
   id: serial("id").primaryKey(),
-  publicationCity: varchar("publication_city").notNull(),
-  publicationYear: varchar("publication_year").notNull(),
   pageStart: integer("page_start").notNull(),
   pageEnd: integer("page_end").notNull(),
   // because users can submit citations, they need to be approved before publically consumed.

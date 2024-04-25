@@ -48,6 +48,7 @@
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.29.3",
     "embla-carousel-react": "^8.0.0",
+    "fast-xml-parser": "^4.3.6",
     "framer-motion": "^11.0.5",
     "html-react-parser": "^5.1.4",
     "lucia": "^3.0.1",

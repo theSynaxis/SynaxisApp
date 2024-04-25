@@ -44,11 +44,14 @@ export default function BookCombobox() {
     onSuccess: (data, variables) => {
       return createBook.mutate({
         title: data.title,
-        authors: data.authors,
-        publishedDate: data.publishedDate,
         authorId: null, // TODO: add authorId to connect with saints later
+        authors: data.authors,
         isbn: variables.isbn,
+        blurb: data.blurb ?? null,
         coverImage: data.coverImage,
+        publisher: data.publisher ?? "Unknown", // TODO: admin dashboard should filter by unknowns to fix
+        publicationYear: data.publicationYear,
+        publicationCity: data.publicationCity ?? "Unknown", // TODO: admin dashboard should filter by unknowns to fix
       });
     },
     onError: (e) => {

@@ -3,69 +3,7 @@ import { eq } from "drizzle-orm";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { works } from "~/server/db/schema";
-import { TRPCError } from "@trpc/server";
-
-interface GoogleBooksApiItem {
-  kind: string;
-  id: string;
-  etag: string;
-  selfLink: string;
-  volumeInfo: {
-    title: string;
-    authors: string[];
-    publishedDate: string;
-    industryIdentifiers: { type: string; identifier: string }[];
-    readingModes: {
-      text: boolean;
-      image: boolean;
-    };
-    pageCount: number;
-    printType: string;
-    categories: string[];
-    maturityRating: string;
-    allowAnonLogging: boolean;
-    contentVersion: string;
-    panelizationSummary: {
-      containsEpubBubbles: boolean;
-      containsImageBubbles: boolean;
-    };
-    language: string;
-    previewLink: string;
-    infoLink: string;
-    canonicalVolumeLink: string;
-  };
-  saleInfo: {
-    country: string;
-    saleability: string;
-    isEbook: boolean;
-  };
-  accessInfo: {
-    country: string;
-    viewability: string;
-    embeddable: boolean;
-    publicDomain: boolean;
-    textToSpeechPermission: string;
-    epub: {
-      isAvailable: boolean;
-    };
-    pdf: {
-      isAvailable: boolean;
-    };
-    webReaderLink: string;
-    accessViewStatus: string;
-    quoteSharingAllowed: boolean;
-  };
-}
-
-interface GoogleBooksApi {
-  kind: string;
-  totalItems: number;
-  items: GoogleBooksApiItem[];
-}
-
-interface BookCover {
-  url: string;
-}
+import { isbnSearch } from "../helpers";
 
 export const workRouter = createTRPCRouter({
   isbnSearch: publicProcedure
@@ -75,34 +13,15 @@ export const workRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${input.isbn}`;
-
-      const response = await fetch(url);
-      const data = (await response.json()) as GoogleBooksApi;
-      const book = data.items[0];
-
-      if (!book) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Could not find book with the ISBN provided.",
-        });
-      }
-
-      // search for book cover url after finding book:
-      const coverIsbn =
-        input.isbn.length === 13 && input.isbn.includes("978")
-          ? `978-${input.isbn.substring(3)}` // if ISBN-13, add hiphen after 978
-          : `978-${input.isbn}`; // if ISBN-10, add 978- before number
-
-      const coverUrl = `http://bookcover.longitood.com/bookcover/${coverIsbn}`;
-      const coverResponse = await fetch(coverUrl);
-      const coverData = (await coverResponse.json()) as BookCover;
-
+      const book = await isbnSearch(input);
       return {
-        title: book.volumeInfo.title,
-        authors: book.volumeInfo.authors,
-        publishedDate: book.volumeInfo.publishedDate,
-        coverImage: coverData.url,
+        title: book.title,
+        authors: book.authors,
+        blurb: book.blurb,
+        coverImage: book.coverImage,
+        publisher: book.publisher,
+        publicationYear: book.publicationYear,
+        publicationCity: book.publicationCity,
       };
     }),
   create: publicProcedure
@@ -112,20 +31,27 @@ export const workRouter = createTRPCRouter({
         authors: z.array(z.string()),
         isbn: z.union([z.string().min(10).max(10), z.string().min(13).max(13)]),
         authorId: z.number().nullable(),
-        publishedDate: z.string(),
         coverImage: z.string(),
+        blurb: z.string().nullable(),
+        publisher: z.string(),
+        publicationCity: z.string(),
+        publicationYear: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(works).values({
         title: input.title,
-        isbn: input.isbn,
         authorId: input.authorId,
-        publishedDate: input.publishedDate,
         authors: input.authors,
+        isbn: input.isbn,
+        blurb: input.blurb,
         coverImage: input.coverImage,
+        publisher: input.publisher,
+        publicationCity: input.publicationCity,
+        publicationYear: input.publicationYear,
       });
 
+      // return for toast success message
       const book = await ctx.db
         .select()
         .from(works)
