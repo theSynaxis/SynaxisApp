@@ -55,6 +55,7 @@ export default function BookCombobox() {
       });
     },
     onError: (e) => {
+      // TODO: duplicate key value violates unique constraint "synaxis-app_works_isbn_unique" to return user friendly error
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       return setSubmitError(JSON.parse(e.message)[0].message);
     },

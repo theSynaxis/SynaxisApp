@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { works } from "~/server/db/schema";
 import { isbnSearch } from "../helpers";
 
@@ -24,7 +28,7 @@ export const workRouter = createTRPCRouter({
         publicationCity: book.publicationCity,
       };
     }),
-  create: publicProcedure
+  create: protectedProcedure
     .input(
       z.object({
         title: z.string().min(1),
@@ -49,6 +53,7 @@ export const workRouter = createTRPCRouter({
         publisher: input.publisher,
         publicationCity: input.publicationCity,
         publicationYear: input.publicationYear,
+        submitId: ctx.user.id,
       });
 
       // return for toast success message

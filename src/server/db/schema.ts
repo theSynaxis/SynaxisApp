@@ -150,7 +150,7 @@ export const works = createTable("works", {
   authors: varchar("authors").array().notNull(),
   translators: varchar("translators").array(),
   editors: varchar("editors").array(),
-  isbn: varchar("isbn").notNull(),
+  isbn: varchar("isbn").notNull().unique(),
   blurb: varchar("blurb"),
   coverImage: varchar("cover_image"),
   publisher: varchar("publisher"),
@@ -158,6 +158,10 @@ export const works = createTable("works", {
   publicationYear: varchar("publication_year").notNull(),
   // because users can submit works, they need to be approved before publically consumed.
   isApproved: boolean("is_approved").default(false).notNull(),
+  // id of the user who submitted the quote.
+  submitId: varchar("submit_id")
+    .references(() => users.id)
+    .notNull(),
   createdDate: timestamp("created_date")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
