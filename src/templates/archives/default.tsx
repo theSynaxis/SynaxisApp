@@ -2,19 +2,25 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   type TemplateProps,
-  stripWpUrl,
+  // stripWpUrl,
   swapWpUrl,
   getFeaturedImage,
+  type WpPage,
 } from "@nextwp/core";
-import type { ArchivePageData } from "@nextwp/core/src/api/get-page-data/get-archive-page";
 import type { Post } from "~/types/post";
-import { Badge } from "~/components/ui/badge";
+// import { Badge } from "~/components/ui/badge";
 import Edges from "~/components/layout/edges";
 // import { ArchivePagination } from "~/components/template-parts/archive-pagination";
 import { parseHtml } from "~/lib/utils";
 
-interface BlogArchiveData extends Omit<ArchivePageData, "items"> {
+interface BlogArchiveData {
   items?: Post[];
+  page?: WpPage | undefined;
+  prevPage?: string | undefined;
+  nextPage?: string | undefined;
+  totalPages?: number | undefined;
+  totalItems?: number | undefined;
+  currentPage?: number | undefined;
 }
 
 interface BlogArchive extends Omit<TemplateProps, "data"> {
@@ -36,7 +42,7 @@ export default function PostArchiveTemplate(props: BlogArchive) {
 
   return (
     <Edges>
-      <h1 className="mb-5">{parseHtml(page?.title?.rendered)}</h1>
+      <h1 className="mb-5">{parseHtml(`${page?.title?.rendered}`)}</h1>
       <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
         {items?.map((post: Post) => {
           const featuredImage = getFeaturedImage(post);
@@ -60,11 +66,11 @@ export default function PostArchiveTemplate(props: BlogArchive) {
               </div>
               <div className="max-w-xl">
                 <div className="mt-8 flex items-center gap-x-4 text-xs">
-                  <time className="text-gray-500" dateTime={post.datetime}>
+                  <time className="text-gray-500" dateTime={`${post.date}`}>
                     {post.date}
                   </time>
 
-                  {post?._embedded?.["wp:term"]?.map((tax) => {
+                  {/* {post?._embedded?.["wp:term"]?.map((tax) => {
                     return tax?.map((term, index) => {
                       return (
                         <Link href={stripWpUrl(term.link)} key={index}>
@@ -72,7 +78,7 @@ export default function PostArchiveTemplate(props: BlogArchive) {
                         </Link>
                       );
                     });
-                  })}
+                  })} */}
                 </div>
                 <div className="group relative">
                   <h3 className="text-gray-900 group-hover:text-gray-600 mt-3 text-lg font-semibold leading-6">
@@ -89,7 +95,7 @@ export default function PostArchiveTemplate(props: BlogArchive) {
                   />
                 </div>
                 <div className="relative mt-8 flex items-center gap-x-4">
-                  <Link href={stripWpUrl(post?._embedded?.author?.[0].link)}>
+                  {/* <Link href={stripWpUrl(post?._embedded?.author?.[0].link)}>
                     <Image
                       alt=""
                       className="bg-gray-100 h-10 w-10 rounded-full"
@@ -105,7 +111,7 @@ export default function PostArchiveTemplate(props: BlogArchive) {
                       </p>
                       <p className="text-gray-600">{post.author.role}</p>
                     </div>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </article>
