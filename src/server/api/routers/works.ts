@@ -1,34 +1,92 @@
 import { z } from "zod";
 import { eq } from "drizzle-orm";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { works } from "~/server/db/schema";
-  
+import { isbnSearch } from "../helpers";
+import { TRPCError } from "@trpc/server";
+
 export const workRouter = createTRPCRouter({
-  create: publicProcedure
-    .input(z.object({ 
-      title: z.string().min(1),
-      authorId: z.number(),
-      publishedDate: z.string().nullable(),
-    }))
+  isbnSearch: publicProcedure
+    .input(
+      z.object({
+        isbn: z.union([z.string().min(10).max(10), z.string().min(13).max(13)]),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const book = await isbnSearch(input);
+      return {
+        title: book.title,
+        authors: book.authors,
+        blurb: book.blurb,
+        coverImage: book.coverImage,
+        publisher: book.publisher,
+        publicationYear: book.publicationYear,
+        publicationCity: book.publicationCity,
+      };
+    }),
+  create: protectedProcedure
+    .input(
+      z.object({
+        title: z.string().min(1),
+        authors: z.array(z.string()),
+        isbn: z.union([z.string().min(10).max(10), z.string().min(13).max(13)]),
+        authorId: z.number().nullable(),
+        coverImage: z.string(),
+        blurb: z.string().nullable(),
+        publisher: z.string(),
+        publicationCity: z.string(),
+        publicationYear: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(works).values({
-        title: input.title,
-        authorId: input.authorId,
-        publishedDate: input.publishedDate,
-      });
+      await ctx.db
+        .insert(works)
+        .values({
+          title: input.title,
+          authorId: input.authorId,
+          authors: input.authors,
+          isbn: input.isbn,
+          blurb: input.blurb,
+          coverImage: input.coverImage,
+          publisher: input.publisher,
+          publicationCity: input.publicationCity,
+          publicationYear: input.publicationYear,
+          submitId: ctx.user.id,
+        })
+        .catch((e) => {
+          if (String(e).includes("synaxis-app_works_isbn_unique")) {
+            throw new TRPCError({
+              code: "UNPROCESSABLE_CONTENT",
+              message: "We already have this book in our database.",
+            });
+          }
+        });
+
+      // return for toast success message
+      const book = await ctx.db
+        .select()
+        .from(works)
+        .where(eq(works.isbn, input.isbn));
+      return book[0];
     }),
   updateApproval: publicProcedure // TODO: modProcedure
-    .input(z.object({ 
+    .input(
+      z.object({
         id: z.number(),
-        isApproved: z.boolean()
-    }))
-    .mutation(async ( { ctx, input }) => {
-        await ctx.db
-            .update(works)
-            .set({
-                isApproved: input.isApproved,
-            })
-            .where(eq(works.id, input.id))
-    })
+        isApproved: z.boolean(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(works)
+        .set({
+          isApproved: input.isApproved,
+        })
+        .where(eq(works.id, input.id));
+    }),
 });

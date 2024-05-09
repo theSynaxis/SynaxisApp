@@ -20,6 +20,7 @@ import {
 import { useToast } from "~/components/ui/use-toast";
 import { Textarea } from "~/components/ui/textarea";
 import SaintCombobox from "~/components/domain/common/saint-combobox";
+import BookCombobox from "./book-combobox";
 
 export default function SubmitQuote() {
   const [submitError, setSubmitError] = useState("");
@@ -29,10 +30,16 @@ export default function SubmitQuote() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       text: "",
-      publicationCity: "",
-      publicationYear: "",
-      pageStart: "",
-      pageEnd: "",
+      citation: {
+        book: {
+          title: "",
+          authors: [],
+        },
+        publicationCity: "",
+        publicationYear: "",
+        pageStart: "",
+        pageEnd: "",
+      },
     },
   });
 
@@ -60,10 +67,10 @@ export default function SubmitQuote() {
     createQuote.mutate({
       text: formData.text,
       citation: {
-        publicationCity: formData.publicationCity, // supplied by ISBN lookup
-        publicationYear: formData.publicationYear, // supplied by ISBN lookup
-        pageStart: formData.pageStart,
-        pageEnd: formData.pageEnd,
+        publicationCity: formData.citation.publicationCity, // supplied by ISBN lookup
+        publicationYear: formData.citation.publicationYear, // supplied by ISBN lookup
+        pageStart: formData.citation.pageStart,
+        pageEnd: formData.citation.pageEnd,
       },
     });
   }
@@ -97,7 +104,7 @@ export default function SubmitQuote() {
         <span className="flex flex-col items-start justify-between gap-4">
           <FormLabel className="text-lg">Citation Details</FormLabel>
 
-          <span>
+          <span className="flex flex-row items-center justify-normal gap-16">
             <FormField
               control={form.control}
               name="saint"
@@ -111,12 +118,26 @@ export default function SubmitQuote() {
                 </>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="citation.book"
+              render={({ field }) => (
+                <>
+                  <FormItem className="flex flex-col">
+                    <FormLabel className="text-base">Book</FormLabel>
+                    <BookCombobox />
+                    <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                  </FormItem>
+                </>
+              )}
+            />
           </span>
 
           <span className="flex flex-row items-center justify-normal gap-12">
             <FormField
               control={form.control}
-              name="pageStart"
+              name="citation.pageStart"
               render={({ field }) => (
                 <>
                   <FormItem>
@@ -137,7 +158,7 @@ export default function SubmitQuote() {
 
             <FormField
               control={form.control}
-              name="pageEnd"
+              name="citation.pageEnd"
               render={({ field }) => (
                 <>
                   <FormItem>
