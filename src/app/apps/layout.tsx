@@ -17,7 +17,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const menuItems = await getMenuItems({ slug: "sidebar-menu" });
+  const sidebarMenu =
+    process.env.NODE_ENV === "development"
+      ? "dev-sidebar-menu"
+      : "prod-sidebar-menu";
+  const menuItems = await getMenuItems({ slug: sidebarMenu });
   const siteSettings = await getSiteSettings();
   const logo = await getSiteLogo();
   const cookieStore = cookies();
