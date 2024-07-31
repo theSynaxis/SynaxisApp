@@ -13,28 +13,31 @@ export default async function CalendarPage() {
           <span className="text-secondary-red-600">Lives</span> of the Saints
         </h1>
 
-        <p className="w-1/2">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem saepe
-          corporis, quaerat veritatis ipsam, iure sapiente quibusdam assumenda
-          non, consequuntur quas accusamus? Suscipit inventore architecto illum
-          maiores nostrum reprehenderit laboriosam!
+        <p className="w-1/2 text-center">
+          With the Lives app, you can become more familiar with the saints of
+          the Orthodox Church.
         </p>
 
-        <div>
-          <h3>Download</h3>
-          <p>From Apple App Store</p>
-          <p>From Google Play Store</p>
-        </div>
-
-        <Link href="/apps/calendar/app">
-          <div>
-            <h3>Use in the Browser</h3>
-            <p>
+        <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:gap-8">
+          <Link
+            className="flex max-w-md flex-col gap-4 rounded-xl border border-neutral-900 bg-white/10 p-4 shadow-md hover:bg-white/20 hover:shadow-lg"
+            href="/apps/lives/app"
+          >
+            <h3 className="text-2xl font-bold">Use in Browser →</h3>
+            <div className="text-lg">
               It&rsquo;s also a browser app! You can use it right here in your
               favorite browser.
-            </p>
+            </div>
+          </Link>
+          <div className="flex max-w-md flex-col gap-4 rounded-xl border border-neutral-900 bg-white/10 p-4 shadow-md">
+            <h3 className="text-2xl font-bold">
+              Download the App - Coming Soon
+            </h3>
+            <div className="text-lg">
+              Mobile app for your phone coming soon!
+            </div>
           </div>
-        </Link>
+        </div>
       </div>
     </main>
   );
