@@ -2,13 +2,17 @@ import { unstable_noStore as noStore } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { formatDate } from "date-fns";
 
 import { Button } from "~/components/ui/button";
+import LivesCard from "~/components/domain/lives/lives-card";
 
 export default async function LivesApp() {
   noStore();
   const cookieStore = cookies();
   const userSession = cookieStore.get("auth_session");
+
+  const today = formatDate(new Date(), "EEEE, dd MMMM, y");
 
   return (
     <main className="flex w-full flex-col items-center justify-center text-neutral-900">
@@ -19,7 +23,11 @@ export default async function LivesApp() {
           <span className="text-secondary-red-600">Lives</span> of the Saints
         </h1>
 
-        <h2>Saint Silouan the Athonite</h2>
+        <h2>{today}</h2>
+
+        <LivesCard />
+
+        <h3>Saint Silouan the Athonite</h3>
 
         <Image
           src={"/images/saints/St-Silouan-Athonite.jpg"}
