@@ -34,6 +34,7 @@ import {
   EMPEROR,
   EMPRESS,
   EQUAL_TO_THE_APOSTLES,
+  FOOL_FOR_CHRIST,
   GRAND_PRINCE,
   GRAND_PRINCESS,
   KING,
@@ -74,6 +75,7 @@ import {
   isPrincess,
   isProphet,
   isQueen,
+  isFoolForChrist,
 } from "~/lib/constants";
 
 // import types
@@ -121,6 +123,7 @@ export default function SubmitSaint() {
       isMarried: false,
       isMale: true,
       isLevite: false,
+      isFoolForChrist: false,
     },
   });
 
@@ -222,6 +225,7 @@ export default function SubmitSaint() {
       isMarried: formData.isMarried,
       isMale: formData.isMale,
       isLevite: formData.isLevite,
+      isFoolForChrist: formData.isFoolForChrist,
       yearBorn: formData.yearBorn ?? null,
       yearDied: formData.yearDied ?? null,
     });
@@ -1083,6 +1087,33 @@ export default function SubmitSaint() {
                         />
                       </FormControl>
                       <FormDescription>Was this saint married?</FormDescription>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={isFoolForChrist}
+                render={({ field }) => (
+                  <>
+                    <FormItem className="flex flex-row items-center justify-normal gap-2 text-base">
+                      <FormLabel className="sr-only">
+                        Was this saint a fool for Christ?
+                      </FormLabel>
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          onClick={() => {
+                            return saintLogic(isFoolForChrist, setValue);
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Was this saint a fool for Christ?
+                      </FormDescription>
                       <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                     </FormItem>
                   </>

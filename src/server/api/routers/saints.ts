@@ -78,6 +78,7 @@ export const saintRouter = createTRPCRouter({
         isMarried: z.boolean(),
         isMale: z.boolean(),
         isLevite: z.boolean(),
+        isFoolForChrist: z.boolean(),
         yearBorn: z.number().nullable(),
         yearDied: z.number().nullable(),
       }),
@@ -95,6 +96,7 @@ export const saintRouter = createTRPCRouter({
         isMarried: input.isMarried,
         isMale: input.isMale,
         isLevite: input.isLevite,
+        isFoolForChrist: input.isFoolForChrist,
         yearBorn: input.yearBorn,
         yearDied: input.yearDied,
       });

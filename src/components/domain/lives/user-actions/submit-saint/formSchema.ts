@@ -40,4 +40,5 @@ export const formSchema = z.object({
   isMarried: z.boolean(),
   isMale: z.boolean(),
   isLevite: z.boolean(),
+  isFoolForChrist: z.boolean(),
 });
