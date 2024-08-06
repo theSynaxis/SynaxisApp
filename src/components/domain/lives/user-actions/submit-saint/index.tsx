@@ -34,7 +34,6 @@ import {
   EMPEROR,
   EMPRESS,
   EQUAL_TO_THE_APOSTLES,
-  FOOL_FOR_CHRIST,
   GRAND_PRINCE,
   GRAND_PRINCESS,
   KING,
@@ -76,14 +75,49 @@ import {
   isProphet,
   isQueen,
   isFoolForChrist,
+  OF_CHRIST_AND_THEOTOKOS,
+  SAINT_WITH_GREAT_DOXOLOGY,
+  SAINT_WITH_SERVICE,
+  GREAT_SAINTS_DAY,
+  SIMPLE_COMMEMORATION,
 } from "~/lib/constants";
 
 // import types
 import { type z } from "zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 export default function SubmitSaint() {
   const { toast } = useToast();
   const [submitError, setSubmitError] = useState("");
+
+  const feastsOptions = [
+    {
+      value: OF_CHRIST_AND_THEOTOKOS,
+      label: "Feast of the Lord or the Theotokos",
+    },
+    {
+      value: GREAT_SAINTS_DAY,
+      label: "A great saint's Feast Day",
+    },
+    {
+      value: SAINT_WITH_GREAT_DOXOLOGY,
+      label: "A saint day with Great Doxology at Matins",
+    },
+    {
+      value: SAINT_WITH_SERVICE,
+      label: "A saint with a service",
+    },
+    {
+      value: SIMPLE_COMMEMORATION,
+      label: "Simple commemoration of a saint",
+    },
+  ];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -94,6 +128,7 @@ export default function SubmitSaint() {
         month: 0,
         day: 0,
       },
+      feastType: SIMPLE_COMMEMORATION,
       yearBorn: undefined,
       yearDied: undefined,
       isProphet: false,
@@ -217,6 +252,7 @@ export default function SubmitSaint() {
         month: Number(formData.feastDate.month),
         day: Number(formData.feastDate.day),
       },
+      feastType: formData.feastType,
       apostle: apostle(),
       clergy: clergy(),
       royal: royalty(),
@@ -309,6 +345,49 @@ export default function SubmitSaint() {
                           max="31"
                           {...field}
                         />
+                      </FormControl>
+                      <FormMessage className="pl-4 font-bold text-secondary-red-500" />
+                    </FormItem>
+                  </>
+                )}
+              />
+            </span>
+          </span>
+
+          <span>
+            <FormLabel className="text-lg">
+              Feast <span className="text-secondary-red-500">*</span>
+            </FormLabel>
+
+            <span className="flex flex-row items-center justify-normal gap-4">
+              <FormField
+                control={form.control}
+                name="feastType"
+                render={({ field }) => (
+                  <>
+                    <FormItem>
+                      <br />
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Feast" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {feastsOptions.map((option) => {
+                              return (
+                                <SelectItem
+                                  value={option.value}
+                                  key={option.label}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                     </FormItem>

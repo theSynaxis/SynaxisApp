@@ -15,8 +15,10 @@ import {
   EQUAL_TO_THE_APOSTLES,
   GRAND_PRINCE,
   GRAND_PRINCESS,
+  GREAT_SAINTS_DAY,
   KING,
   MARTYR,
+  OF_CHRIST_AND_THEOTOKOS,
   PASSION_BEARER,
   PATRIARCH,
   PRIEST,
@@ -24,7 +26,10 @@ import {
   PRINCESS,
   PROPHET,
   QUEEN,
+  SAINT_WITH_GREAT_DOXOLOGY,
+  SAINT_WITH_SERVICE,
   SEVENTY_APOSTLES,
+  SIMPLE_COMMEMORATION,
   TWELVE_APOSTLES,
 } from "~/lib/constants";
 
@@ -35,6 +40,13 @@ export const saintRouter = createTRPCRouter({
         name: z.string().min(1),
         isBc: z.boolean(),
         feastDate: z.object({ month: z.number(), day: z.number() }),
+        feastType: z.union([
+          z.literal(OF_CHRIST_AND_THEOTOKOS),
+          z.literal(GREAT_SAINTS_DAY),
+          z.literal(SAINT_WITH_GREAT_DOXOLOGY),
+          z.literal(SAINT_WITH_SERVICE),
+          z.literal(SIMPLE_COMMEMORATION),
+        ]),
         apostle: z
           .union([
             z.literal(TWELVE_APOSTLES),
@@ -88,6 +100,7 @@ export const saintRouter = createTRPCRouter({
         name: input.name,
         isBc: input.isBc,
         feastDate: `${input.feastDate.month}/${input.feastDate.day}`,
+        feastType: input.feastType,
         apostle: input.apostle,
         clergy: input.clergy,
         royal: input.royal,
