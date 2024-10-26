@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { saints } from "~/server/db/schema";
 import {
   BISHOP,
@@ -32,6 +36,8 @@ import {
   SIMPLE_COMMEMORATION,
   TWELVE_APOSTLES,
 } from "~/lib/constants";
+import { eq } from "drizzle-orm";
+import { todayAsNumbers } from "~/lib/utils";
 
 export const saintRouter = createTRPCRouter({
   create: protectedProcedure
@@ -117,5 +123,12 @@ export const saintRouter = createTRPCRouter({
   list: protectedProcedure.query(async ({ ctx }) => {
     const items = await ctx.db.select().from(saints);
     return items;
+  }),
+  dailySaints: publicProcedure.query(async ({ ctx }) => {
+    const saintsOfTheDay = await ctx.db
+      .select()
+      .from(saints)
+      .where(eq(saints.feastDate, todayAsNumbers));
+    return saintsOfTheDay;
   }),
 });

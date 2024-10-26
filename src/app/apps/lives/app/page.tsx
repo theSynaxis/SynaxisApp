@@ -1,17 +1,15 @@
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { formatDate } from "date-fns";
 
 import { Button } from "~/components/ui/button";
 import LivesToday from "~/components/domain/lives/lives-today";
+import { today } from "~/lib/utils";
 
 export default async function LivesApp() {
   noStore();
   const cookieStore = cookies();
   const userSession = cookieStore.get("auth_session");
-
-  const today = formatDate(new Date(), "EEEE, dd MMMM, y");
 
   return (
     <main className="flex w-full flex-col items-center justify-start text-neutral-900">

@@ -21,15 +21,16 @@ type FeastType =
   | typeof SIMPLE_COMMEMORATION;
 
 interface LivesCardProps {
-  id: string;
+  id: number;
   header: string;
+  life: string;
   icon: string;
   feastType: FeastType;
   openState?: boolean;
 }
 
 export default function LivesCard(props: LivesCardProps) {
-  const { header, icon, feastType, openState } = props;
+  const { header, icon, life, feastType, openState } = props;
   const [openLivesCard, setOpenLivesCard] = useState(openState);
 
   function iconType(feastType: FeastType) {
@@ -99,16 +100,8 @@ export default function LivesCard(props: LivesCardProps) {
                 height={200}
               />
 
-              <p>
-                The Venerable Silouan of Athos, a new witness for God and a true
-                man of prayer for the whole world, &quot;who in the twentieth
-                century glorified Mount Athos and showed in it an angelic
-                life&quot; was born in Russia in 1866. He was born into the
-                family of the peasant Ivan Antonov who lived in the village of
-                Shovskoe in Lebedyansky district of Tambov province. The family
-                was large: father, mother, five sons and two daughters. The baby
-                was baptised in the village church of the Nativity of Christ and
-                named Simeon.
+              <p className="w-4/5">
+                {life ?? "There is no record for this saint."}
                 <br />
                 <Link href="/apps/lives/app/saints/saint" className="font-bold">
                   Read More →
