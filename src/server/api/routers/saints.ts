@@ -120,6 +120,20 @@ export const saintRouter = createTRPCRouter({
         yearDied: input.yearDied,
       });
     }),
+  addLife: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().min(1),
+        life: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(saints)
+        .set({ life: input.life })
+        .where(eq(saints.id, input.id));
+    }),
   list: protectedProcedure.query(async ({ ctx }) => {
     const items = await ctx.db.select().from(saints);
     return items;

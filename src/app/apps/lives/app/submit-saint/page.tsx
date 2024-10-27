@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import SubmitSaint from "~/components/domain/lives/user-actions/submit-saint";
 
-export default async function SayingsApp() {
+export default async function SubmitSaintPage() {
   noStore();
   const cookieStore = cookies();
   const userSession = cookieStore.get("auth_session");

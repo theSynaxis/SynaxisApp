@@ -10,7 +10,7 @@ import {
   CardFooter,
 } from "~/components/ui/card";
 
-export default async function SayingsApp() {
+export default async function UniqueSaintPage() {
   noStore();
 
   return (

@@ -30,7 +30,7 @@ interface LivesCardProps {
 }
 
 export default function LivesCard(props: LivesCardProps) {
-  const { header, icon, life, feastType, openState } = props;
+  const { id, header, icon, life, feastType, openState } = props;
   const [openLivesCard, setOpenLivesCard] = useState(openState);
 
   function iconType(feastType: FeastType) {
@@ -103,9 +103,25 @@ export default function LivesCard(props: LivesCardProps) {
               <p className="w-4/5">
                 {life ?? "There is no record for this saint."}
                 <br />
-                <Link href="/apps/lives/app/saints/saint" className="font-bold">
-                  Read More →
-                </Link>
+                {life ? (
+                  <>
+                    <Link
+                      href="/apps/lives/app/saints/saint"
+                      className="font-bold"
+                    >
+                      Read More →
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href={`/apps/lives/app/submit-life?saintId=${id}&saintName=${header}`}
+                      className="font-bold"
+                    >
+                      Submit Life →
+                    </Link>
+                  </>
+                )}
               </p>
             </CardContent>
           </>
