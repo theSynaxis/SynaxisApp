@@ -19,7 +19,6 @@ export default async function SubmitSaintPage() {
         >
           <span className="text-secondary-red-600">Lives</span> of the Saints
         </h1>
-
         <div className="w-3/5">
           <SubmitSaint />
         </div>

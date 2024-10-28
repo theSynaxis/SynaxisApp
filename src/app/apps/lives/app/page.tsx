@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { Button } from "~/components/ui/button";
 import LivesToday from "~/components/domain/lives/lives-today";
 import { today } from "~/lib/utils";
+import TextEditor from "~/components/ui/text-editor";
 
 export default async function LivesApp() {
   noStore();
@@ -23,6 +24,7 @@ export default async function LivesApp() {
         <h2>{today}</h2>
 
         <LivesToday />
+        <TextEditor />
 
         {userSession?.value ? (
           <Link href="/apps/lives/app/submit-saint">
