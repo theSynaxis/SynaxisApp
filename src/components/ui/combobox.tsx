@@ -32,7 +32,7 @@ interface ComboboxProps {
 }
 
 export function Combobox(props: ComboboxProps) {
-  const { items, placeholder, classes } = props;
+  const { items, placeholder } = props;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 

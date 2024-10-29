@@ -81,8 +81,8 @@ function CustomOnChangePlugin(props: {
     return editor.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-        const html = $generateHtmlFromNodes(editor, null) as string;
-        onChange(html);
+        const html = $generateHtmlFromNodes(editor, null);
+        onChange(`${html}`);
       });
     });
   }, [onChange, editor]);
