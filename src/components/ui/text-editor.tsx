@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { TreeView } from "@lexical/react/LexicalTreeView";
 import { mergeRegister } from "@lexical/utils";
+import { $generateHtmlFromNodes } from "@lexical/html";
 import {
   $getSelection,
   $isRangeSelection,
@@ -21,6 +21,7 @@ import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { parseHtml } from "~/lib/utils";
 
 const placeholder = "Enter some rich text...";
 const ExampleTheme = {
@@ -60,7 +61,7 @@ const ExampleTheme = {
 };
 
 const editorConfig = {
-  namespace: "React.js Demo",
+  namespace: "Synaxis WYSIWYG",
   nodes: [],
   // Handling of errors during update
   onError(error: Error) {
@@ -70,30 +71,60 @@ const editorConfig = {
   theme: ExampleTheme,
 };
 
+function CustomOnChangePlugin(props: {
+  onChange: (html: string) => void;
+}): null {
+  const [editor] = useLexicalComposerContext();
+  const { onChange } = props;
+
+  useEffect(() => {
+    return editor.registerUpdateListener(({ editorState }) => {
+      editorState.read(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+        const html = $generateHtmlFromNodes(editor, null) as string;
+        onChange(html);
+      });
+    });
+  }, [onChange, editor]);
+
+  return null;
+}
+
 export default function TextEditor() {
+  const [htmlEditorText, setHtmlEditorText] = useState("");
+
+  const handleChange = (e: string) => {
+    return setHtmlEditorText(e);
+  };
+
+  const userInput = parseHtml(`${htmlEditorText}`);
+
   return (
-    <LexicalComposer initialConfig={editorConfig}>
-      <div className="editor-container">
-        <ToolbarPlugin />
-        <div className="editor-inner">
-          <RichTextPlugin
-            contentEditable={
-              <ContentEditable
-                className="editor-input"
-                aria-placeholder={placeholder}
-                placeholder={
-                  <div className="editor-placeholder">{placeholder}</div>
-                }
-              />
-            }
-            ErrorBoundary={LexicalErrorBoundary}
-          />
-          <HistoryPlugin />
-          <AutoFocusPlugin />
-          <TreeViewPlugin />
+    <>
+      <LexicalComposer initialConfig={editorConfig}>
+        <div className="editor-container">
+          <ToolbarPlugin />
+          <div className="editor-inner">
+            <RichTextPlugin
+              contentEditable={
+                <ContentEditable
+                  className="editor-input"
+                  aria-placeholder={placeholder}
+                  placeholder={
+                    <div className="editor-placeholder">{placeholder}</div>
+                  }
+                />
+              }
+              ErrorBoundary={LexicalErrorBoundary}
+            />
+            <CustomOnChangePlugin onChange={handleChange} />
+            <HistoryPlugin />
+            <AutoFocusPlugin />
+          </div>
         </div>
-      </div>
-    </LexicalComposer>
+      </LexicalComposer>
+      <div>{userInput}</div>
+    </>
   );
 }
 
@@ -256,20 +287,5 @@ function ToolbarPlugin() {
         <i className="format justify-align" />
       </button>{" "}
     </div>
-  );
-}
-
-function TreeViewPlugin(): JSX.Element {
-  const [editor] = useLexicalComposerContext();
-  return (
-    <TreeView
-      viewClassName="tree-view-output"
-      treeTypeButtonClassName="debug-treetype-button"
-      timeTravelPanelClassName="debug-timetravel-panel"
-      timeTravelButtonClassName="debug-timetravel-button"
-      timeTravelPanelSliderClassName="debug-timetravel-panel-slider"
-      timeTravelPanelButtonClassName="debug-timetravel-panel-button"
-      editor={editor}
-    />
   );
 }
