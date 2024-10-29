@@ -1,5 +1,6 @@
 "use client";
-
+import Link from "next/link";
+import Image from "next/image";
 import {
   type Dispatch,
   type SetStateAction,
@@ -29,6 +30,15 @@ import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { parseHtml } from "~/lib/utils";
+import { Card, CardContent, CardHeader } from "./card";
+import {
+  OF_CHRIST_AND_THEOTOKOS,
+  GREAT_SAINTS_DAY,
+  SAINT_WITH_GREAT_DOXOLOGY,
+  SAINT_WITH_SERVICE,
+  SIMPLE_COMMEMORATION,
+} from "~/lib/constants";
+import { Button } from "./button";
 
 const placeholder = "Enter some rich text...";
 const Theme = {
@@ -113,16 +123,15 @@ export default function TextEditor() {
         </div>
       </LexicalComposer>
       <div className={`${showPreview ? "" : "hidden"}`}>
-        <span>
-          <button
-            onClick={() => setShowPreview(!showPreview)}
-            className="toolbar-item"
-            aria-label="View Preview"
-          >
-            Show Editor
-          </button>
-        </span>
-        {userInput}
+        <TextPreview
+          header={"Monastic Martyr Anastasia of Rome"}
+          life={userInput}
+          icon={
+            "https://images.oca.org/icons/sm/october/1029anastasia-roman.jpg"
+          }
+          feastType="SAINT_WITH_GREAT_DOXOLOGY"
+          previewMethod={{ showPreview, setShowPreview }}
+        />
       </div>
     </>
   );
@@ -327,4 +336,82 @@ function CustomOnChangePlugin(props: {
   }, [onChange, editor]);
 
   return null;
+}
+
+interface PreviewProps {
+  header: string;
+  life: string | JSX.Element | JSX.Element[];
+  icon: string;
+  feastType: FeastType;
+  previewMethod: {
+    showPreview: boolean;
+    setShowPreview: Dispatch<SetStateAction<boolean>>;
+  };
+}
+type FeastType =
+  | typeof OF_CHRIST_AND_THEOTOKOS
+  | typeof GREAT_SAINTS_DAY
+  | typeof SAINT_WITH_GREAT_DOXOLOGY
+  | typeof SAINT_WITH_SERVICE
+  | typeof SIMPLE_COMMEMORATION;
+
+function TextPreview(props: PreviewProps) {
+  const { header, icon, life, feastType, previewMethod } = props;
+  const { showPreview, setShowPreview } = previewMethod;
+
+  function iconType(feastType: FeastType) {
+    switch (feastType) {
+      case OF_CHRIST_AND_THEOTOKOS:
+        return "/images/icons/Book-Gold-Icon.svg"; // TODO: ChiRo icon
+      case GREAT_SAINTS_DAY:
+        return "/images/icons/Calendar-Gold-Icon.svg"; // TODO: Elaborate cross icon
+      case SAINT_WITH_GREAT_DOXOLOGY:
+        return "/images/icons/Chat-Gold-Icon.svg"; // TODO: Big cross icon
+      case SAINT_WITH_SERVICE:
+        return "/images/icons/Home-Gold-Icon.svg"; // TODO: Simple cross icon
+      case SIMPLE_COMMEMORATION:
+        return "/images/icons/Dot-Filled-Icon.svg"; // TODO: change color to synaxis red
+      default:
+        return "/images/icons/Dot-Filled-Icon.svg";
+    }
+  }
+  return (
+    <>
+      <Card className="w-full border border-neutral-300 shadow-lg">
+        <CardHeader className="flex flex-row items-center justify-between text-xl">
+          <Link
+            href="/apps/lives/app/saints/saint"
+            className="flex flex-row items-center justify-between gap-2"
+          >
+            <Image
+              src={iconType(feastType)}
+              alt="Minor Saint"
+              className={`h-4 w-4 cursor-pointer`}
+              width={16}
+              height={16}
+            />
+            {header}
+          </Link>
+
+          <span>
+            <Button onClick={() => setShowPreview(!showPreview)}>
+              Show Editor
+            </Button>
+          </span>
+        </CardHeader>
+        <CardContent className="flex flex-row items-start justify-around gap-8 text-2xl">
+          <Image
+            src={icon}
+            alt="St Silouan The Athonite"
+            width={140}
+            height={200}
+          />
+
+          <p className="w-4/5">
+            {life ?? "There is no record for this saint."}
+          </p>
+        </CardContent>
+      </Card>
+    </>
+  );
 }
