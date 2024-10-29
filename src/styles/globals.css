@@ -55,7 +55,9 @@
   .editor-container {
     margin: 20px auto 20px auto;
     border-radius: 2px;
-    max-width: 600px;
+    /* max-width: 600px; */
+    width: 70%;
+    min-height: 300px;
     color: #000;
     position: relative;
     line-height: 20px;
@@ -68,6 +70,7 @@
   .editor-inner {
     background: #fff;
     position: relative;
+    height: 100%
   }
   
   .editor-input {
