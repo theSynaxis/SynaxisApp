@@ -19,6 +19,8 @@ import { useToast } from "~/components/ui/use-toast";
 // import types
 import { z } from "zod";
 import { TextEditor } from "~/components/ui/text-editor";
+import { $generateHtmlFromNodes } from "@lexical/html";
+import { LexicalEditor } from "lexical";
 
 interface SubmitSaintProps {
   id: number;
@@ -63,7 +65,26 @@ export default function SubmitLife(props: SubmitSaintProps) {
 
   function onSubmit(formData: z.infer<typeof formSchema>) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    formData.life = JSON.stringify(editorRef.current.getEditorState());
+    // formData.life = JSON.stringify(editorRef.current.getEditorState());
+
+    // const editor: LexicalEditor = editorRef.current;
+
+    // const readed = editor.read(() => {
+    //   return;
+    // });
+
+    // console.log(`${readed}`);
+
+    // editor.registerUpdateListener(({ editorState }) => {
+    //   editorState.read(() => {
+    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    //     const html = $generateHtmlFromNodes(editor, null);
+    //     onChange(`${html}`);
+    //   });
+    // });
+    // console.log(
+    //   `editor state: ${JSON.stringify(editorRef.current.getEditorState(), null, 2)}`,
+    // );
     addSaintLife.mutate({
       id: formData.id,
       name: formData.name,
@@ -71,7 +92,7 @@ export default function SubmitLife(props: SubmitSaintProps) {
     });
   }
 
-  const editorRef: unknown = useRef();
+  // const editorRef: unknown = useRef();
 
   return (
     <Form {...form}>
@@ -83,11 +104,11 @@ export default function SubmitLife(props: SubmitSaintProps) {
           <FormField
             control={form.control}
             name="life"
-            render={() => (
+            render={({ field }) => (
               <>
                 <FormItem>
                   <FormControl>
-                    <TextEditor ref={editorRef} previewHeader={saintName} />
+                    <TextEditor {...field} previewHeader={saintName} />
                   </FormControl>
                   <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                 </FormItem>

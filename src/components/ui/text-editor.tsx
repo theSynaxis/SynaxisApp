@@ -8,7 +8,6 @@ import {
   useState,
   forwardRef,
   type Dispatch,
-  type LegacyRef,
   type SetStateAction,
 } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
@@ -40,7 +39,6 @@ import {
   SAINT_WITH_SERVICE,
   SIMPLE_COMMEMORATION,
 } from "~/lib/constants";
-import { span } from "./span";
 
 const placeholder = "Enter some rich text...";
 const Theme = {
@@ -92,14 +90,16 @@ const editorConfig = {
 
 interface TextEditorProps {
   previewHeader: string;
+  onChange: (...event: unknown[]) => void;
 }
 
-export const TextEditor = forwardRef((props: TextEditorProps, ref: unknown) => {
-  const { previewHeader } = props;
+export const TextEditor = forwardRef((props: TextEditorProps) => {
+  const { previewHeader, onChange } = props;
   const [htmlEditorText, setHtmlEditorText] = useState("");
   const [showPreview, setShowPreview] = useState(false);
 
   const handleChange = (e: string) => {
+    onChange(e);
     return setHtmlEditorText(e);
   };
 
@@ -124,7 +124,6 @@ export const TextEditor = forwardRef((props: TextEditorProps, ref: unknown) => {
               ErrorBoundary={LexicalErrorBoundary}
             />
             <CustomOnChangePlugin onChange={handleChange} />
-            <EditorCapturePlugin ref={ref} />
             <HistoryPlugin />
             <AutoFocusPlugin />
           </div>
@@ -221,7 +220,7 @@ function ToolbarPlugin(props: ToolbarProps) {
     <div className="toolbar flex items-center justify-between" ref={toolbarRef}>
       <span className="flex">
         <span
-          disabled={!canUndo}
+          // disabled={!canUndo}
           onClick={() => {
             editor.dispatchCommand(UNDO_COMMAND, undefined);
           }}
@@ -231,7 +230,7 @@ function ToolbarPlugin(props: ToolbarProps) {
           <i className="format undo" />
         </span>
         <span
-          disabled={!canRedo}
+          // disabled={!canRedo}
           onClick={() => {
             editor.dispatchCommand(REDO_COMMAND, undefined);
           }}
@@ -348,23 +347,6 @@ function CustomOnChangePlugin(props: {
   return null;
 }
 
-const EditorCapturePlugin = forwardRef(
-  (props: unknown, ref: LegacyRef<unknown> | undefined) => {
-    const [editor] = useLexicalComposerContext();
-    useEffect(() => {
-      if (ref) {
-        ref.current = editor;
-        return () => {
-          ref.current = null;
-        };
-      }
-    }, [editor, ref]);
-
-    return null;
-  },
-);
-EditorCapturePlugin.displayName = "Lexical Editor Capture Plugin";
-
 interface PreviewProps {
   header: string;
   life: string | JSX.Element | JSX.Element[];
@@ -437,9 +419,9 @@ function TextPreview(props: PreviewProps) {
             height={200}
           />
 
-          <p className="w-4/5">
+          <span className="w-4/5">
             {life ?? "There is no record for this saint."}
-          </p>
+          </span>
         </CardContent>
       </Card>
     </>

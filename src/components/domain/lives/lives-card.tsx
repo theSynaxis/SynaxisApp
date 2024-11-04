@@ -12,6 +12,7 @@ import {
   SAINT_WITH_SERVICE,
   SIMPLE_COMMEMORATION,
 } from "~/lib/constants";
+import { parseHtml } from "~/lib/utils";
 
 type FeastType =
   | typeof OF_CHRIST_AND_THEOTOKOS
@@ -100,8 +101,12 @@ export default function LivesCard(props: LivesCardProps) {
                 height={200}
               />
 
-              <p className="w-4/5">
-                {life ?? "There is no record for this saint."}
+              <span className="w-4/5">
+                {life ? (
+                  <>{parseHtml(life)}</>
+                ) : (
+                  "There is no record for this saint."
+                )}
                 <br />
                 {life ? (
                   <>
@@ -122,7 +127,7 @@ export default function LivesCard(props: LivesCardProps) {
                     </Link>
                   </>
                 )}
-              </p>
+              </span>
             </CardContent>
           </>
         ) : (
