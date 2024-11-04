@@ -5,14 +5,16 @@ export default async function AppsPage() {
   noStore();
 
   return (
-    <main className="flex w-full flex-col items-center justify-center text-neutral-900">
-      <div className="container flex flex-col items-center justify-start gap-8 px-4 py-4">
-        <h1
-          className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
-        >
-          The <span className="text-secondary-red-600">Synaxis</span> App
-        </h1>
-        <h2>Apps for Eastern Orthodox Christians</h2>
+    <main className="flex w-full flex-col items-center justify-between text-neutral-900">
+      <div className="container flex flex-col items-center justify-between gap-24 px-4 py-4">
+        <span className="flex flex-col items-center justify-between gap-8">
+          <h1
+            className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
+          >
+            The <span className="text-secondary-red-600">Synaxis</span> App
+          </h1>
+          <h2>Apps for Eastern Orthodox Christians</h2>
+        </span>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-8">
           <Link
