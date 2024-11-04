@@ -11,6 +11,7 @@ import {
   isEmperor,
   isEmpress,
   isEqualToApostle,
+  isFoolForChrist,
   isGrandPrince,
   isGrandPrincess,
   isKing,
@@ -55,7 +56,9 @@ type field =
   | typeof isPrince
   | typeof isPrincess
   | typeof isProphet
-  | typeof isQueen;
+  | typeof isQueen
+  | typeof isFoolForChrist;
+
 type Values = { field: field; setTo: boolean }[];
 
 export const bcValues: Values = [
@@ -138,6 +141,10 @@ export const bcValues: Values = [
   },
   {
     field: isMonk,
+    setTo: false,
+  },
+  {
+    field: isFoolForChrist,
     setTo: false,
   },
 ];
@@ -226,6 +233,10 @@ export const prophetValues: Values = [
     field: isMonk,
     setTo: false,
   },
+  {
+    field: isFoolForChrist,
+    setTo: false,
+  },
 ];
 
 export const leviteValues: Values = [
@@ -304,6 +315,10 @@ export const leviteValues: Values = [
 
   {
     field: isMonk,
+    setTo: false,
+  },
+  {
+    field: isFoolForChrist,
     setTo: false,
   },
 ];
@@ -398,6 +413,10 @@ export const apostleValues: Values = [
     field: isMale,
     setTo: true,
   },
+  {
+    field: isFoolForChrist,
+    setTo: false,
+  },
 ];
 
 export const lxxValues: Values = [
@@ -469,6 +488,10 @@ export const lxxValues: Values = [
   {
     field: isMale,
     setTo: true,
+  },
+  {
+    field: isFoolForChrist,
+    setTo: false,
   },
 ];
 
@@ -1949,6 +1972,29 @@ export const passionBearerValues: Values = [
   },
   {
     field: isConfessor,
+    setTo: false,
+  },
+];
+
+export const foolForChristValues: Values = [
+  {
+    field: isBc,
+    setTo: false,
+  },
+  {
+    field: isProphet,
+    setTo: false,
+  },
+  {
+    field: isLevite,
+    setTo: false,
+  },
+  {
+    field: isApostle,
+    setTo: false,
+  },
+  {
+    field: isLxx,
     setTo: false,
   },
 ];

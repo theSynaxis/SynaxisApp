@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 import { saints } from "~/server/db/schema";
 import {
   BISHOP,
@@ -15,8 +19,10 @@ import {
   EQUAL_TO_THE_APOSTLES,
   GRAND_PRINCE,
   GRAND_PRINCESS,
+  GREAT_SAINTS_DAY,
   KING,
   MARTYR,
+  OF_CHRIST_AND_THEOTOKOS,
   PASSION_BEARER,
   PATRIARCH,
   PRIEST,
@@ -24,9 +30,14 @@ import {
   PRINCESS,
   PROPHET,
   QUEEN,
+  SAINT_WITH_GREAT_DOXOLOGY,
+  SAINT_WITH_SERVICE,
   SEVENTY_APOSTLES,
+  SIMPLE_COMMEMORATION,
   TWELVE_APOSTLES,
 } from "~/lib/constants";
+import { eq } from "drizzle-orm";
+import { todayAsNumbers } from "~/lib/utils";
 
 export const saintRouter = createTRPCRouter({
   create: protectedProcedure
@@ -35,6 +46,13 @@ export const saintRouter = createTRPCRouter({
         name: z.string().min(1),
         isBc: z.boolean(),
         feastDate: z.object({ month: z.number(), day: z.number() }),
+        feastType: z.union([
+          z.literal(OF_CHRIST_AND_THEOTOKOS),
+          z.literal(GREAT_SAINTS_DAY),
+          z.literal(SAINT_WITH_GREAT_DOXOLOGY),
+          z.literal(SAINT_WITH_SERVICE),
+          z.literal(SIMPLE_COMMEMORATION),
+        ]),
         apostle: z
           .union([
             z.literal(TWELVE_APOSTLES),
@@ -78,6 +96,7 @@ export const saintRouter = createTRPCRouter({
         isMarried: z.boolean(),
         isMale: z.boolean(),
         isLevite: z.boolean(),
+        isFoolForChrist: z.boolean(),
         yearBorn: z.number().nullable(),
         yearDied: z.number().nullable(),
       }),
@@ -87,6 +106,7 @@ export const saintRouter = createTRPCRouter({
         name: input.name,
         isBc: input.isBc,
         feastDate: `${input.feastDate.month}/${input.feastDate.day}`,
+        feastType: input.feastType,
         apostle: input.apostle,
         clergy: input.clergy,
         royal: input.royal,
@@ -95,12 +115,43 @@ export const saintRouter = createTRPCRouter({
         isMarried: input.isMarried,
         isMale: input.isMale,
         isLevite: input.isLevite,
+        isFoolForChrist: input.isFoolForChrist,
         yearBorn: input.yearBorn,
         yearDied: input.yearDied,
       });
+    }),
+  addLife: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().min(1),
+        life: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(saints)
+        .set({ life: input.life })
+        .where(eq(saints.id, input.id));
     }),
   list: protectedProcedure.query(async ({ ctx }) => {
     const items = await ctx.db.select().from(saints);
     return items;
   }),
+  dailySaints: publicProcedure.query(async ({ ctx }) => {
+    const saintsOfTheDay = await ctx.db
+      .select()
+      .from(saints)
+      .where(eq(saints.feastDate, todayAsNumbers));
+    return saintsOfTheDay;
+  }),
+  findSaintById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const saintById = await ctx.db
+        .select()
+        .from(saints)
+        .where(eq(saints.id, input.id));
+      return saintById[0];
+    }),
 });

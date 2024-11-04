@@ -14,6 +14,7 @@ import {
   isEmperor,
   isEmpress,
   isEqualToApostle,
+  isFoolForChrist,
   isGrandPrince,
   isGrandPrincess,
   isKing,
@@ -42,6 +43,7 @@ import {
   emperorValues,
   empressValues,
   equalToTheApostlesValues,
+  foolForChristValues,
   grandPrinceValues,
   grandPrincessValues,
   kingValues,
@@ -122,5 +124,9 @@ export function saintLogic(field: string, setValue: FormSetValue) {
       return passionBearerValues.map((value) =>
         setValue(value.field, value.setTo),
       );
+    case isFoolForChrist:
+      return foolForChristValues.map((value) => {
+        setValue(value.field, value.setTo);
+      });
   }
 }

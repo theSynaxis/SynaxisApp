@@ -5,7 +5,9 @@ import NavMenu from "./nav-menu";
 import Edges from "./edges";
 
 export default async function HeaderMenu() {
-  const menuItems = await getMenuItems({ slug: "main-menu" });
+  const mainMenu =
+    process.env.NODE_ENV === "development" ? "dev-main-menu" : "prod-main-menu";
+  const menuItems = await getMenuItems({ slug: mainMenu });
   const siteSettings = await getSiteSettings();
   const logo = await getSiteLogo();
 

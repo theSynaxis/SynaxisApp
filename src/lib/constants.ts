@@ -25,6 +25,8 @@ export const QUEEN = "QUEEN";
 export const MARTYR = "MARTYR";
 export const CONFESSOR = "CONFESSOR";
 export const PASSION_BEARER = "PASSION_BEARER";
+// Fool for Christ:
+export const FOOL_FOR_CHRIST = "FOOL_FOR_CHRIST";
 
 // Saint form constants:
 export const isBc = "isBc";
@@ -55,3 +57,11 @@ export const isMonk = "isMonk";
 export const isMarried = "isMarried";
 export const isMale = "isMale";
 export const isLevite = "isLevite";
+export const isFoolForChrist = "isFoolForChrist";
+
+// Feasts
+export const OF_CHRIST_AND_THEOTOKOS = "OF_CHRIST_AND_THEOTOKOS";
+export const GREAT_SAINTS_DAY = "GREAT_SAINTS_DAY";
+export const SAINT_WITH_GREAT_DOXOLOGY = "SAINT_WITH_GREAT_DOXOLOGY";
+export const SAINT_WITH_SERVICE = "SAINT_WITH_SERVICE";
+export const SIMPLE_COMMEMORATION = "SIMPLE_COMMEMORATION";

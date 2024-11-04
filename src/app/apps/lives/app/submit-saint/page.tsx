@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 import SubmitSaint from "~/components/domain/lives/user-actions/submit-saint";
 
-export default async function SayingsApp() {
+export default async function SubmitSaintPage() {
   noStore();
   const cookieStore = cookies();
   const userSession = cookieStore.get("auth_session");
@@ -19,7 +19,6 @@ export default async function SayingsApp() {
         >
           <span className="text-secondary-red-600">Lives</span> of the Saints
         </h1>
-
         <div className="w-3/5">
           <SubmitSaint />
         </div>

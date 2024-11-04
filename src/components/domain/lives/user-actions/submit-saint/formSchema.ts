@@ -1,4 +1,11 @@
 import { z } from "zod";
+import {
+  GREAT_SAINTS_DAY,
+  OF_CHRIST_AND_THEOTOKOS,
+  SAINT_WITH_GREAT_DOXOLOGY,
+  SAINT_WITH_SERVICE,
+  SIMPLE_COMMEMORATION,
+} from "~/lib/constants";
 
 export const formSchema = z.object({
   name: z.string().min(3),
@@ -7,6 +14,13 @@ export const formSchema = z.object({
     month: z.coerce.number().min(1).max(12),
     day: z.coerce.number().min(1).max(31),
   }),
+  feastType: z.union([
+    z.literal(OF_CHRIST_AND_THEOTOKOS),
+    z.literal(GREAT_SAINTS_DAY),
+    z.literal(SAINT_WITH_GREAT_DOXOLOGY),
+    z.literal(SAINT_WITH_SERVICE),
+    z.literal(SIMPLE_COMMEMORATION),
+  ]),
   yearBorn: z
     .union([z.coerce.number().int().positive().min(1), z.nan()])
     .optional(),
@@ -40,4 +54,5 @@ export const formSchema = z.object({
   isMarried: z.boolean(),
   isMale: z.boolean(),
   isLevite: z.boolean(),
+  isFoolForChrist: z.boolean(),
 });
