@@ -5,18 +5,20 @@ export default async function LivesPage() {
   noStore();
 
   return (
-    <main className="flex w-full flex-col items-center justify-center text-neutral-900">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1
-          className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
-        >
-          <span className="text-secondary-red-600">Lives</span> of the Saints
-        </h1>
+    <main className="flex w-full flex-col items-center justify-between text-neutral-900">
+      <div className="container flex flex-col items-center justify-between gap-24 px-4 py-4">
+        <span className="flex flex-col items-center justify-between gap-8">
+          <h1
+            className={`font-synaxisHeader text-5xl font-extrabold tracking-tight text-primary-gold-600 sm:text-[5rem]`}
+          >
+            <span className="text-secondary-red-600">Lives</span> of the Saints
+          </h1>
 
-        <p className="w-1/2 text-center">
-          With the Lives app, you can become more familiar with the saints of
-          the Orthodox Church.
-        </p>
+          <h4 className="text-center">
+            With the Lives app, you can become more familiar with the saints of
+            the Orthodox Church.
+          </h4>
+        </span>
 
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-2 md:gap-8">
           <Link
