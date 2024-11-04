@@ -61,7 +61,7 @@ export default function LivesCard(props: LivesCardProps) {
           onClick={() => setOpenLivesCard(!openLivesCard)}
         >
           <Link
-            href="/apps/lives/app/saints/saint"
+            href={`/apps/lives/app/saints/${header}?saintId=${id}`}
             className="flex flex-row items-center justify-between gap-2"
           >
             <Image
@@ -113,7 +113,7 @@ export default function LivesCard(props: LivesCardProps) {
                 {life ? (
                   <>
                     <Link
-                      href="/apps/lives/app/saints/saint"
+                      href={`/apps/lives/app/saints/${header}?saintId=${id}`}
                       className="font-bold"
                     >
                       Read More →
