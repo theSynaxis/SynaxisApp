@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { z } from "zod";
 
 import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
-// import { Input } from "~/components/ui/input";
+import { useToast } from "~/components/ui/use-toast";
+import { TextEditor } from "~/components/ui/text-editor";
 import {
   Form,
   FormControl,
@@ -14,13 +16,6 @@ import {
   FormItem,
   FormMessage,
 } from "~/components/ui/form";
-import { useToast } from "~/components/ui/use-toast";
-
-// import types
-import { z } from "zod";
-import { TextEditor } from "~/components/ui/text-editor";
-import { $generateHtmlFromNodes } from "@lexical/html";
-import { LexicalEditor } from "lexical";
 
 interface SubmitSaintProps {
   id: number;
@@ -48,7 +43,7 @@ export default function SubmitLife(props: SubmitSaintProps) {
     },
   });
 
-  const { formState, reset } = form;
+  const { reset } = form;
 
   const addSaintLife = api.saint.addLife.useMutation({
     onSuccess: (_data, variables) => {
