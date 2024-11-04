@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { api } from "~/trpc/react";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
+// import { Input } from "~/components/ui/input";
 import {
   Form,
   FormControl,
@@ -19,6 +19,7 @@ import { useToast } from "~/components/ui/use-toast";
 
 // import types
 import { z } from "zod";
+import { TextEditor } from "~/components/ui/text-editor";
 
 interface SubmitSaintProps {
   id: number;
@@ -65,6 +66,8 @@ export default function SubmitLife(props: SubmitSaintProps) {
   });
 
   function onSubmit(formData: z.infer<typeof formSchema>) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    formData.life = JSON.stringify(editorRef.current.getEditorState());
     addSaintLife.mutate({
       id: formData.id,
       name: formData.name,
@@ -72,13 +75,15 @@ export default function SubmitLife(props: SubmitSaintProps) {
     });
   }
 
+  const editorRef: unknown = useRef();
+
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex w-full flex-col gap-12"
       >
-        <span className="flex flex-row items-center justify-normal gap-12">
+        <span>
           <FormField
             control={form.control}
             name="life"
@@ -89,12 +94,13 @@ export default function SubmitLife(props: SubmitSaintProps) {
                     Saint Life <span className="text-secondary-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input
+                    {/* <Input
                       type="text"
                       placeholder="Saint Name"
                       className="text-black w-full rounded-full px-4 py-2"
                       {...field}
-                    />
+                    /> */}
+                    <TextEditor ref={editorRef} />
                   </FormControl>
                   <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                 </FormItem>
@@ -108,12 +114,13 @@ export default function SubmitLife(props: SubmitSaintProps) {
         )}
 
         <Button
-          variant={addSaintLife.isLoading || isDirty ? "default" : "disabled"}
+          // variant={addSaintLife.isLoading || isDirty ? "default" : "disabled"}
           className="w-fit"
         >
           {addSaintLife.isLoading ? "Submitting..." : "Submit"}
         </Button>
       </form>
+      <pre>{JSON.stringify(form.formState, null, 2)}</pre>
     </Form>
   );
 }

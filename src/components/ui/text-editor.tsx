@@ -2,12 +2,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import {
-  type Dispatch,
-  type SetStateAction,
   useCallback,
   useEffect,
   useRef,
   useState,
+  forwardRef,
+  type Dispatch,
+  type LegacyRef,
+  type SetStateAction,
 } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
@@ -88,7 +90,7 @@ const editorConfig = {
   theme: Theme,
 };
 
-export default function TextEditor() {
+export const TextEditor = forwardRef((_props: unknown, ref: unknown) => {
   const [htmlEditorText, setHtmlEditorText] = useState("");
   const [showPreview, setShowPreview] = useState(false);
 
@@ -117,6 +119,7 @@ export default function TextEditor() {
               ErrorBoundary={LexicalErrorBoundary}
             />
             <CustomOnChangePlugin onChange={handleChange} />
+            <EditorCapturePlugin ref={ref} />
             <HistoryPlugin />
             <AutoFocusPlugin />
           </div>
@@ -135,7 +138,9 @@ export default function TextEditor() {
       </div>
     </>
   );
-}
+});
+
+TextEditor.displayName = "Lexical Text Editor";
 
 const LowPriority = 1;
 
@@ -337,6 +342,23 @@ function CustomOnChangePlugin(props: {
 
   return null;
 }
+
+const EditorCapturePlugin = forwardRef(
+  (props: unknown, ref: LegacyRef<unknown> | undefined) => {
+    const [editor] = useLexicalComposerContext();
+    useEffect(() => {
+      if (ref) {
+        ref.current = editor;
+        return () => {
+          ref.current = null;
+        };
+      }
+    }, [editor, ref]);
+
+    return null;
+  },
+);
+EditorCapturePlugin.displayName = "Lexical Editor Capture Plugin";
 
 interface PreviewProps {
   header: string;
