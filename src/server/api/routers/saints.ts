@@ -145,4 +145,13 @@ export const saintRouter = createTRPCRouter({
       .where(eq(saints.feastDate, todayAsNumbers));
     return saintsOfTheDay;
   }),
+  findSaintById: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const saintById = await ctx.db
+        .select()
+        .from(saints)
+        .where(eq(saints.id, input.id));
+      return saintById[0];
+    }),
 });
