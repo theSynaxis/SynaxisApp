@@ -70,6 +70,7 @@ export default function UniqueSaintPage() {
         {/* </div> */}
 
         {/* <h3>Sayings</h3> */}
+        {/* quote cards here */}
 
         <Link href="/apps/sayings/app/submit-quote">
           <Button>Submit Quote</Button>
