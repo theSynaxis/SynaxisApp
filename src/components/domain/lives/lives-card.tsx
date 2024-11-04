@@ -34,6 +34,8 @@ export default function LivesCard(props: LivesCardProps) {
   const { id, header, icon, life, feastType, openState } = props;
   const [openLivesCard, setOpenLivesCard] = useState(openState);
 
+  const lifeExcerpt = `${life.substring(0, 1000).trim()}`;
+
   function iconType(feastType: FeastType) {
     switch (feastType) {
       case OF_CHRIST_AND_THEOTOKOS:
@@ -93,7 +95,7 @@ export default function LivesCard(props: LivesCardProps) {
         </CardHeader>
         {openLivesCard ? (
           <>
-            <CardContent className="flex flex-row items-center justify-around gap-8 text-2xl">
+            <CardContent className="flex flex-row items-start justify-around gap-8 text-2xl">
               <Image
                 src={icon}
                 alt="St Silouan The Athonite"
@@ -103,7 +105,7 @@ export default function LivesCard(props: LivesCardProps) {
 
               <span className="w-4/5">
                 {life ? (
-                  <>{parseHtml(life)}</>
+                  <>{parseHtml(lifeExcerpt)} ...</>
                 ) : (
                   "There is no record for this saint."
                 )}
