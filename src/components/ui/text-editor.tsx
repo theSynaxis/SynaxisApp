@@ -90,7 +90,12 @@ const editorConfig = {
   theme: Theme,
 };
 
-export const TextEditor = forwardRef((_props: unknown, ref: unknown) => {
+interface TextEditorProps {
+  previewHeader: string;
+}
+
+export const TextEditor = forwardRef((props: TextEditorProps, ref: unknown) => {
+  const { previewHeader } = props;
   const [htmlEditorText, setHtmlEditorText] = useState("");
   const [showPreview, setShowPreview] = useState(false);
 
@@ -127,10 +132,10 @@ export const TextEditor = forwardRef((_props: unknown, ref: unknown) => {
       </LexicalComposer>
       <div className={`${showPreview ? "" : "hidden"}`}>
         <TextPreview
-          header={"Monastic Martyr Anastasia of Rome"}
+          header={previewHeader}
           life={userInput}
           icon={
-            "https://images.oca.org/icons/sm/october/1029anastasia-roman.jpg"
+            "https://images.oca.org/icons/sm/november/1104.seraphim.samoilovich.jpg"
           }
           feastType="SAINT_WITH_GREAT_DOXOLOGY"
           previewMethod={{ showPreview, setShowPreview }}

@@ -87,7 +87,7 @@ export default function SubmitLife(props: SubmitSaintProps) {
               <>
                 <FormItem>
                   <FormControl>
-                    <TextEditor ref={editorRef} />
+                    <TextEditor ref={editorRef} previewHeader={saintName} />
                   </FormControl>
                   <FormMessage className="pl-4 font-bold text-secondary-red-500" />
                 </FormItem>
