@@ -287,46 +287,6 @@
     background: #999;
   }
   
-  .debug-timetravel-panel {
-    overflow: hidden;
-    padding: 0 0 10px 0;
-    margin: auto;
-    display: flex;
-  }
-  
-  .debug-timetravel-panel-slider {
-    padding: 0;
-    flex: 8;
-  }
-  
-  .debug-timetravel-panel-button {
-    padding: 0;
-    border: 0;
-    background: none;
-    flex: 1;
-    color: #fff;
-    font-size: 12px;
-  }
-  
-  .debug-timetravel-panel-button:hover {
-    text-decoration: underline;
-  }
-  
-  .debug-timetravel-button {
-    border: 0;
-    padding: 0;
-    font-size: 12px;
-    top: 10px;
-    right: 15px;
-    position: absolute;
-    background: none;
-    color: #fff;
-  }
-  
-  .debug-timetravel-button:hover {
-    text-decoration: underline;
-  }
-  
   .toolbar {
     display: flex;
     margin-bottom: 1px;
@@ -337,7 +297,7 @@
     vertical-align: middle;
   }
   
-  .toolbar button.toolbar-item {
+  .toolbar span.toolbar-item {
     border: 0;
     display: flex;
     background: none;
@@ -347,15 +307,15 @@
     vertical-align: middle;
   }
   
-  .toolbar button.toolbar-item:disabled {
+  .toolbar span.toolbar-item:disabled {
     cursor: not-allowed;
   }
   
-  .toolbar button.toolbar-item.spaced {
+  .toolbar span.toolbar-item.spaced {
     margin-right: 2px;
   }
   
-  .toolbar button.toolbar-item i.format {
+  .toolbar span.toolbar-item i.format {
     background-size: contain;
     display: inline-block;
     height: 18px;
@@ -366,15 +326,15 @@
     opacity: 0.6;
   }
   
-  .toolbar button.toolbar-item:disabled i.format {
+  .toolbar span.toolbar-item:disabled i.format {
     opacity: 0.2;
   }
   
-  .toolbar button.toolbar-item.active {
+  .toolbar span.toolbar-item.active {
     background-color: rgba(223, 232, 250, 0.3);
   }
   
-  .toolbar button.toolbar-item.active i {
+  .toolbar span.toolbar-item.active i {
     opacity: 1;
   }
   

@@ -40,7 +40,7 @@ import {
   SAINT_WITH_SERVICE,
   SIMPLE_COMMEMORATION,
 } from "~/lib/constants";
-import { Button } from "./button";
+import { span } from "./span";
 
 const placeholder = "Enter some rich text...";
 const Theme = {
@@ -215,7 +215,7 @@ function ToolbarPlugin(props: ToolbarProps) {
   return (
     <div className="toolbar flex items-center justify-between" ref={toolbarRef}>
       <span className="flex">
-        <button
+        <span
           disabled={!canUndo}
           onClick={() => {
             editor.dispatchCommand(UNDO_COMMAND, undefined);
@@ -224,8 +224,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Undo"
         >
           <i className="format undo" />
-        </button>
-        <button
+        </span>
+        <span
           disabled={!canRedo}
           onClick={() => {
             editor.dispatchCommand(REDO_COMMAND, undefined);
@@ -234,9 +234,9 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Redo"
         >
           <i className="format redo" />
-        </button>
+        </span>
         <Divider />
-        <button
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
           }}
@@ -244,8 +244,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Format Bold"
         >
           <i className="format bold" />
-        </button>
-        <button
+        </span>
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
           }}
@@ -253,8 +253,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Format Italics"
         >
           <i className="format italic" />
-        </button>
-        <button
+        </span>
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
           }}
@@ -262,8 +262,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Format Underline"
         >
           <i className="format underline" />
-        </button>
-        <button
+        </span>
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough");
           }}
@@ -271,9 +271,9 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Format Strikethrough"
         >
           <i className="format strikethrough" />
-        </button>
+        </span>
         <Divider />
-        <button
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
           }}
@@ -281,8 +281,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Left Align"
         >
           <i className="format left-align" />
-        </button>
-        <button
+        </span>
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
           }}
@@ -290,8 +290,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Center Align"
         >
           <i className="format center-align" />
-        </button>
-        <button
+        </span>
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
           }}
@@ -299,8 +299,8 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Right Align"
         >
           <i className="format right-align" />
-        </button>
-        <button
+        </span>
+        <span
           onClick={() => {
             editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify");
           }}
@@ -308,17 +308,17 @@ function ToolbarPlugin(props: ToolbarProps) {
           aria-label="Justify Align"
         >
           <i className="format justify-align" />
-        </button>
+        </span>
         <Divider />
       </span>
       <span>
-        <button
+        <span
           onClick={() => setShowPreview(!showPreview)}
           className="toolbar-item"
           aria-label="View Preview"
         >
           Preview
-        </button>
+        </span>
       </span>
     </div>
   );
@@ -416,9 +416,12 @@ function TextPreview(props: PreviewProps) {
           </Link>
 
           <span>
-            <Button onClick={() => setShowPreview(!showPreview)}>
+            <span
+              onClick={() => setShowPreview(!showPreview)}
+              className="ring-offset-background focus-visible:ring-ring hover:boxShadow-lg inline-flex h-10 cursor-pointer items-center justify-center whitespace-nowrap rounded-md bg-primary-gold-500 px-4 py-2 text-lg font-medium text-neutral-900 transition transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+            >
               Show Editor
-            </Button>
+            </span>
           </span>
         </CardHeader>
         <CardContent className="flex flex-row items-start justify-around gap-8 text-2xl">

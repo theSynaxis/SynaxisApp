@@ -12,7 +12,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import { useToast } from "~/components/ui/use-toast";
@@ -47,10 +46,7 @@ export default function SubmitLife(props: SubmitSaintProps) {
     },
   });
 
-  const {
-    formState: { isDirty },
-    reset,
-  } = form;
+  const { formState, reset } = form;
 
   const addSaintLife = api.saint.addLife.useMutation({
     onSuccess: (_data, variables) => {
@@ -87,19 +83,10 @@ export default function SubmitLife(props: SubmitSaintProps) {
           <FormField
             control={form.control}
             name="life"
-            render={({ field }) => (
+            render={() => (
               <>
                 <FormItem>
-                  <FormLabel className="text-lg">
-                    Saint Life <span className="text-secondary-red-500">*</span>
-                  </FormLabel>
                   <FormControl>
-                    {/* <Input
-                      type="text"
-                      placeholder="Saint Name"
-                      className="text-black w-full rounded-full px-4 py-2"
-                      {...field}
-                    /> */}
                     <TextEditor ref={editorRef} />
                   </FormControl>
                   <FormMessage className="pl-4 font-bold text-secondary-red-500" />
@@ -113,14 +100,10 @@ export default function SubmitLife(props: SubmitSaintProps) {
           <p className="pl-4 font-bold text-secondary-red-500">{submitError}</p>
         )}
 
-        <Button
-          // variant={addSaintLife.isLoading || isDirty ? "default" : "disabled"}
-          className="w-fit"
-        >
+        <Button className="w-fit">
           {addSaintLife.isLoading ? "Submitting..." : "Submit"}
         </Button>
       </form>
-      <pre>{JSON.stringify(form.formState, null, 2)}</pre>
     </Form>
   );
 }
