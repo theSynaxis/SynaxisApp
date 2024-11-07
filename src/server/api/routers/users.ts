@@ -1,17 +1,27 @@
 import { z } from "zod";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 
 // import components
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  protectedProcedure,
+} from "~/server/api/trpc";
 import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { lucia } from '~/server/api/auth';
+import { lucia } from "~/server/api/auth";
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ username: z.string().min(1), email: z.string().email(), password: z.string() }))
+    .input(
+      z.object({
+        username: z.string().min(1),
+        email: z.string().email(),
+        password: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const hashedPassword = await bcrypt.hash(input.password, 10);
       const usernameTaken = await ctx.db
@@ -23,12 +33,18 @@ export const userRouter = createTRPCRouter({
         .from(users)
         .where(eq(users.email, input.email));
 
-      if(usernameTaken?.[0]?.username) {
-        throw new TRPCError({ code: "UNPROCESSABLE_CONTENT", message: "Username taken." })
+      if (usernameTaken?.[0]?.username) {
+        throw new TRPCError({
+          code: "UNPROCESSABLE_CONTENT",
+          message: "Username taken.",
+        });
       }
 
-      if(emailTaken?.[0]?.email) {
-        throw new TRPCError({ code: "UNPROCESSABLE_CONTENT", message: "Email taken." })
+      if (emailTaken?.[0]?.email) {
+        throw new TRPCError({
+          code: "UNPROCESSABLE_CONTENT",
+          message: "Email taken.",
+        });
       }
 
       await ctx.db.insert(users).values({
@@ -39,10 +55,12 @@ export const userRouter = createTRPCRouter({
       });
     }),
   login: publicProcedure
-    .input(z.object({ 
-      usernameOrEmail: z.string(),
-      password: z.string()
-    }))
+    .input(
+      z.object({
+        usernameOrEmail: z.string(),
+        password: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const userByUsername = await ctx.db
         .select()
@@ -50,16 +68,22 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.username, input.usernameOrEmail));
 
       if (userByUsername?.[0]?.password) {
-        const passwordMatches = await bcrypt.compare(input.password, userByUsername[0].password);
+        const passwordMatches = await bcrypt.compare(
+          input.password,
+          userByUsername[0].password,
+        );
 
         if (!passwordMatches) {
-          throw new TRPCError({ code: "FORBIDDEN", message: "Invalid Credentials." })
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Invalid Credentials.",
+          });
         }
 
         const session = await lucia.createSession(userByUsername[0].id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
 
-        return sessionCookie
+        return sessionCookie;
       }
 
       const userByEmail = await ctx.db
@@ -68,19 +92,28 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.email, input.usernameOrEmail));
 
       if (userByEmail?.[0]?.password) {
-        const passwordMatches = await bcrypt.compare(input.password, userByEmail[0].password);
+        const passwordMatches = await bcrypt.compare(
+          input.password,
+          userByEmail[0].password,
+        );
 
         if (!passwordMatches) {
-          throw new TRPCError({ code: "FORBIDDEN", message: "Invalid Credentials." })
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Invalid Credentials.",
+          });
         }
-        
+
         const session = await lucia.createSession(userByEmail[0].id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
 
-        return sessionCookie
+        return sessionCookie;
       }
-      
-      throw new TRPCError({ code: "NOT_FOUND", message: "Invalid Credentials." })
+
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Invalid Credentials.",
+      });
     }),
   logout: protectedProcedure.mutation(async ({ ctx }) => {
     const { session } = ctx;
@@ -88,6 +121,10 @@ export const userRouter = createTRPCRouter({
     await lucia.invalidateSession(session.id);
     const sessionCookie = lucia.createBlankSessionCookie();
 
-    return sessionCookie
-    }),
+    return sessionCookie;
+  }),
+  list: protectedProcedure.query(async ({ ctx }) => {
+    const items = await ctx.db.select().from(users);
+    return items;
+  }),
 });

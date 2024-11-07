@@ -10,7 +10,6 @@ import {
   type ColumnFiltersState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { faker } from "@faker-js/faker";
 import Link from "next/link";
 
 import {
@@ -31,28 +30,30 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import Image from "next/image";
+import { api } from "~/trpc/react";
 
-const data: User[] = [
+const falseData: User[] = [
   {
     id: "728ed52f",
-    username: "St Silouan the Athonite",
+    username: "Nobody",
     role: "user",
+    email: "nobody@email.com",
+    firstName: "Nobody",
+    lastName: "Important",
+    patron: "Ain't got one.",
+    birthday: new Date(),
+    nameday: new Date(),
+    location: "somewhere",
+    denomination: "Orthodox",
+    jurisdiction: "Antiochian",
+    sex: "Male",
+    joinedDate: new Date(),
+    updatedDate: new Date(),
+    isBanned: false,
+    isDeleted: false,
+    emailVerified: false,
   },
 ];
-
-const createFakeSaints = () => {
-  const saint = faker.person.firstName();
-
-  return {
-    id: faker.string.uuid(),
-    username: `St ${saint}`,
-    role: `user`,
-  };
-};
-
-for (let index = 0; index < 4; index++) {
-  data.push(createFakeSaints());
-}
 
 export default function AllUsersTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -63,8 +64,10 @@ export default function AllUsersTable() {
   // for client side data filtering. ideal would be server side filtering.
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
+  const { data, isLoading, isError } = api.user.list.useQuery();
+
   const table = useReactTable({
-    data,
+    data: data ?? falseData,
     columns,
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
@@ -75,6 +78,9 @@ export default function AllUsersTable() {
       columnVisibility,
     },
   });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError || !data) return <p>ERROR</p>;
 
   return (
     <div className="w-full rounded-md border border-neutral-900 shadow-lg">
