@@ -38,6 +38,7 @@ const falseData: User[] = [
     username: "Nobody",
     role: "user",
     email: "nobody@email.com",
+    name: "Nobody Important",
     firstName: "Nobody",
     lastName: "Important",
     patron: "Ain't got one.",
@@ -131,14 +132,6 @@ export default function AllUsersTable() {
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 border-t border-neutral-900 p-4">
-        <Link
-          className="flex flex-row items-start justify-end"
-          href="/apps/sayings/app/submit-quote"
-        >
-          <Button>Submit New Quote</Button>
-        </Link>
-      </div>
     </div>
   );
 }

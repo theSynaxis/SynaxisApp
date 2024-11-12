@@ -1,6 +1,7 @@
 "use client";
 
 import { createColumnHelper } from "@tanstack/react-table";
+import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,6 +21,7 @@ export type User = {
   role: string;
   username: string;
   email: string;
+  name: string;
   firstName: string;
   lastName: string;
   patron: string;
@@ -40,7 +42,7 @@ const columnHelper = createColumnHelper<User>();
 
 export const columns = [
   columnHelper.accessor("username", {
-    header: () => <div className="text-left text-base">User</div>,
+    header: () => <div className="text-base">User</div>,
     cell: (info) => {
       return (
         <Link href="/apps/sayings/app/saints/saint" className="text-base">
@@ -51,9 +53,75 @@ export const columns = [
     footer: (props) => props.column.id,
   }),
   columnHelper.accessor("role", {
-    header: () => <div className="text-center text-base">User Role</div>,
+    header: () => <div className="text-base">User Role</div>,
+    cell: (info) => {
+      return <span className="text-base capitalize">{info.getValue()}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("email", {
+    header: () => <div className="text-base">Email</div>,
     cell: (info) => {
       return <span className="text-base">{info.getValue()}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("name", {
+    header: () => <div className="text-base">Name</div>,
+    cell: (info) => {
+      const { firstName, lastName } = info.row.original;
+      return (
+        <span className="text-base">
+          {firstName} {lastName}
+        </span>
+      );
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("joinedDate", {
+    header: () => <div className="text-base">Joined Date</div>,
+    cell: (info) => {
+      const date = info.getValue();
+      return <span className="text-base">{format(date, `d, MMM, yyyy`)}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("updatedDate", {
+    header: () => <div className="text-base">Profile Last Updated</div>,
+    cell: (info) => {
+      const date = info.getValue();
+      return <span className="text-base">{format(date, `d, MMM, yyyy`)}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("emailVerified", {
+    header: () => <div className="text-base">Verified Email</div>,
+    cell: (info) => {
+      return (
+        <span className="flex justify-center text-base">
+          {info.getValue() ? (
+            <>
+              <Image
+                src={"/images/icons/Check-Icon.svg"}
+                alt={"Email Verified"}
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
+            </>
+          ) : (
+            <>
+              <Image
+                src={"/images/icons/X-Icon.svg"}
+                alt={"Email Verified"}
+                width={32}
+                height={32}
+                className="h-8 w-8 text-secondary-red-500"
+              />
+            </>
+          )}
+        </span>
+      );
     },
     footer: (props) => props.column.id,
   }),
@@ -64,34 +132,57 @@ export const columns = [
       const { username, role } = info.row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <Image
-                src={"/images/icons/Dots-Vertical-Icon.svg"}
-                alt={"Actions"}
-                width={16}
-                height={16}
-                className="h-4 w-4"
-              />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="mr-2 bg-neutral-50">
-            <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-neutral-900" />
-            <Dialog>
-              <DialogTrigger>
-                <DropdownMenuItem
-                  className="cursor-pointer text-base text-secondary-red-500"
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  Ban
-                </DropdownMenuItem>
-              </DialogTrigger>
-            </Dialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <span className="flex flex-row justify-center self-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <Image
+                  src={"/images/icons/Dots-Vertical-Icon.svg"}
+                  alt={"Actions"}
+                  width={16}
+                  height={16}
+                  className="h-4 w-4"
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="mr-2 bg-neutral-50">
+              <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
+              <Dialog>
+                <DialogTrigger>
+                  <DropdownMenuItem
+                    className="cursor-pointer text-base"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    Promote
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </Dialog>
+              <DropdownMenuSeparator className="bg-neutral-900" />
+              <Dialog>
+                <DialogTrigger>
+                  <DropdownMenuItem
+                    className="cursor-pointer text-base text-secondary-red-500"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    Ban
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </Dialog>
+              <DropdownMenuSeparator className="bg-neutral-900" />
+              <Dialog>
+                <DialogTrigger>
+                  <DropdownMenuItem
+                    className="cursor-pointer text-base text-secondary-red-700"
+                    onSelect={(e) => e.preventDefault()}
+                  >
+                    DELETE
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </Dialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </span>
       );
     },
   }),
