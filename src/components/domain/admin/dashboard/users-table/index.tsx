@@ -31,6 +31,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import Image from "next/image";
 import { api } from "~/trpc/react";
+import { Checkbox } from "~/components/ui/checkbox";
 
 const falseData: User[] = [
   {
@@ -158,42 +159,38 @@ function SearchQuotes(props: { table: TableType<User> }) {
           className="flex flex-col items-start gap-4 bg-neutral-50 px-4 py-6"
         >
           <span className="gap-4">
-            By Quote:
+            By Username:
             <Input
-              placeholder="Filter quotes..."
+              placeholder="Filter by username..."
               value={
-                (table.getColumn("quote")?.getFilterValue() as string) ?? ""
+                (table.getColumn("username")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("quote")?.setFilterValue(event.target.value)
+                table.getColumn("username")?.setFilterValue(event.target.value)
               }
               className="max-w-sm"
             />
           </span>
           <span className="gap-4">
-            By Saint:
+            By Email:
             <Input
-              placeholder="Filter saints..."
+              placeholder="Filter by email..."
               value={
-                (table.getColumn("saint")?.getFilterValue() as string) ?? ""
+                (table.getColumn("email")?.getFilterValue() as string) ?? ""
               }
               onChange={(event) =>
-                table.getColumn("saint")?.setFilterValue(event.target.value)
+                table.getColumn("email")?.setFilterValue(event.target.value)
               }
               className="max-w-sm"
             />
           </span>
-          <span className="gap-4">
-            By Source:
-            <Input
-              placeholder="Filter sources..."
-              value={
-                (table.getColumn("source")?.getFilterValue() as string) ?? ""
+          <span className="flex flex-col gap-4">
+            By Email Verification:
+            <Checkbox
+              defaultChecked={false}
+              onCheckedChange={(event) =>
+                table.getColumn("emailVerified")?.setFilterValue(event)
               }
-              onChange={(event) =>
-                table.getColumn("source")?.setFilterValue(event.target.value)
-              }
-              className="max-w-sm"
             />
           </span>
         </DropdownMenuContent>
