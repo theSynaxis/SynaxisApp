@@ -10,8 +10,6 @@ import {
   type ColumnFiltersState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import Link from "next/link";
-
 import {
   Table,
   TableBody,
@@ -21,7 +19,6 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { type User, columns } from "./columns";
-import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
   DropdownMenu,
@@ -138,6 +135,8 @@ export default function AllUsersTable() {
 }
 
 function SearchQuotes(props: { table: TableType<User> }) {
+  const [userRoleFilter, setUserRoleFilter] = useState("users");
+
   const { table } = props;
   return (
     <>
@@ -192,6 +191,53 @@ function SearchQuotes(props: { table: TableType<User> }) {
                 table.getColumn("emailVerified")?.setFilterValue(event)
               }
             />
+          </span>
+          <span>
+            By User Role:
+            <span className="flex flex-row items-center justify-center gap-4">
+              <span className="flex flex-col items-center justify-center gap-4">
+                User
+                <Checkbox
+                  checked={userRoleFilter === "users" ? true : false}
+                  defaultChecked={true}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter("users") : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(event ? "users" : userRoleFilter);
+                  }}
+                />
+              </span>
+              <span className="flex flex-col items-center justify-center gap-4">
+                Mod
+                <Checkbox
+                  checked={userRoleFilter === "mod" ? true : false}
+                  defaultChecked={false}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter("mod") : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(event ? "mod" : userRoleFilter);
+                  }}
+                />
+              </span>
+              <span className="flex flex-col items-center justify-center gap-4">
+                Admin
+                <Checkbox
+                  checked={userRoleFilter === "admin" ? true : false}
+                  defaultChecked={false}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter("admin") : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(event ? "admin" : userRoleFilter);
+                  }}
+                />
+              </span>
+            </span>
           </span>
         </DropdownMenuContent>
       </DropdownMenu>
