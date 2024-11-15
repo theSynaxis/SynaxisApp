@@ -7,11 +7,11 @@ interface PromoteUserProps {
   currentUserRole: USER_ROLES;
 }
 
-export function PromoteUser(props: PromoteUserProps) {
+export function DemoteUser(props: PromoteUserProps) {
   const { userId, currentUserRole } = props;
 
-  const { mutate: promoteToMod, isLoading: modPromoteIsLoading } =
-    api.user.makeMod.useMutation({
+  const { mutate: demoteFromMod, isLoading: userDemoteIsLoading } =
+    api.user.demoteUserFromMod.useMutation({
       onSuccess: async () => {
         // success toast trigger
       },
@@ -19,8 +19,8 @@ export function PromoteUser(props: PromoteUserProps) {
         //   return setError("user", { type: "server", message: e.message });
       },
     });
-  const { mutate: promoteToAdmin, isLoading: adminPromoteIsLoading } =
-    api.user.makeAdmin.useMutation({
+  const { mutate: demoteToMod, isLoading: modDemoteIsLoading } =
+    api.user.makeMod.useMutation({
       onSuccess: async () => {
         // success toast trigger
       },
@@ -31,30 +31,30 @@ export function PromoteUser(props: PromoteUserProps) {
 
   function handleClick() {
     switch (currentUserRole) {
-      case USER_ROLES.USER:
-        return promoteToMod({ userId });
       case USER_ROLES.MODERATOR:
-        return promoteToAdmin({ userId });
+        return demoteFromMod({ userId });
+      case USER_ROLES.ADMINISTRATOR:
+        return demoteToMod({ userId });
       default:
         break;
     }
   }
 
   const buttonText =
-    currentUserRole === USER_ROLES.USER
-      ? "Promote User to Moderator"
-      : "Make User an Administrator";
+    currentUserRole === USER_ROLES.ADMINISTRATOR
+      ? "Demote User to Moderator"
+      : "Demote User from Moderator";
 
   return (
     <>
       <Button
         size={"sm"}
         variant={
-          modPromoteIsLoading || adminPromoteIsLoading ? "disabled" : "default"
+          userDemoteIsLoading || modDemoteIsLoading ? "disabled" : "default"
         }
         onClick={handleClick}
       >
-        {modPromoteIsLoading || adminPromoteIsLoading
+        {userDemoteIsLoading || modDemoteIsLoading
           ? "Promoting..."
           : buttonText}
       </Button>

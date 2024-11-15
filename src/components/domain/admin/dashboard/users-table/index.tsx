@@ -29,12 +29,13 @@ import {
 import Image from "next/image";
 import { api } from "~/trpc/react";
 import { Checkbox } from "~/components/ui/checkbox";
+import { USER_ROLES } from "~/lib/constants";
 
 const falseData: User[] = [
   {
     id: "728ed52f",
     username: "Nobody",
-    role: "user",
+    role: USER_ROLES.USER,
     email: "nobody@email.com",
     name: "Nobody Important",
     firstName: "Nobody",

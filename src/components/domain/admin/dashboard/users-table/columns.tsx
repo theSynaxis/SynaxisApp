@@ -24,6 +24,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { PromoteUser } from "../../admin-actions/promote-user";
 import { USER_ROLES } from "~/lib/constants";
+import { DemoteUser } from "../../admin-actions/demote-user";
 
 export type User = {
   id: string;
@@ -170,7 +171,7 @@ export const columns = [
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
-                        <DialogTitle>Promote/Demote User</DialogTitle>
+                        <DialogTitle>Promote User</DialogTitle>
                         <DialogDescription className="flex flex-col gap-4 pt-4">
                           <div className="flex w-full flex-col items-start justify-center">
                             <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
@@ -201,7 +202,7 @@ export const columns = [
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[425px]">
                       <DialogHeader>
-                        <DialogTitle>Promote/Demote User</DialogTitle>
+                        <DialogTitle>Promote User</DialogTitle>
                         <DialogDescription className="flex flex-col gap-4 pt-4">
                           <div className="flex w-full flex-col items-start justify-center">
                             <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
@@ -230,6 +231,20 @@ export const columns = [
                         Demote
                       </DropdownMenuItem>
                     </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Demote User</DialogTitle>
+                        <DialogDescription className="flex flex-col gap-4 pt-4">
+                          <div className="flex w-full flex-col items-start justify-center">
+                            <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                              {username}
+                              <span>Current Role: {role}</span>
+                            </span>
+                          </div>
+                          <DemoteUser userId={id} currentUserRole={role} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
                   </Dialog>
                 </>
               ) : (

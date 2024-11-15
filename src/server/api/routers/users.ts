@@ -128,13 +128,23 @@ export const userRouter = createTRPCRouter({
     const items = await ctx.db.select().from(users);
     return items;
   }),
-  promote: protectedProcedure
+  demoteUserFromMod: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db
+      const updatedUser = await ctx.db
         .update(users)
-        .set({ role: USER_ROLES.MODERATOR })
+        .set({ role: USER_ROLES.USER, updatedDate: new Date() })
         .where(eq(users.id, input.userId));
+      return updatedUser;
+    }),
+  makeMod: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const updatedUser = await ctx.db
+        .update(users)
+        .set({ role: USER_ROLES.MODERATOR, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+      return updatedUser;
     }),
   makeAdmin: protectedProcedure
     .input(z.object({ userId: z.string() }))
@@ -145,13 +155,14 @@ export const userRouter = createTRPCRouter({
         .from(users)
         .where(eq(users.id, actorId));
 
-      if (actingUser[0].role !== USER_ROLES.ADMINISTRATOR) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const updatedUser = await ctx.db
         .update(users)
-        .set({ role: USER_ROLES.ADMINISTRATOR })
+        .set({ role: USER_ROLES.ADMINISTRATOR, updatedDate: new Date() })
         .where(eq(users.id, input.userId));
 
       return updatedUser;
