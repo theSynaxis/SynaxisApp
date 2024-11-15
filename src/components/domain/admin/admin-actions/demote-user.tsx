@@ -1,31 +1,48 @@
+import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { USER_ROLES } from "~/lib/constants";
 import { api } from "~/trpc/react";
 
 interface PromoteUserProps {
   userId: string;
+  username: string;
   currentUserRole: USER_ROLES;
 }
 
 export function DemoteUser(props: PromoteUserProps) {
-  const { userId, currentUserRole } = props;
+  const { userId, username, currentUserRole } = props;
+  const { toast } = useToast();
 
   const { mutate: demoteFromMod, isLoading: userDemoteIsLoading } =
     api.user.demoteUserFromMod.useMutation({
-      onSuccess: async () => {
-        // success toast trigger
+      onSuccess: async (_data, _variables) => {
+        toast({
+          title: `Success`,
+          description: `${username} has been demoted to a regular user.`,
+        });
       },
       onError: (e) => {
-        //   return setError("user", { type: "server", message: e.message });
+        toast({
+          title: `Error`,
+          variant: "destructive",
+          description: `${e.message}`,
+        });
       },
     });
   const { mutate: demoteToMod, isLoading: modDemoteIsLoading } =
     api.user.makeMod.useMutation({
-      onSuccess: async () => {
-        // success toast trigger
+      onSuccess: async (_data, _variables) => {
+        toast({
+          title: `Success`,
+          description: `${username} has been demoted to a moderator.`,
+        });
       },
       onError: (e) => {
-        //   return setError("user", { type: "server", message: e.message });
+        toast({
+          title: `Error`,
+          variant: "destructive",
+          description: `${e.message}`,
+        });
       },
     });
 

@@ -179,7 +179,11 @@ export const columns = [
                               <span>Current Role: {role}</span>
                             </span>
                           </div>
-                          <PromoteUser userId={id} currentUserRole={role} />
+                          <PromoteUser
+                            userId={id}
+                            username={username}
+                            currentUserRole={role}
+                          />
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
@@ -210,7 +214,11 @@ export const columns = [
                               <span>Current Role: {role}</span>
                             </span>
                           </div>
-                          <PromoteUser userId={id} currentUserRole={role} />
+                          <PromoteUser
+                            userId={id}
+                            username={username}
+                            currentUserRole={role}
+                          />
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>
@@ -241,7 +249,11 @@ export const columns = [
                               <span>Current Role: {role}</span>
                             </span>
                           </div>
-                          <DemoteUser userId={id} currentUserRole={role} />
+                          <DemoteUser
+                            userId={id}
+                            username={username}
+                            currentUserRole={role}
+                          />
                         </DialogDescription>
                       </DialogHeader>
                     </DialogContent>

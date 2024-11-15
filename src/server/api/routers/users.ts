@@ -140,6 +140,17 @@ export const userRouter = createTRPCRouter({
   makeMod: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
       const updatedUser = await ctx.db
         .update(users)
         .set({ role: USER_ROLES.MODERATOR, updatedDate: new Date() })

@@ -2,6 +2,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { sourceSansPro, synaxisHeader } from "../fonts";
 import HeaderMenu from "~/components/layout/header-menu";
 import Footer from "~/components/layout/footer";
+import { Toaster } from "~/components/ui/toaster";
 import "~/styles/globals.css";
 
 export default function RootLayout({
@@ -16,7 +17,10 @@ export default function RootLayout({
       >
         <div className="mx-auto">
           <HeaderMenu />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            {children}
+            <Toaster />
+          </TRPCReactProvider>
           <Footer />
         </div>
       </body>

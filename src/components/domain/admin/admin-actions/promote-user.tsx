@@ -1,31 +1,48 @@
+import { useToast } from "~/components/ui/use-toast";
 import { Button } from "~/components/ui/button";
 import { USER_ROLES } from "~/lib/constants";
 import { api } from "~/trpc/react";
 
 interface PromoteUserProps {
   userId: string;
+  username: string;
   currentUserRole: USER_ROLES;
 }
 
 export function PromoteUser(props: PromoteUserProps) {
-  const { userId, currentUserRole } = props;
+  const { userId, username, currentUserRole } = props;
+  const { toast } = useToast();
 
   const { mutate: promoteToMod, isLoading: modPromoteIsLoading } =
     api.user.makeMod.useMutation({
-      onSuccess: async () => {
-        // success toast trigger
+      onSuccess: async (_data, _variables) => {
+        toast({
+          title: `Success`,
+          description: `${username} is now a moderator!`,
+        });
       },
       onError: (e) => {
-        //   return setError("user", { type: "server", message: e.message });
+        toast({
+          title: `Error`,
+          variant: "destructive",
+          description: `${e.message}`,
+        });
       },
     });
   const { mutate: promoteToAdmin, isLoading: adminPromoteIsLoading } =
     api.user.makeAdmin.useMutation({
-      onSuccess: async () => {
-        // success toast trigger
+      onSuccess: async (_data, _variables) => {
+        toast({
+          title: `Success`,
+          description: `${username} is now an administrator!`,
+        });
       },
       onError: (e) => {
-        //   return setError("user", { type: "server", message: e.message });
+        toast({
+          title: `Error`,
+          variant: "destructive",
+          description: `${e.message}`,
+        });
       },
     });
 
