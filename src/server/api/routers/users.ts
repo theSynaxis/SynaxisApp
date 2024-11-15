@@ -136,4 +136,24 @@ export const userRouter = createTRPCRouter({
         .set({ role: USER_ROLES.MODERATOR })
         .where(eq(users.id, input.userId));
     }),
+  makeAdmin: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      if (actingUser[0].role !== USER_ROLES.ADMINISTRATOR) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updatedUser = await ctx.db
+        .update(users)
+        .set({ role: USER_ROLES.ADMINISTRATOR })
+        .where(eq(users.id, input.userId));
+
+      return updatedUser;
+    }),
 });

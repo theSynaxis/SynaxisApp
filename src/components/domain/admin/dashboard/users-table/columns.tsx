@@ -4,10 +4,6 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  AllCollections,
-  CreateCollection,
-} from "~/components/domain/sayings/user-actions/add-to-collection";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -26,19 +22,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
-import { USER_ROLES } from "~/lib/constants";
 import { PromoteUser } from "../../admin-actions/promote-user";
+import { USER_ROLES } from "~/lib/constants";
 
 export type User = {
   id: string;
-  role: string;
+  role: USER_ROLES;
   username: string;
   email: string;
   name: string;
@@ -150,20 +139,6 @@ export const columns = [
     header: () => <div className="text-center text-base">Actions</div>,
     cell: (info) => {
       const { username, role, id } = info.row.original;
-      const userRolesArray = [
-        {
-          value: USER_ROLES.ADMINISTRATOR,
-          label: USER_ROLES.ADMINISTRATOR,
-        },
-        {
-          value: USER_ROLES.MODERATOR,
-          label: USER_ROLES.MODERATOR,
-        },
-        {
-          value: USER_ROLES.USER,
-          label: USER_ROLES.USER,
-        },
-      ];
 
       return (
         <span className="flex flex-row justify-center self-center">
@@ -182,52 +157,106 @@ export const columns = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="mr-2 bg-neutral-50">
               <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
-              <Dialog>
-                <DialogTrigger>
-                  <DropdownMenuItem
-                    className="cursor-pointer text-base"
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    Promote
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Promote/Demote User</DialogTitle>
-                    <DialogDescription className="flex flex-col gap-4 pt-4">
-                      <div className="flex w-full flex-col items-start justify-center">
-                        <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
-                          {username}
-                          <span>Current Role: {role}</span>
-                        </span>
-                      </div>
-                      <PromoteUser userId={id} />
-                    </DialogDescription>
-                  </DialogHeader>
-                </DialogContent>
-              </Dialog>
-              <DropdownMenuSeparator className="bg-neutral-900" />
-              <Dialog>
-                <DialogTrigger>
-                  <DropdownMenuItem
-                    className="cursor-pointer text-base text-secondary-red-500"
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    Ban
-                  </DropdownMenuItem>
-                </DialogTrigger>
-              </Dialog>
-              <DropdownMenuSeparator className="bg-neutral-900" />
-              <Dialog>
-                <DialogTrigger>
-                  <DropdownMenuItem
-                    className="cursor-pointer text-base text-secondary-red-700"
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    DELETE
-                  </DropdownMenuItem>
-                </DialogTrigger>
-              </Dialog>
+              {role === USER_ROLES.USER ? (
+                <>
+                  <Dialog>
+                    <DialogTrigger>
+                      <DropdownMenuItem
+                        className="cursor-pointer text-base"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        Promote
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Promote/Demote User</DialogTitle>
+                        <DialogDescription className="flex flex-col gap-4 pt-4">
+                          <div className="flex w-full flex-col items-start justify-center">
+                            <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                              {username}
+                              <span>Current Role: {role}</span>
+                            </span>
+                          </div>
+                          <PromoteUser userId={id} currentUserRole={role} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                  <DropdownMenuSeparator className="bg-neutral-900" />
+                </>
+              ) : (
+                <></>
+              )}
+              {role === USER_ROLES.MODERATOR ? (
+                <>
+                  <Dialog>
+                    <DialogTrigger>
+                      <DropdownMenuItem
+                        className="cursor-pointer text-base"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        Make Admin
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Promote/Demote User</DialogTitle>
+                        <DialogDescription className="flex flex-col gap-4 pt-4">
+                          <div className="flex w-full flex-col items-start justify-center">
+                            <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                              {username}
+                              <span>Current Role: {role}</span>
+                            </span>
+                          </div>
+                          <PromoteUser userId={id} currentUserRole={role} />
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                  <DropdownMenuSeparator className="bg-neutral-900" />
+                </>
+              ) : (
+                <></>
+              )}
+              {role !== USER_ROLES.USER ? (
+                <>
+                  <Dialog>
+                    <DialogTrigger>
+                      <DropdownMenuItem
+                        className="cursor-pointer text-base text-secondary-red-500"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        Demote
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                  </Dialog>
+                </>
+              ) : (
+                <>
+                  <Dialog>
+                    <DialogTrigger>
+                      <DropdownMenuItem
+                        className="cursor-pointer text-base text-secondary-red-500"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        Ban
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                  </Dialog>
+                  <DropdownMenuSeparator className="bg-neutral-900" />
+                  <Dialog>
+                    <DialogTrigger>
+                      <DropdownMenuItem
+                        className="cursor-pointer text-base text-secondary-red-700"
+                        onSelect={(e) => e.preventDefault()}
+                      >
+                        DELETE
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                  </Dialog>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </span>
