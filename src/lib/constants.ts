@@ -65,3 +65,10 @@ export const GREAT_SAINTS_DAY = "GREAT_SAINTS_DAY";
 export const SAINT_WITH_GREAT_DOXOLOGY = "SAINT_WITH_GREAT_DOXOLOGY";
 export const SAINT_WITH_SERVICE = "SAINT_WITH_SERVICE";
 export const SIMPLE_COMMEMORATION = "SIMPLE_COMMEMORATION";
+
+// User Roles
+export enum USER_ROLES {
+  ADMINISTRATOR = "admin",
+  MODERATOR = "mod",
+  USER = "user",
+}

@@ -12,6 +12,7 @@ import {
 import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { lucia } from "~/server/api/auth";
+import { USER_ROLES } from "~/lib/constants";
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure
@@ -127,4 +128,12 @@ export const userRouter = createTRPCRouter({
     const items = await ctx.db.select().from(users);
     return items;
   }),
+  promote: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(users)
+        .set({ role: USER_ROLES.MODERATOR })
+        .where(eq(users.id, input.userId));
+    }),
 });
