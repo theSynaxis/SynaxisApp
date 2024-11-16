@@ -46,6 +46,7 @@ export const users = createTable("users", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   isBanned: boolean("is_banned").default(false),
+  bannedUntil: timestamp("banned_until"),
   isDeleted: boolean("is_deleted").default(false),
 });
 

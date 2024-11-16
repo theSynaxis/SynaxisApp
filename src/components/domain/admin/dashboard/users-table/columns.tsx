@@ -26,6 +26,7 @@ import { PromoteUser } from "../../admin-actions/promote-user";
 import { USER_ROLES } from "~/lib/constants";
 import { DemoteUser } from "../../admin-actions/demote-user";
 import { DeleteUser } from "../../admin-actions/delete-user";
+import { BanUser } from "~/components/domain/mod/mod-actions/ban-user";
 
 export type User = {
   id: string;
@@ -149,10 +150,11 @@ interface ActionsColumnProps {
   username: string;
   role: USER_ROLES;
   id: string;
+  isBanned: boolean;
 }
 
 function ActionsColumn(props: ActionsColumnProps) {
-  const { username, role, id } = props;
+  const { username, role, id, isBanned } = props;
 
   return (
     <>
@@ -172,7 +174,7 @@ function ActionsColumn(props: ActionsColumnProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="mr-2 bg-neutral-50">
             <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
-            {role === USER_ROLES.USER ? (
+            {role === USER_ROLES.USER && isBanned === false ? (
               <>
                 <Dialog>
                   <DialogTrigger>
@@ -275,17 +277,35 @@ function ActionsColumn(props: ActionsColumnProps) {
               </>
             ) : (
               <>
-                <Dialog>
-                  <DialogTrigger>
-                    <DropdownMenuItem
-                      className="cursor-pointer text-base text-secondary-red-500"
-                      onSelect={(e) => e.preventDefault()}
-                    >
-                      Ban
-                    </DropdownMenuItem>
-                  </DialogTrigger>
-                </Dialog>
-                <DropdownMenuSeparator className="bg-neutral-900" />
+                {isBanned === false ? (
+                  <>
+                    <Dialog>
+                      <DialogTrigger>
+                        <DropdownMenuItem
+                          className="cursor-pointer text-base text-secondary-red-500"
+                          onSelect={(e) => e.preventDefault()}
+                        >
+                          Ban
+                        </DropdownMenuItem>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Ban User</DialogTitle>
+                          <DialogDescription className="flex flex-col gap-4 pt-4">
+                            <div className="flex w-full flex-col items-start justify-center text-lg">
+                              <p>Are you sure you want to ban {username}?</p>
+                            </div>
+
+                            <BanUser userId={id} username={username} />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                    <DropdownMenuSeparator className="bg-neutral-900" />
+                  </>
+                ) : (
+                  <></>
+                )}
                 <Dialog>
                   <DialogTrigger>
                     <DropdownMenuItem

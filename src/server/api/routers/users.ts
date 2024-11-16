@@ -181,6 +181,27 @@ export const userRouter = createTRPCRouter({
 
       return updatedUser;
     }),
+  ban: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role === USER_ROLES.USER) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const bannedUser = await ctx.db
+        .update(users)
+        .set({ isBanned: true })
+        .where(eq(users.id, input.userId));
+
+      return bannedUser;
+    }),
   delete: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
