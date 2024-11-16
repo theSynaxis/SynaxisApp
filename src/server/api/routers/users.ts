@@ -125,7 +125,10 @@ export const userRouter = createTRPCRouter({
     return sessionCookie;
   }),
   list: protectedProcedure.query(async ({ ctx }) => {
-    const items = await ctx.db.select().from(users);
+    const items = await ctx.db
+      .select()
+      .from(users)
+      .where(eq(users.isDeleted, false));
     return items;
   }),
   demoteUserFromMod: protectedProcedure
@@ -177,5 +180,26 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.id, input.userId));
 
       return updatedUser;
+    }),
+  delete: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const deletedUser = await ctx.db
+        .update(users)
+        .set({ isDeleted: true })
+        .where(eq(users.id, input.userId));
+
+      return deletedUser;
     }),
 });

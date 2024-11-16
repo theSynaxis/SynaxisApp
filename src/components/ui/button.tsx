@@ -19,6 +19,7 @@ const buttonVariants = cva(
           "bg-neutral-700 text-neutral-100 transition cursor-not-allowed",
         link: "text-primary underline-offset-4 hover:underline",
         ghost: "hover:bg-accent hover:text-accent-foreground",
+        // TODO: ADD RED CAUTION BUTTON
       },
       size: {
         default: "h-10 px-4 py-2",
