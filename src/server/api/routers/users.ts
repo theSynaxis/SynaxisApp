@@ -124,6 +124,14 @@ export const userRouter = createTRPCRouter({
 
     return sessionCookie;
   }),
+  currentSession: protectedProcedure.query(async ({ ctx }) => {
+    const currentId = ctx.user.id;
+    const currentUser = await ctx.db
+      .select()
+      .from(users)
+      .where(eq(users.id, currentId));
+    return currentUser[0];
+  }),
   list: protectedProcedure.query(async ({ ctx }) => {
     const items = await ctx.db
       .select()
@@ -150,7 +158,10 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.id, actorId));
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR) {
+      if (
+        actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR ||
+        input.userId === actorId // admins cannot demote themselves
+      ) {
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 

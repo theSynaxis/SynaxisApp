@@ -27,6 +27,7 @@ import { USER_ROLES } from "~/lib/constants";
 import { DemoteUser } from "../../admin-actions/demote-user";
 import { DeleteUser } from "../../admin-actions/delete-user";
 import { BanUser } from "~/components/domain/mod/mod-actions/ban-user";
+import { api } from "~/trpc/react";
 
 export type User = {
   id: string;
@@ -156,6 +157,12 @@ interface ActionsColumnProps {
 function ActionsColumn(props: ActionsColumnProps) {
   const { username, role, id, isBanned } = props;
 
+  const {
+    data: currentUser,
+    isLoading,
+    isError,
+  } = api.user.currentSession.useQuery();
+
   return (
     <>
       <span className="flex flex-row justify-center self-center">
@@ -174,6 +181,35 @@ function ActionsColumn(props: ActionsColumnProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="mr-2 bg-neutral-50">
             <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
+            <Dialog>
+              <DialogTrigger>
+                <DropdownMenuItem
+                  className="cursor-pointer text-base"
+                  onSelect={(e) => e.preventDefault()}
+                >
+                  Message
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Message User</DialogTitle>
+                  <DialogDescription className="flex flex-col gap-4 pt-4">
+                    <div className="flex w-full flex-col items-start justify-center">
+                      <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                        {username}
+                        <span>Current Role: {role}</span>
+                      </span>
+                    </div>
+                    <PromoteUser
+                      userId={id}
+                      username={username}
+                      currentUserRole={role}
+                    />
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+            <DropdownMenuSeparator className="bg-neutral-900" />
             {role === USER_ROLES.USER && isBanned === false ? (
               <>
                 <Dialog>
@@ -246,34 +282,40 @@ function ActionsColumn(props: ActionsColumnProps) {
             )}
             {role !== USER_ROLES.USER ? (
               <>
-                <Dialog>
-                  <DialogTrigger>
-                    <DropdownMenuItem
-                      className="cursor-pointer text-base text-secondary-red-500"
-                      onSelect={(e) => e.preventDefault()}
-                    >
-                      Demote
-                    </DropdownMenuItem>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Demote User</DialogTitle>
-                      <DialogDescription className="flex flex-col gap-4 pt-4">
-                        <div className="flex w-full flex-col items-start justify-center">
-                          <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
-                            {username}
-                            <span>Current Role: {role}</span>
-                          </span>
-                        </div>
-                        <DemoteUser
-                          userId={id}
-                          username={username}
-                          currentUserRole={role}
-                        />
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
+                {currentUser?.id !== id ? (
+                  <>
+                    <Dialog>
+                      <DialogTrigger>
+                        <DropdownMenuItem
+                          className="cursor-pointer text-base text-secondary-red-500"
+                          onSelect={(e) => e.preventDefault()}
+                        >
+                          Demote
+                        </DropdownMenuItem>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Demote User</DialogTitle>
+                          <DialogDescription className="flex flex-col gap-4 pt-4">
+                            <div className="flex w-full flex-col items-start justify-center">
+                              <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                                {username}
+                                <span>Current Role: {role}</span>
+                              </span>
+                            </div>
+                            <DemoteUser
+                              userId={id}
+                              username={username}
+                              currentUserRole={role}
+                            />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  </>
+                ) : (
+                  <></>
+                )}
               </>
             ) : (
               <>
