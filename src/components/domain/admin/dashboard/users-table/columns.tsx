@@ -3,7 +3,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Image from "next/image";
-import Link from "next/link";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -22,11 +21,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { BanUser } from "~/components/domain/mod/mod-actions/ban-user";
 import { PromoteUser } from "../../admin-actions/promote-user";
-import { USER_ROLES } from "~/lib/constants";
 import { DemoteUser } from "../../admin-actions/demote-user";
 import { DeleteUser } from "../../admin-actions/delete-user";
-import { BanUser } from "~/components/domain/mod/mod-actions/ban-user";
+import { USER_ROLES } from "~/lib/constants";
 import { api } from "~/trpc/react";
 
 export type User = {
@@ -57,11 +56,7 @@ export const columns = [
   columnHelper.accessor("username", {
     header: () => <div className="text-base">User</div>,
     cell: (info) => {
-      return (
-        <Link href="/apps/sayings/app/saints/saint" className="text-base">
-          {info.getValue()}
-        </Link>
-      );
+      return <>{info.getValue()}</>;
     },
     footer: (props) => props.column.id,
   }),
