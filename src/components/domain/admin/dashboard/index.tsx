@@ -19,10 +19,10 @@ export default function AdminDashboard() {
       title: "Users",
       view: "users",
     },
-    {
-      title: "Account",
-      view: "account",
-    },
+    // {
+    //   title: "Account",
+    //   view: "account",
+    // },
   ];
 
   return (
