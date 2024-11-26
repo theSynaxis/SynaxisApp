@@ -208,7 +208,28 @@ export const userRouter = createTRPCRouter({
 
       const bannedUser = await ctx.db
         .update(users)
-        .set({ isBanned: true })
+        .set({ isBanned: true, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+
+      return bannedUser;
+    }),
+  unban: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role === USER_ROLES.USER) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const bannedUser = await ctx.db
+        .update(users)
+        .set({ isBanned: false, updatedDate: new Date() })
         .where(eq(users.id, input.userId));
 
       return bannedUser;
@@ -229,7 +250,7 @@ export const userRouter = createTRPCRouter({
 
       const deletedUser = await ctx.db
         .update(users)
-        .set({ isDeleted: true })
+        .set({ isDeleted: true, updatedDate: new Date() })
         .where(eq(users.id, input.userId));
 
       return deletedUser;

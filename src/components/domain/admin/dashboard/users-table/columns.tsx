@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { BanUser } from "~/components/domain/mod/mod-actions/ban-user";
+import { UnbanUser } from "~/components/domain/mod/mod-actions/unban-user";
 import { PromoteUser } from "../../admin-actions/promote-user";
 import { DemoteUser } from "../../admin-actions/demote-user";
 import { DeleteUser } from "../../admin-actions/delete-user";
@@ -56,7 +57,7 @@ export const columns = [
   columnHelper.accessor("username", {
     header: () => <div className="text-base">User</div>,
     cell: (info) => {
-      return <>{info.getValue()}</>;
+      return <span className="text-base">{info.getValue()}</span>;
     },
     footer: (props) => props.column.id,
   }),
@@ -157,6 +158,9 @@ function ActionsColumn(props: ActionsColumnProps) {
     isLoading,
     isError,
   } = api.user.currentSession.useQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>ERROR</p>;
 
   return (
     <>
@@ -341,7 +345,31 @@ function ActionsColumn(props: ActionsColumnProps) {
                     <DropdownMenuSeparator className="bg-neutral-900" />
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <Dialog>
+                      <DialogTrigger>
+                        <DropdownMenuItem
+                          className="cursor-pointer text-base text-secondary-red-500"
+                          onSelect={(e) => e.preventDefault()}
+                        >
+                          Unban
+                        </DropdownMenuItem>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Unban User</DialogTitle>
+                          <DialogDescription className="flex flex-col gap-4 pt-4">
+                            <div className="flex w-full flex-col items-start justify-center text-lg">
+                              <p>Are you sure you want to unban {username}?</p>
+                            </div>
+
+                            <UnbanUser userId={id} username={username} />
+                          </DialogDescription>
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                    <DropdownMenuSeparator className="bg-neutral-900" />
+                  </>
                 )}
                 <Dialog>
                   <DialogTrigger>
