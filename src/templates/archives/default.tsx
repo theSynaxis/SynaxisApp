@@ -1,7 +1,133 @@
-export default function PostArchiveTemplate() {
+import Link from "next/link";
+import Image from "next/image";
+import {
+  type TemplateProps,
+  // stripWpUrl,
+  swapWpUrl,
+  getFeaturedImage,
+  type WpPage,
+} from "@nextwp/core";
+import type { Post } from "~/types/post";
+// import { Badge } from "~/components/ui/badge";
+import Edges from "~/components/layout/edges";
+// import { ArchivePagination } from "~/components/template-parts/archive-pagination";
+import { parseHtml } from "~/lib/utils";
+
+interface BlogArchiveData {
+  items?: Post[];
+  page?: WpPage | undefined;
+  prevPage?: string | undefined;
+  nextPage?: string | undefined;
+  totalPages?: number | undefined;
+  totalItems?: number | undefined;
+  currentPage?: number | undefined;
+}
+
+interface BlogArchive extends Omit<TemplateProps, "data"> {
+  data: BlogArchiveData;
+}
+
+export default function PostArchiveTemplate(props: BlogArchive) {
+  const {
+    data: {
+      items,
+      page,
+      // prevPage,
+      // nextPage,
+      // totalItems,
+      // totalPages,
+      // currentPage,
+    },
+  } = props;
+
   return (
-    <>
-      <h1>PostArchiveTemplate</h1>
-    </>
+    <Edges>
+      <h1 className="mb-5">{parseHtml(`${page?.title?.rendered}`)}</h1>
+      <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        {items?.map((post: Post) => {
+          const featuredImage = getFeaturedImage(post);
+
+          return (
+            <article
+              className="flex flex-col items-start justify-between"
+              key={post.id}
+            >
+              <div className="relative aspect-[16/9] w-full sm:aspect-[2/1] lg:aspect-[3/2]">
+                {featuredImage?.url ? (
+                  <Image
+                    alt=""
+                    className="bg-gray-100 aspect-[16/9] w-full rounded-2xl object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+                    fill
+                    src={featuredImage.url}
+                  />
+                ) : null}
+
+                <div className="ring-gray-900/10 absolute inset-0 rounded-2xl ring-1 ring-inset" />
+              </div>
+              <div className="max-w-xl">
+                <div className="mt-8 flex items-center gap-x-4 text-xs">
+                  <time className="text-gray-500" dateTime={`${post.date}`}>
+                    {post.date}
+                  </time>
+
+                  {/* {post?._embedded?.["wp:term"]?.map((tax) => {
+                    return tax?.map((term, index) => {
+                      return (
+                        <Link href={stripWpUrl(term.link)} key={index}>
+                          <Badge>{term.name}</Badge>
+                        </Link>
+                      );
+                    });
+                  })} */}
+                </div>
+                <div className="group relative">
+                  <h3 className="text-gray-900 group-hover:text-gray-600 mt-3 text-lg font-semibold leading-6">
+                    <Link href={swapWpUrl(post.link)}>
+                      <span className="absolute inset-0" />
+                      {post.title.rendered}
+                    </Link>
+                  </h3>
+                  <div
+                    className="text-gray-600 mt-5 line-clamp-3 text-sm leading-6"
+                    dangerouslySetInnerHTML={{
+                      __html: post.excerpt.rendered,
+                    }}
+                  />
+                </div>
+                <div className="relative mt-8 flex items-center gap-x-4">
+                  {/* <Link href={stripWpUrl(post?._embedded?.author?.[0].link)}>
+                    <Image
+                      alt=""
+                      className="bg-gray-100 h-10 w-10 rounded-full"
+                      height={40}
+                      quality={100}
+                      src={post?._embedded?.author?.[0]?.avatar_urls?.["96"]}
+                      width={40}
+                    />
+                    <div className="text-sm leading-6">
+                      <p className="text-gray-900 font-semibold">
+                        <span className="absolute inset-0" />
+                        {post?._embedded?.author?.[0].name}
+                      </p>
+                      <p className="text-gray-600">{post.author.role}</p>
+                    </div>
+                  </Link> */}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      {/* <div className="mt-5 flex items-center justify-between gap-x-2 border-t pt-5">
+        <ArchivePagination
+          currentPage={currentPage}
+          nextPage={nextPage}
+          prevPage={prevPage}
+          totalItems={totalItems}
+          totalPages={totalPages}
+        />
+      </div> */}
+    </Edges>
   );
 }
