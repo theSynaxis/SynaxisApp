@@ -86,7 +86,7 @@ export default function AllUsersTable() {
     <div className="w-full rounded-md border border-neutral-900 shadow-lg">
       <div className="flex w-full flex-row items-start justify-between border-b-2 border-secondary-red-500 bg-neutral-900 p-4 text-lg uppercase text-primary-gold-400">
         <ColumnVisibilityActions table={table} />
-        <SearchQuotes table={table} />
+        <SearchUsers table={table} />
         {/* <span>Link to open advanced search modal</span> */}
       </div>
       <Table className="w-full">
@@ -138,8 +138,8 @@ export default function AllUsersTable() {
   );
 }
 
-function SearchQuotes(props: { table: TableType<User> }) {
-  const [userRoleFilter, setUserRoleFilter] = useState("users");
+function SearchUsers(props: { table: TableType<User> }) {
+  const [userRoleFilter, setUserRoleFilter] = useState<USER_ROLES | null>(null);
 
   const { table } = props;
   return (
@@ -200,44 +200,68 @@ function SearchQuotes(props: { table: TableType<User> }) {
             By User Role:
             <span className="flex flex-row items-center justify-center gap-4">
               <span className="flex flex-col items-center justify-center gap-4">
-                User
+                All
                 <Checkbox
-                  checked={userRoleFilter === "users" ? true : false}
+                  checked={userRoleFilter === null ? true : false}
                   defaultChecked={true}
                   onCheckedChange={(event) => {
-                    event ? setUserRoleFilter("users") : null;
+                    event ? setUserRoleFilter(null) : null;
 
                     return table
                       .getColumn("role")
-                      ?.setFilterValue(event ? "users" : userRoleFilter);
+                      ?.setFilterValue(event ? null : userRoleFilter);
+                  }}
+                />
+              </span>
+              <span className="flex flex-col items-center justify-center gap-4">
+                User
+                <Checkbox
+                  checked={userRoleFilter === USER_ROLES.USER ? true : false}
+                  defaultChecked={true}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter(USER_ROLES.USER) : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(
+                        event ? USER_ROLES.USER : userRoleFilter,
+                      );
                   }}
                 />
               </span>
               <span className="flex flex-col items-center justify-center gap-4">
                 Mod
                 <Checkbox
-                  checked={userRoleFilter === "mod" ? true : false}
+                  checked={
+                    userRoleFilter === USER_ROLES.MODERATOR ? true : false
+                  }
                   defaultChecked={false}
                   onCheckedChange={(event) => {
-                    event ? setUserRoleFilter("mod") : null;
+                    event ? setUserRoleFilter(USER_ROLES.MODERATOR) : null;
 
                     return table
                       .getColumn("role")
-                      ?.setFilterValue(event ? "mod" : userRoleFilter);
+                      ?.setFilterValue(
+                        event ? USER_ROLES.MODERATOR : userRoleFilter,
+                      );
                   }}
                 />
               </span>
               <span className="flex flex-col items-center justify-center gap-4">
                 Admin
                 <Checkbox
-                  checked={userRoleFilter === "admin" ? true : false}
+                  checked={
+                    userRoleFilter === USER_ROLES.ADMINISTRATOR ? true : false
+                  }
                   defaultChecked={false}
                   onCheckedChange={(event) => {
-                    event ? setUserRoleFilter("admin") : null;
+                    event ? setUserRoleFilter(USER_ROLES.ADMINISTRATOR) : null;
 
                     return table
                       .getColumn("role")
-                      ?.setFilterValue(event ? "admin" : userRoleFilter);
+                      ?.setFilterValue(
+                        event ? USER_ROLES.ADMINISTRATOR : userRoleFilter,
+                      );
                   }}
                 />
               </span>

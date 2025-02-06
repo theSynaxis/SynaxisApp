@@ -1,4 +1,3 @@
-import { api } from "~/trpc/react";
 import { Separator } from "~/components/ui/separator";
 import AllUsersTable from "./users-table";
 
