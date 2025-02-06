@@ -13,6 +13,7 @@ import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 import { lucia } from "~/server/api/auth";
 import { USER_ROLES } from "~/lib/constants";
+import { USER } from "~/lib/types";
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure
@@ -133,11 +134,12 @@ export const userRouter = createTRPCRouter({
     return currentUser[0];
   }),
   list: protectedProcedure.query(async ({ ctx }) => {
-    const items = await ctx.db
+    const allUsers = await ctx.db
       .select()
       .from(users)
       .where(eq(users.isDeleted, false));
-    return items;
+
+    return allUsers as unknown as USER[];
   }),
   demoteUserFromMod: protectedProcedure
     .input(z.object({ userId: z.string() }))

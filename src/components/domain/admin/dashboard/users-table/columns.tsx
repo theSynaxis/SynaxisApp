@@ -28,30 +28,9 @@ import { DemoteUser } from "../../admin-actions/demote-user";
 import { DeleteUser } from "../../admin-actions/delete-user";
 import { USER_ROLES } from "~/lib/constants";
 import { api } from "~/trpc/react";
+import { type USER } from "~/lib/types";
 
-export type User = {
-  id: string;
-  role: USER_ROLES;
-  username: string;
-  email: string;
-  name: string;
-  firstName: string;
-  lastName: string;
-  patron: string;
-  birthday: Date;
-  nameday: Date;
-  location: string;
-  denomination: string;
-  jurisdiction: string;
-  sex: string;
-  joinedDate: Date;
-  updatedDate: Date;
-  isBanned: boolean;
-  isDeleted: boolean; // if true, don't show user - in fact, this should be in the retrieval code
-  emailVerified: boolean;
-};
-
-const columnHelper = createColumnHelper<User>();
+const columnHelper = createColumnHelper<USER>();
 
 export const columns = [
   columnHelper.accessor("username", {
@@ -75,7 +54,7 @@ export const columns = [
     },
     footer: (props) => props.column.id,
   }),
-  columnHelper.accessor("name", {
+  columnHelper.accessor("firstName", {
     header: () => <div className="text-base">Name</div>,
     cell: (info) => {
       const { firstName, lastName } = info.row.original;

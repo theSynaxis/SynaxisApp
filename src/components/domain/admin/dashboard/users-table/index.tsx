@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { type User, columns } from "./columns";
+import { columns } from "./columns";
 import { Input } from "~/components/ui/input";
 import {
   DropdownMenu,
@@ -30,17 +30,18 @@ import Image from "next/image";
 import { api } from "~/trpc/react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { USER_ROLES } from "~/lib/constants";
+import { type USER } from "~/lib/types";
 
-const falseData: User[] = [
+const falseData: USER[] = [
   {
     id: "728ed52f",
     username: "Nobody",
     role: USER_ROLES.USER,
     email: "nobody@email.com",
-    name: "Nobody Important",
     firstName: "Nobody",
     lastName: "Important",
     patron: "Ain't got one.",
+    bio: undefined,
     birthday: new Date(),
     nameday: new Date(),
     location: "somewhere",
@@ -50,6 +51,7 @@ const falseData: User[] = [
     joinedDate: new Date(),
     updatedDate: new Date(),
     isBanned: false,
+    bannedUntil: undefined,
     isDeleted: false,
     emailVerified: false,
   },
@@ -138,7 +140,7 @@ export default function AllUsersTable() {
   );
 }
 
-function SearchUsers(props: { table: TableType<User> }) {
+function SearchUsers(props: { table: TableType<USER> }) {
   const [userRoleFilter, setUserRoleFilter] = useState<USER_ROLES | null>(null);
 
   const { table } = props;
@@ -273,7 +275,7 @@ function SearchUsers(props: { table: TableType<User> }) {
   );
 }
 
-function ColumnVisibilityActions(props: { table: TableType<User> }) {
+function ColumnVisibilityActions(props: { table: TableType<USER> }) {
   const { table } = props;
   return (
     <>
