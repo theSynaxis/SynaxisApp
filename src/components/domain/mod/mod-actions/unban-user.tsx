@@ -10,9 +10,11 @@ interface PromoteUserProps {
 export function UnbanUser(props: PromoteUserProps) {
   const { userId, username } = props;
   const { toast } = useToast();
+  const utils = api.useUtils();
 
   const { mutate, isLoading } = api.user.unban.useMutation({
     onSuccess: async (_data, _variables) => {
+      utils.user.list.invalidate();
       toast({
         title: `Success`,
         description: `${username} has been unbanned.`,
