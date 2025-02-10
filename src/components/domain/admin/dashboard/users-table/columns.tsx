@@ -29,6 +29,8 @@ import { DeleteUser } from "../../admin-actions/delete-user";
 import { USER_ROLES } from "~/lib/constants";
 import { api } from "~/trpc/react";
 import { type USER } from "~/lib/types";
+import { Calendar } from "~/components/ui/calendar";
+import { useState } from "react";
 
 const columnHelper = createColumnHelper<USER>();
 
@@ -299,29 +301,7 @@ function ActionsColumn(props: ActionsColumnProps) {
               <>
                 {isBanned === false ? (
                   <>
-                    <Dialog>
-                      <DialogTrigger>
-                        <DropdownMenuItem
-                          className="cursor-pointer text-base text-secondary-red-500"
-                          onSelect={(e) => e.preventDefault()}
-                        >
-                          Ban
-                        </DropdownMenuItem>
-                      </DialogTrigger>
-                      <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                          <DialogTitle>Ban User</DialogTitle>
-                          <DialogDescription className="flex flex-col gap-4 pt-4">
-                            <div className="flex w-full flex-col items-start justify-center text-lg">
-                              <p>Are you sure you want to ban {username}?</p>
-                            </div>
-
-                            <BanUser userId={id} username={username} />
-                          </DialogDescription>
-                        </DialogHeader>
-                      </DialogContent>
-                    </Dialog>
-                    <DropdownMenuSeparator className="bg-neutral-900" />
+                    <BanUserAction username={username} id={id} />
                   </>
                 ) : (
                   <>
@@ -377,6 +357,47 @@ function ActionsColumn(props: ActionsColumnProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </span>
+    </>
+  );
+}
+
+function BanUserAction(props: { id: string; username: string }) {
+  const { id, username } = props;
+  const [date, setDate] = useState<Date | undefined>();
+
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base text-secondary-red-500"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Ban
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="flex flex-col items-center sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Ban User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-center justify-center text-lg">
+                <p>
+                  Are you sure you want to ban{" "}
+                  <span className="text-secondary-red-600">{username}</span>?
+                </p>
+                <Calendar mode="single" selected={date} onSelect={setDate} />
+                <span>
+                  Ban user until:{" "}
+                  {date ? format(date, "MMM d, yyyy") : "Forever"}
+                </span>
+              </div>
+
+              <BanUser userId={id} username={username} date={date} />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <DropdownMenuSeparator className="bg-neutral-900" />
     </>
   );
 }

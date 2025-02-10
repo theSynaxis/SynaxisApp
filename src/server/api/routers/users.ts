@@ -138,7 +138,7 @@ export const userRouter = createTRPCRouter({
       .select()
       .from(users)
       .where(eq(users.isDeleted, false));
-
+    // TODO: exclude password
     return allUsers as unknown as USER[];
   }),
   demoteUserFromMod: protectedProcedure
@@ -195,7 +195,7 @@ export const userRouter = createTRPCRouter({
       return updatedUser;
     }),
   ban: protectedProcedure
-    .input(z.object({ userId: z.string() }))
+    .input(z.object({ userId: z.string(), date: z.date().optional() }))
     .mutation(async ({ ctx, input }) => {
       const actorId = ctx.user.id;
       const actingUser = await ctx.db
@@ -210,7 +210,11 @@ export const userRouter = createTRPCRouter({
 
       const bannedUser = await ctx.db
         .update(users)
-        .set({ isBanned: true, updatedDate: new Date() })
+        .set({
+          isBanned: true,
+          bannedUntil: input.date,
+          updatedDate: new Date(),
+        })
         .where(eq(users.id, input.userId));
 
       return bannedUser;
@@ -231,7 +235,7 @@ export const userRouter = createTRPCRouter({
 
       const bannedUser = await ctx.db
         .update(users)
-        .set({ isBanned: false, updatedDate: new Date() })
+        .set({ isBanned: false, bannedUntil: null, updatedDate: new Date() })
         .where(eq(users.id, input.userId));
 
       return bannedUser;
