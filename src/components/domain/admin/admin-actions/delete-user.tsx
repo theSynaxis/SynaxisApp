@@ -10,9 +10,11 @@ interface PromoteUserProps {
 export function DeleteUser(props: PromoteUserProps) {
   const { userId, username } = props;
   const { toast } = useToast();
+  const utils = api.useUtils();
 
   const { mutate, isLoading } = api.user.delete.useMutation({
     onSuccess: async (_data, _variables) => {
+      await utils.user.list.invalidate();
       toast({
         title: `Success`,
         description: `${username} has been deleted.`,

@@ -14,7 +14,7 @@ export function UnbanUser(props: PromoteUserProps) {
 
   const { mutate, isLoading } = api.user.unban.useMutation({
     onSuccess: async (_data, _variables) => {
-      utils.user.list.invalidate();
+      await utils.user.list.invalidate();
       toast({
         title: `Success`,
         description: `${username} has been unbanned.`,

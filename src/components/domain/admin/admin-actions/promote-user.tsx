@@ -12,10 +12,12 @@ interface PromoteUserProps {
 export function PromoteUser(props: PromoteUserProps) {
   const { userId, username, currentUserRole } = props;
   const { toast } = useToast();
+  const utils = api.useUtils();
 
   const { mutate: promoteToMod, isLoading: modPromoteIsLoading } =
     api.user.makeMod.useMutation({
       onSuccess: async (_data, _variables) => {
+        await utils.user.list.invalidate();
         toast({
           title: `Success`,
           description: `${username} is now a moderator!`,
