@@ -34,6 +34,7 @@ export function DemoteUser(props: PromoteUserProps) {
   const { mutate: demoteToMod, isLoading: modDemoteIsLoading } =
     api.user.makeMod.useMutation({
       onSuccess: async (_data, _variables) => {
+        await utils.user.list.invalidate();
         toast({
           title: `Success`,
           description: `${username} has been demoted to a moderator.`,

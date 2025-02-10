@@ -34,6 +34,7 @@ export function PromoteUser(props: PromoteUserProps) {
   const { mutate: promoteToAdmin, isLoading: adminPromoteIsLoading } =
     api.user.makeAdmin.useMutation({
       onSuccess: async (_data, _variables) => {
+        await utils.user.list.invalidate();
         toast({
           title: `Success`,
           description: `${username} is now an administrator!`,
