@@ -12,41 +12,41 @@ import type { Session, User } from "lucia";
 const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
-	sessionCookie: {
-		// this sets cookies with super long expiration
-		// since Next.js doesn't allow Lucia to extend cookie expiration when rendering pages
-		expires: false, // session cookies have very long lifespan (2 years)
-		attributes: {
-			// set to `true` when using HTTPS
-			secure: process.env.NODE_ENV === "production"
-		}
-	}
+  sessionCookie: {
+    // this sets cookies with super long expiration
+    // since Next.js doesn't allow Lucia to extend cookie expiration when rendering pages
+    expires: false, // session cookies have very long lifespan (2 years)
+    attributes: {
+      // set to `true` when using HTTPS
+      secure: process.env.NODE_ENV === "production",
+    },
+  },
 });
 
 // IMPORTANT!
 declare module "lucia" {
-	interface Register {
-		Lucia: typeof lucia;
-		DatabaseUserAttributes: DatabaseUserAttributes;
-	}
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
 }
 
 interface DatabaseUserAttributes {
-	username: string;
-	isAdmin: string;
-	isMod: string;
+  username: string;
+  isAdmin: string;
+  isMod: string;
 }
 
 export const uncachedValidateRequest = async (): Promise<
   { user: User; session: Session } | { user: null; session: null }
 > => {
-	const sessionCookieName = lucia.sessionCookieName;
-	const sessionId = cookies().get(sessionCookieName)?.value ?? null;
+  const sessionCookieName = lucia.sessionCookieName;
+  const sessionId = cookies().get(sessionCookieName)?.value ?? null;
 
-	if (!sessionId) {
-		return { user: null, session: null };
-	}
-	const result = await lucia.validateSession(sessionId);
+  if (!sessionId) {
+    return { user: null, session: null };
+  }
+  const result = await lucia.validateSession(sessionId);
 
-	return result;
+  return result;
 };

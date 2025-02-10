@@ -1,0 +1,315 @@
+"use client";
+
+import { useState } from "react";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getFilteredRowModel,
+  type Table as TableType,
+  type ColumnFiltersState,
+  type VisibilityState,
+} from "@tanstack/react-table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
+import { columns } from "./columns";
+import { Input } from "~/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import Image from "next/image";
+import { api } from "~/trpc/react";
+import { Checkbox } from "~/components/ui/checkbox";
+import { USER_ROLES } from "~/lib/constants";
+import { type USER } from "~/lib/types";
+
+const falseData: USER[] = [
+  {
+    id: "728ed52f",
+    username: "Nobody",
+    role: USER_ROLES.USER,
+    email: "nobody@email.com",
+    firstName: "Nobody",
+    lastName: "Important",
+    patron: "Ain't got one.",
+    bio: undefined,
+    birthday: new Date(),
+    nameday: new Date(),
+    location: "somewhere",
+    denomination: "Orthodox",
+    jurisdiction: "Antiochian",
+    sex: "Male",
+    joinedDate: new Date(),
+    updatedDate: new Date(),
+    isBanned: false,
+    bannedUntil: undefined,
+    isDeleted: false,
+    emailVerified: false,
+  },
+];
+
+export default function AllUsersTable() {
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    avatar: true,
+    name: true,
+    role: true,
+  });
+  // for client side data filtering. ideal would be server side filtering.
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
+  const { data, isLoading, isError } = api.user.list.useQuery();
+
+  const table = useReactTable({
+    data: data ?? falseData,
+    columns,
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    getCoreRowModel: getCoreRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    state: {
+      columnFilters,
+      columnVisibility,
+    },
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError || !data) return <p>ERROR</p>;
+
+  return (
+    <div className="w-full rounded-md border border-neutral-900 shadow-lg">
+      <div className="flex w-full flex-row items-start justify-between border-b-2 border-secondary-red-500 bg-neutral-900 p-4 text-lg uppercase text-primary-gold-400">
+        <ColumnVisibilityActions table={table} />
+        <SearchUsers table={table} />
+        {/* <span>Link to open advanced search modal</span> */}
+      </div>
+      <Table className="w-full">
+        <TableHeader className="">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                className={`${row.original.isBanned ? "bg-secondary-red-100" : ""}`}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center text-2xl"
+              >
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function SearchUsers(props: { table: TableType<USER> }) {
+  const [userRoleFilter, setUserRoleFilter] = useState<USER_ROLES | null>(null);
+
+  const { table } = props;
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <span className="flex cursor-pointer flex-row items-center justify-between gap-2">
+            Search
+            <Image
+              src={"/images/icons/Chevron-Down-Gold-Icon.svg"}
+              alt="Column Visibility"
+              width={12}
+              height={12}
+              className="h-3 w-3"
+            />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          className="flex flex-col items-start gap-4 bg-neutral-50 px-4 py-6"
+        >
+          <span className="gap-4">
+            By Username:
+            <Input
+              placeholder="Filter by username..."
+              value={
+                (table.getColumn("username")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("username")?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+          </span>
+          <span className="gap-4">
+            By Email:
+            <Input
+              placeholder="Filter by email..."
+              value={
+                (table.getColumn("email")?.getFilterValue() as string) ?? ""
+              }
+              onChange={(event) =>
+                table.getColumn("email")?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+          </span>
+          <span className="flex flex-col gap-4">
+            By Email Verification:
+            <Checkbox
+              defaultChecked={false}
+              onCheckedChange={(event) =>
+                table.getColumn("emailVerified")?.setFilterValue(event)
+              }
+            />
+          </span>
+          <span>
+            By User Role:
+            <span className="flex flex-row items-center justify-center gap-4">
+              <span className="flex flex-col items-center justify-center gap-4">
+                All
+                <Checkbox
+                  checked={userRoleFilter === null ? true : false}
+                  defaultChecked={true}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter(null) : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(event ? null : userRoleFilter);
+                  }}
+                />
+              </span>
+              <span className="flex flex-col items-center justify-center gap-4">
+                User
+                <Checkbox
+                  checked={userRoleFilter === USER_ROLES.USER ? true : false}
+                  defaultChecked={true}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter(USER_ROLES.USER) : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(
+                        event ? USER_ROLES.USER : userRoleFilter,
+                      );
+                  }}
+                />
+              </span>
+              <span className="flex flex-col items-center justify-center gap-4">
+                Mod
+                <Checkbox
+                  checked={
+                    userRoleFilter === USER_ROLES.MODERATOR ? true : false
+                  }
+                  defaultChecked={false}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter(USER_ROLES.MODERATOR) : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(
+                        event ? USER_ROLES.MODERATOR : userRoleFilter,
+                      );
+                  }}
+                />
+              </span>
+              <span className="flex flex-col items-center justify-center gap-4">
+                Admin
+                <Checkbox
+                  checked={
+                    userRoleFilter === USER_ROLES.ADMINISTRATOR ? true : false
+                  }
+                  defaultChecked={false}
+                  onCheckedChange={(event) => {
+                    event ? setUserRoleFilter(USER_ROLES.ADMINISTRATOR) : null;
+
+                    return table
+                      .getColumn("role")
+                      ?.setFilterValue(
+                        event ? USER_ROLES.ADMINISTRATOR : userRoleFilter,
+                      );
+                  }}
+                />
+              </span>
+            </span>
+          </span>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+}
+
+function ColumnVisibilityActions(props: { table: TableType<USER> }) {
+  const { table } = props;
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <span className="flex cursor-pointer flex-row items-center justify-between gap-2">
+            Columns
+            <Image
+              src={"/images/icons/Chevron-Down-Gold-Icon.svg"}
+              alt="Column Visibility"
+              width={12}
+              height={12}
+              className="h-3 w-3"
+            />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="bg-neutral-50">
+          {table
+            .getAllColumns()
+            .filter((column) => column.getCanHide())
+            .map((column) => {
+              return (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+}

@@ -11,7 +11,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "~/server/db";
-import { uncachedValidateRequest } from "~/server/api/auth"
+import { uncachedValidateRequest } from "~/server/api/auth";
 
 /**
  * 1. CONTEXT

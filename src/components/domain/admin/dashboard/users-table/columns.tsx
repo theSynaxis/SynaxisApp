@@ -1,0 +1,494 @@
+"use client";
+
+import { createColumnHelper } from "@tanstack/react-table";
+import { format } from "date-fns";
+import Image from "next/image";
+
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { BanUser } from "~/components/domain/mod/mod-actions/ban-user";
+import { UnbanUser } from "~/components/domain/mod/mod-actions/unban-user";
+import { PromoteUser } from "../../admin-actions/promote-user";
+import { DemoteUser } from "../../admin-actions/demote-user";
+import { DeleteUser } from "../../admin-actions/delete-user";
+import { USER_ROLES } from "~/lib/constants";
+import { api } from "~/trpc/react";
+import { type USER } from "~/lib/types";
+import { Calendar } from "~/components/ui/calendar";
+import { useState } from "react";
+import { propagateServerField } from "next/dist/server/lib/render-server";
+
+const columnHelper = createColumnHelper<USER>();
+
+export const columns = [
+  columnHelper.accessor("username", {
+    header: () => <div className="text-base">User</div>,
+    cell: (info) => {
+      return <span className="text-base">{info.getValue()}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("role", {
+    header: () => <div className="text-base">User Role</div>,
+    cell: (info) => {
+      return <span className="text-base capitalize">{info.getValue()}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("email", {
+    header: () => <div className="text-base">Email</div>,
+    cell: (info) => {
+      return <span className="text-base">{info.getValue()}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("firstName", {
+    header: () => <div className="text-base">Name</div>,
+    cell: (info) => {
+      const { firstName, lastName } = info.row.original;
+      return (
+        <span className="text-base">
+          {firstName} {lastName}
+        </span>
+      );
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("joinedDate", {
+    header: () => <div className="text-base">Joined Date</div>,
+    cell: (info) => {
+      const date = info.getValue();
+      return <span className="text-base">{format(date, `d, MMM, yyyy`)}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("updatedDate", {
+    header: () => <div className="text-base">Profile Last Updated</div>,
+    cell: (info) => {
+      const date = info.getValue();
+      return <span className="text-base">{format(date, `d, MMM, yyyy`)}</span>;
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.accessor("emailVerified", {
+    header: () => <div className="text-base">Verified Email</div>,
+    cell: (info) => {
+      return (
+        <span className="flex justify-center text-base">
+          {info.getValue() ? (
+            <>
+              <Image
+                src={"/images/icons/Check-Icon.svg"}
+                alt={"Email Verified"}
+                width={32}
+                height={32}
+                className="h-8 w-8"
+              />
+            </>
+          ) : (
+            <>
+              <Image
+                src={"/images/icons/X-Icon.svg"}
+                alt={"Email Verified"}
+                width={32}
+                height={32}
+                className="h-8 w-8 text-secondary-red-500"
+              />
+            </>
+          )}
+        </span>
+      );
+    },
+    footer: (props) => props.column.id,
+  }),
+  columnHelper.display({
+    id: "actions",
+    header: () => <div className="text-center text-base">Actions</div>,
+    cell: (info) => {
+      return <ActionsColumn {...info.row.original} />;
+    },
+  }),
+];
+
+interface ActionsColumnProps {
+  username: string;
+  role: USER_ROLES;
+  id: string;
+  isBanned: boolean;
+}
+
+function ActionsColumn(props: ActionsColumnProps) {
+  const { username, role, id, isBanned } = props;
+
+  const {
+    data: currentUser,
+    isLoading,
+    isError,
+  } = api.user.currentSession.useQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>ERROR</p>;
+
+  return (
+    <>
+      <span className="flex flex-row justify-center self-center">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <Image
+                src={"/images/icons/Dots-Vertical-Icon.svg"}
+                alt={"Actions"}
+                width={16}
+                height={16}
+                className="h-4 w-4"
+              />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="mr-2 bg-neutral-50">
+            <DropdownMenuLabel className="sr-only">Actions</DropdownMenuLabel>
+
+            <MessageUserAction id={id} username={username} role={role} />
+            <DropdownMenuSeparator className="bg-neutral-900" />
+
+            {role === USER_ROLES.USER && isBanned === false ? (
+              // The option to Promote a user is only available if the user in the row
+              // is not an admin, a mod, or is banned.
+              <>
+                <PromoteUserAction id={id} username={username} role={role} />
+                <DropdownMenuSeparator className="bg-neutral-900" />
+              </>
+            ) : (
+              <></>
+            )}
+
+            {role === USER_ROLES.MODERATOR ? (
+              // the option to Promote a user to admin is only available if
+              // the user in the row is already a moderator
+              <>
+                <MakeAdminUserAction username={username} id={id} role={role} />
+                <DropdownMenuSeparator className="bg-neutral-900" />
+              </>
+            ) : (
+              <></>
+            )}
+
+            {role !== USER_ROLES.USER ? (
+              // the option to Demote a user is only available
+              // if the user in the row is already an admin, or a mod.
+              <>
+                {currentUser?.id !== id ? (
+                  <>
+                    <DemoteUserAction username={username} id={id} role={role} />
+                  </>
+                ) : (
+                  <></>
+                )}
+              </>
+            ) : (
+              <>
+                {
+                  // the option to Ban or Delete a user is only available
+                  // if the user in the row is not an admin, or a mod.
+                }
+                {isBanned === false ? (
+                  // the option to Ban a user is only available
+                  // if the user in the row is not already banned
+                  <>
+                    <BanUserAction username={username} id={id} />
+                  </>
+                ) : (
+                  // the option to Unban a user is only available
+                  // if the user in the row is not already banned
+                  <>
+                    <UnbanUserAction username={username} id={id} />
+                    <DropdownMenuSeparator className="bg-neutral-900" />
+                  </>
+                )}
+
+                <DeleteUserAction username={username} id={id} />
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </span>
+    </>
+  );
+}
+
+function MessageUserAction(props: {
+  id: string;
+  username: string;
+  role: USER_ROLES;
+}) {
+  const { id, username, role } = props;
+
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Message
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Message User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-start justify-center">
+                <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                  {username}
+                  <span>Current Role: {role}</span>
+                </span>
+              </div>
+              <PromoteUser
+                userId={id}
+                username={username}
+                currentUserRole={role}
+              />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function PromoteUserAction(props: {
+  id: string;
+  username: string;
+  role: USER_ROLES;
+}) {
+  const { id, username, role } = props;
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Promote
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Promote User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-start justify-center">
+                <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                  {username}
+                  <span>Current Role: {role}</span>
+                </span>
+              </div>
+              <PromoteUser
+                userId={id}
+                username={username}
+                currentUserRole={role}
+              />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function MakeAdminUserAction(props: {
+  id: string;
+  username: string;
+  role: USER_ROLES;
+}) {
+  const { id, username, role } = props;
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Make Admin
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Promote User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-start justify-center">
+                <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                  {username}
+                  <span>Current Role: {role}</span>
+                </span>
+              </div>
+              <PromoteUser
+                userId={id}
+                username={username}
+                currentUserRole={role}
+              />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function DemoteUserAction(props: {
+  id: string;
+  username: string;
+  role: USER_ROLES;
+}) {
+  const { id, username, role } = props;
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base text-secondary-red-500"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Demote
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Demote User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-start justify-center">
+                <span className="flex w-full flex-row items-center justify-between p-0 text-lg">
+                  {username}
+                  <span>Current Role: {role}</span>
+                </span>
+              </div>
+              <DemoteUser
+                userId={id}
+                username={username}
+                currentUserRole={role}
+              />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function BanUserAction(props: { id: string; username: string }) {
+  const { id, username } = props;
+  const [date, setDate] = useState<Date | undefined>();
+
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <DropdownMenuItem
+            className="cursor-pointer text-base text-secondary-red-500"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Ban
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="flex flex-col items-center sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Ban User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-center justify-center text-lg">
+                <p>
+                  Are you sure you want to ban{" "}
+                  <span className="text-secondary-red-600">{username}</span>?
+                </p>
+                <Calendar mode="single" selected={date} onSelect={setDate} />
+                <span>
+                  Ban user until:{" "}
+                  {date ? format(date, "MMM d, yyyy") : "Forever"}
+                </span>
+              </div>
+
+              <BanUser userId={id} username={username} date={date} />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <DropdownMenuSeparator className="bg-neutral-900" />
+    </>
+  );
+}
+
+function UnbanUserAction(props: { id: string; username: string }) {
+  const { id, username } = props;
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base text-secondary-red-500"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Unban
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Unban User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-start justify-center text-lg">
+                <p>Are you sure you want to unban {username}?</p>
+              </div>
+
+              <UnbanUser userId={id} username={username} />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
+function DeleteUserAction(props: { id: string; username: string }) {
+  const { id, username } = props;
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger>
+          <DropdownMenuItem
+            className="cursor-pointer text-base text-secondary-red-500"
+            onSelect={(e) => e.preventDefault()}
+          >
+            Delete
+          </DropdownMenuItem>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Delete User</DialogTitle>
+            <DialogDescription className="flex flex-col gap-4 pt-4">
+              <div className="flex w-full flex-col items-start justify-center text-lg">
+                <p>Are you sure you want to delete {username}?</p>
+              </div>
+
+              <DeleteUser userId={id} username={username} />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}

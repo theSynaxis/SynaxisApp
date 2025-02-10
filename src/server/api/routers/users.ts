@@ -1,17 +1,29 @@
 import { z } from "zod";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { generateId } from "lucia";
 
 // import components
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  protectedProcedure,
+} from "~/server/api/trpc";
 import { users } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
-import { lucia } from '~/server/api/auth';
+import { lucia } from "~/server/api/auth";
+import { USER_ROLES } from "~/lib/constants";
+import { USER } from "~/lib/types";
 
 export const userRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ username: z.string().min(1), email: z.string().email(), password: z.string() }))
+    .input(
+      z.object({
+        username: z.string().min(1),
+        email: z.string().email(),
+        password: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const hashedPassword = await bcrypt.hash(input.password, 10);
       const usernameTaken = await ctx.db
@@ -23,12 +35,18 @@ export const userRouter = createTRPCRouter({
         .from(users)
         .where(eq(users.email, input.email));
 
-      if(usernameTaken?.[0]?.username) {
-        throw new TRPCError({ code: "UNPROCESSABLE_CONTENT", message: "Username taken." })
+      if (usernameTaken?.[0]?.username) {
+        throw new TRPCError({
+          code: "UNPROCESSABLE_CONTENT",
+          message: "Username taken.",
+        });
       }
 
-      if(emailTaken?.[0]?.email) {
-        throw new TRPCError({ code: "UNPROCESSABLE_CONTENT", message: "Email taken." })
+      if (emailTaken?.[0]?.email) {
+        throw new TRPCError({
+          code: "UNPROCESSABLE_CONTENT",
+          message: "Email taken.",
+        });
       }
 
       await ctx.db.insert(users).values({
@@ -39,10 +57,12 @@ export const userRouter = createTRPCRouter({
       });
     }),
   login: publicProcedure
-    .input(z.object({ 
-      usernameOrEmail: z.string(),
-      password: z.string()
-    }))
+    .input(
+      z.object({
+        usernameOrEmail: z.string(),
+        password: z.string(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const userByUsername = await ctx.db
         .select()
@@ -50,16 +70,22 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.username, input.usernameOrEmail));
 
       if (userByUsername?.[0]?.password) {
-        const passwordMatches = await bcrypt.compare(input.password, userByUsername[0].password);
+        const passwordMatches = await bcrypt.compare(
+          input.password,
+          userByUsername[0].password,
+        );
 
         if (!passwordMatches) {
-          throw new TRPCError({ code: "FORBIDDEN", message: "Invalid Credentials." })
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Invalid Credentials.",
+          });
         }
 
         const session = await lucia.createSession(userByUsername[0].id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
 
-        return sessionCookie
+        return sessionCookie;
       }
 
       const userByEmail = await ctx.db
@@ -68,19 +94,28 @@ export const userRouter = createTRPCRouter({
         .where(eq(users.email, input.usernameOrEmail));
 
       if (userByEmail?.[0]?.password) {
-        const passwordMatches = await bcrypt.compare(input.password, userByEmail[0].password);
+        const passwordMatches = await bcrypt.compare(
+          input.password,
+          userByEmail[0].password,
+        );
 
         if (!passwordMatches) {
-          throw new TRPCError({ code: "FORBIDDEN", message: "Invalid Credentials." })
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "Invalid Credentials.",
+          });
         }
-        
+
         const session = await lucia.createSession(userByEmail[0].id, {});
         const sessionCookie = lucia.createSessionCookie(session.id);
 
-        return sessionCookie
+        return sessionCookie;
       }
-      
-      throw new TRPCError({ code: "NOT_FOUND", message: "Invalid Credentials." })
+
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "Invalid Credentials.",
+      });
     }),
   logout: protectedProcedure.mutation(async ({ ctx }) => {
     const { session } = ctx;
@@ -88,6 +123,142 @@ export const userRouter = createTRPCRouter({
     await lucia.invalidateSession(session.id);
     const sessionCookie = lucia.createBlankSessionCookie();
 
-    return sessionCookie
+    return sessionCookie;
+  }),
+  currentSession: protectedProcedure.query(async ({ ctx }) => {
+    const currentId = ctx.user.id;
+    const currentUser = await ctx.db
+      .select()
+      .from(users)
+      .where(eq(users.id, currentId));
+    return currentUser[0];
+  }),
+  list: protectedProcedure.query(async ({ ctx }) => {
+    const allUsers = await ctx.db
+      .select()
+      .from(users)
+      .where(eq(users.isDeleted, false));
+    // TODO: exclude password
+    return allUsers as unknown as USER[];
+  }),
+  demoteUserFromMod: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const updatedUser = await ctx.db
+        .update(users)
+        .set({ role: USER_ROLES.USER, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+      return updatedUser;
+    }),
+  makeMod: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (
+        actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR ||
+        input.userId === actorId // admins cannot demote themselves
+      ) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updatedUser = await ctx.db
+        .update(users)
+        .set({ role: USER_ROLES.MODERATOR, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+      return updatedUser;
+    }),
+  makeAdmin: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const updatedUser = await ctx.db
+        .update(users)
+        .set({ role: USER_ROLES.ADMINISTRATOR, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+
+      return updatedUser;
+    }),
+  ban: protectedProcedure
+    .input(z.object({ userId: z.string(), date: z.date().optional() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role === USER_ROLES.USER) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const bannedUser = await ctx.db
+        .update(users)
+        .set({
+          isBanned: true,
+          bannedUntil: input.date,
+          updatedDate: new Date(),
+        })
+        .where(eq(users.id, input.userId));
+
+      return bannedUser;
+    }),
+  unban: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role === USER_ROLES.USER) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const bannedUser = await ctx.db
+        .update(users)
+        .set({ isBanned: false, bannedUntil: null, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+
+      return bannedUser;
+    }),
+  delete: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const actorId = ctx.user.id;
+      const actingUser = await ctx.db
+        .select()
+        .from(users)
+        .where(eq(users.id, actorId));
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+      if (actingUser[0]?.role !== USER_ROLES.ADMINISTRATOR) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const deletedUser = await ctx.db
+        .update(users)
+        .set({ isDeleted: true, updatedDate: new Date() })
+        .where(eq(users.id, input.userId));
+
+      return deletedUser;
     }),
 });

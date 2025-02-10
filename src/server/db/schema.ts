@@ -11,6 +11,7 @@ import {
   boolean,
   integer,
 } from "drizzle-orm/pg-core";
+import { USER_ROLES } from "~/lib/constants";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -23,7 +24,7 @@ export const createTable = pgTableCreator((name) => `synaxis-app_${name}`);
 export const users = createTable("users", {
   id: varchar("id").primaryKey(),
   // roles: user, moderator, administrator
-  role: varchar("role").notNull().default("user"),
+  role: varchar("role").notNull().default(USER_ROLES.USER),
   username: varchar("username", { length: 256 }).notNull(),
   email: varchar("email", { length: 256 }).notNull(),
   emailVerified: boolean("email_verified").default(false).notNull(),
@@ -45,6 +46,7 @@ export const users = createTable("users", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   isBanned: boolean("is_banned").default(false),
+  bannedUntil: timestamp("banned_until"),
   isDeleted: boolean("is_deleted").default(false),
 });
 
